@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LuxFlix Pro Membership</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0f0f0f;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .button-group {
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 15px 30px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .upi-btn { background: #4caf50; color: white; }
+    .paypal-btn { background: #0070ba; color: white; }
+    .qr-section, .submit-form {
+      display: none;
+      max-width: 400px;
+      margin: 20px auto;
+      background: #1c1c1c;
+      padding: 20px;
+      border-radius: 20px;
+    }
+    .qr-section img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    input, label {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+    input[type="file"] {
+      background: #222;
+      color: white;
+    }
+    .submit-btn {
+      background: #e91e63;
+      color: white;
+      font-size: 16px;
+    }
+    .thankyou {
+      display: none;
+      margin-top: 20px;
+      font-size: 18px;
+      color: #00ff99;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>💎 Become a Pro Member</h1>
+  <p>Choose your payment method</p>
+
+  <div class="button-group">
+    <button class="upi-btn" onclick="showPayment('upi')">Pay with UPI</button>
+    <button class="paypal-btn" onclick="showPayment('paypal')">Pay with PayPal</button>
+  </div>
+
+  <!-- UPI QR Section -->
+  <div id="upi" class="qr-section">
+    <img src="https://mypikpak.com/s/VOVqc2furRuHHWh0JekK9yVto2" alt="UPI QR Code" />
+    <p><strong>Pay to:</strong> luxflix@upi</p>
+  </div>
+
+  <!-- PayPal QR Section -->
+  <div id="paypal" class="qr-section">
+    <img src="https://mypikpak.com/s/VOVqbykwkHPJ7Zxa21bgMj1Eo2" alt="PayPal QR Code" />
+    <p><strong>PayPal Email:</strong> luxflixpro@paypal.com</p>
+  </div>
+
+  <!-- Submit Form -->
+  <form id="paymentForm" class="submit-form" action="https://63ce8a1b-d60e-45e9-8ace-db508feff835-00-nnnhmd8hxoz6.worf.replit.dev/submit" method="POST" enctype="multipart/form-data">
+    <label>Your Name</label>
+    <input type="text" name="name" required />
+
+    <label>UPI Ref ID or PayPal Email</label>
+    <input type="text" name="refID" required />
+
+    <label>Upload Payment Screenshot</label>
+    <input type="file" name="screenshot" accept="image/*" required />
+
+    <button type="submit" class="submit-btn">📤 Submit Proof</button>
+  </form>
+
+  <!-- Thank You Message -->
+  <div class="thankyou" id="thankyouMsg">
+    ✅ Thank you! You’ll be upgraded to Pro within 1 hour.
+  </div>
+
+  <script>
+    function showPayment(method) {
+      document.getElementById('upi').style.display = 'none';
+      document.getElementById('paypal').style.display = 'none';
+      document.querySelector('.submit-form').style.display = 'block';
+      document.getElementById(method).style.display = 'block';
+    }
+
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+
+      fetch(form.action, {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => {
+        if (res.ok) {
+          form.style.display = 'none';
+          document.querySelector('.qr-section').style.display = 'none';
+          document.getElementById('thankyouMsg').style.display = 'block';
+        } else {
+          alert("❌ Submission failed. Try again.");
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert("❌ Error submitting. Please try later.");
+      });
+    });
+  </script>
+</body>
+</html>

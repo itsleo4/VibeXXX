@@ -63,3 +63,58 @@ header {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
 }
+/* Auth Forms Style */
+.auth-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 30px;
+  background: #111;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(255, 0, 150, 0.3);
+  text-align: center;
+}
+
+.auth-container h2 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.auth-container form input {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #222;
+  color: #fff;
+}
+
+.auth-container form button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(to right, #ff1493, #ff416c);
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+.auth-container form button:hover {
+  background: linear-gradient(to right, #ff416c, #ff1493);
+}
+
+.auth-container p {
+  color: #ccc;
+  margin-top: 20px;
+}
+
+.auth-container a {
+  color: #ff4da6;
+  text-decoration: underline;
+}

@@ -12,10 +12,11 @@
     <nav>
       <ul class="menu">
         <li><a href="index.html">Free Videos</a></li>
-        <li><a href="pro.html">Pro Videos</a></li>
-        <li><a href="login.html" id="loginBtn">Login</a></li>
-        <li><a href="register.html" id="registerBtn">Register</a></li>
-        <li><a href="#" id="logoutBtn" style="display:none;">Logout</a></li>
+        <li><a href="pro.html" class="pro-link" style="display: none;">Pro Videos</a></li>
+        <li><a href="saved.html" class="saved-link" style="display: none;">Saved</a></li>
+        <li><a href="login.html" class="login-link">Login</a></li>
+        <li><a href="register.html" class="register-link">Register</a></li>
+        <li><a href="#" class="logout-link" style="display: none;" onclick="logout()">Logout</a></li>
       </ul>
     </nav>
   </header>
@@ -26,20 +27,13 @@
       <p>Enjoy exclusive NSFW content – Free and Pro categories available.</p>
       <a href="membership.html" class="cta">Become a Pro Member</a>
     </section>
+
     <section id="videoGrid" class="video-grid">
       <!-- Videos will appear here -->
     </section>
   </main>
+
   <script src="js/main.js"></script>
-<script src="js/auth.js"></script>
-<nav id="nav">
-  <a href="index.html">Home</a>
-  <a href="pro.html" class="pro-link" style="display: none;">Pro Videos</a>
-  <a href="saved.html" class="saved-link" style="display: none;">Saved</a>
-  <a href="login.html" class="login-link">Login</a>
-  <a href="register.html" class="register-link">Register</a>
-  <a href="#" class="logout-link" style="display: none;" onclick="logout()">Logout</a>
-</nav>
-<script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
 </body>
 </html>

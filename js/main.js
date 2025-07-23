@@ -1,8 +1,8 @@
 // js/main.js
 
-document.addEventListener("DOMContentLoaded", function () {
-  const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+document.addEventListener("DOMContentLoaded", () => {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const isLoggedIn = !!user.username;
 
   const loginLink = document.querySelector(".login-link");
   const registerLink = document.querySelector(".register-link");
@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
     logoutLink.style.display = "inline-block";
     savedLink.style.display = "inline-block";
 
-    // If user is a Pro member, show Pro section
     if (user.role === "pro") {
       proLink.style.display = "inline-block";
     }
@@ -30,23 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function logout() {
-  localStorage.removeItem("loggedIn");
+  localStorage.removeItem("user");
   alert("Logged out!");
   location.reload();
 }
-
-// Placeholder for login/logout logic (coming in Phase 2)
-document.addEventListener("DOMContentLoaded", () => {
-  const isLoggedIn = localStorage.getItem("user");
-
-  if (isLoggedIn) {
-    document.getElementById("loginBtn").style.display = "none";
-    document.getElementById("registerBtn").style.display = "none";
-    document.getElementById("logoutBtn").style.display = "inline-block";
-  }
-
-  document.getElementById("logoutBtn")?.addEventListener("click", () => {
-    localStorage.removeItem("user");
-    location.reload();
-  });
-});

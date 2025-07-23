@@ -54,11 +54,6 @@
       background: #e91e63;
       color: white;
       font-size: 16px;
-      cursor: pointer;
-    }
-    .submit-btn:disabled {
-      background: #555;
-      cursor: not-allowed;
     }
     .thankyou {
       display: none;
@@ -66,9 +61,11 @@
       font-size: 18px;
       color: #00ff99;
     }
-    small {
-      color: #aaa;
-      font-size: 13px;
+    .hint {
+      font-size: 12px;
+      color: #ccc;
+      margin-top: -8px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -97,11 +94,11 @@
   <!-- Submit Form -->
   <form id="paymentForm" class="submit-form" action="https://63ce8a1b-d60e-45e9-8ace-db508feff835-00-nnnhmd8hxoz6.worf.replit.dev/submit" method="POST" enctype="multipart/form-data">
     <label>Your Name</label>
-    <input type="text" name="name" required placeholder="Enter your name" />
+    <input type="text" name="name" required />
 
     <label>UPI Ref ID or PayPal Email</label>
-    <input type="text" name="refID" required placeholder="e.g. 254098732101 or your PayPal email" />
-    <small>💡 *UPI Ref ID is a 12-digit code from your payment app after sending money*</small>
+    <input type="text" name="refID" pattern="[a-zA-Z0-9@._-]+" required />
+    <div class="hint">Enter your 12-digit UPI Reference ID (from Google Pay, PhonePe etc.) or PayPal email</div>
 
     <label>Upload Payment Screenshot</label>
     <input type="file" name="screenshot" accept="image/*" required />
@@ -111,7 +108,7 @@
 
   <!-- Thank You Message -->
   <div class="thankyou" id="thankyouMsg">
-    ✅ Thank you! You’ll be upgraded to Pro within 1 hour.
+    ✅ Thank you! Your proof is submitted.<br/>You’ll be upgraded to Pro within 1 hour.
   </div>
 
   <script>
@@ -124,10 +121,11 @@
 
     document.getElementById('paymentForm').addEventListener('submit', function(e) {
       e.preventDefault();
+
       const form = e.target;
       const submitBtn = document.getElementById('submitBtn');
+      submitBtn.innerText = "⏳ Submitting...";
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Submitting...';
 
       const formData = new FormData(form);
 
@@ -138,19 +136,20 @@
       .then(res => {
         if (res.ok) {
           form.style.display = 'none';
-          document.querySelectorAll('.qr-section').forEach(el => el.style.display = 'none');
+          document.getElementById('upi').style.display = 'none';
+          document.getElementById('paypal').style.display = 'none';
           document.getElementById('thankyouMsg').style.display = 'block';
         } else {
           alert("❌ Submission failed. Try again.");
+          submitBtn.innerText = "📤 Submit Proof";
           submitBtn.disabled = false;
-          submitBtn.textContent = '📤 Submit Proof';
         }
       })
       .catch(err => {
         console.error(err);
         alert("❌ Error submitting. Please try later.");
+        submitBtn.innerText = "📤 Submit Proof";
         submitBtn.disabled = false;
-        submitBtn.textContent = '📤 Submit Proof';
       });
     });
   </script>

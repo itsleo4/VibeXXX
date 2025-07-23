@@ -58,17 +58,15 @@
       background: #e91e63;
       color: white;
       font-size: 16px;
-      cursor: pointer;
     }
-    .submit-btn:disabled {
-      background: #888;
-      cursor: not-allowed;
-    }
-    .thankyou {
+    .thankyou, .submitting {
       display: none;
       margin-top: 20px;
       font-size: 18px;
       color: #00ff99;
+    }
+    .submitting {
+      color: #ffaa00;
     }
   </style>
 </head>
@@ -95,7 +93,7 @@
   </div>
 
   <!-- Submit Form -->
-  <form id="paymentForm" class="submit-form" action="https://63ce8a1b-d60e-45e9-8ace-db508feff835-00-nnnhmd8hxoz6.worf.replit.dev/submit" method="POST" enctype="multipart/form-data">
+  <form id="paymentForm" class="submit-form" action="https://63ce8a1b-d60e-45e9-8ace-db508feff835-00-nnnhmd8hxoz6.worf.replit.dev/" method="POST" enctype="multipart/form-data">
     <label>Your Name</label>
     <input type="text" name="name" required />
 
@@ -107,6 +105,11 @@
 
     <button type="submit" class="submit-btn" id="submitBtn">📤 Submit Proof</button>
   </form>
+
+  <!-- Loading / Submitting -->
+  <div class="submitting" id="submittingMsg">
+    ⏳ Submitting... Please wait.
+  </div>
 
   <!-- Thank You Message -->
   <div class="thankyou" id="thankyouMsg">
@@ -124,10 +127,13 @@
     document.getElementById('paymentForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const form = e.target;
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.disabled = true;
-
       const formData = new FormData(form);
+      const submitBtn = document.getElementById('submitBtn');
+
+      // Disable and hide submit button, show loading
+      submitBtn.disabled = true;
+      submitBtn.style.display = 'none';
+      document.getElementById('submittingMsg').style.display = 'block';
 
       fetch(form.action, {
         method: 'POST',
@@ -136,17 +142,23 @@
       .then(res => {
         if (res.ok) {
           form.style.display = 'none';
-          document.querySelector('.qr-section').style.display = 'none';
+          document.getElementById('upi').style.display = 'none';
+          document.getElementById('paypal').style.display = 'none';
+          document.getElementById('submittingMsg').style.display = 'none';
           document.getElementById('thankyouMsg').style.display = 'block';
         } else {
           alert("❌ Submission failed. Try again.");
           submitBtn.disabled = false;
+          submitBtn.style.display = 'block';
+          document.getElementById('submittingMsg').style.display = 'none';
         }
       })
       .catch(err => {
         console.error(err);
         alert("❌ Error submitting. Please try later.");
         submitBtn.disabled = false;
+        submitBtn.style.display = 'block';
+        document.getElementById('submittingMsg').style.display = 'none';
       });
     });
   </script>

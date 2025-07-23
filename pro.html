@@ -3,61 +3,129 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LuxFlix Pro</title>
+  <title>Pro Videos - VibeXXX</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
-      background-color: #000;
+      background-color: #111;
       color: #fff;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 30px;
+      font-family: 'Inter', sans-serif;
     }
-    .teaser, .pro-content {
-      margin: 20px auto;
-      max-width: 500px;
-    }
-    video {
-      width: 100%;
+    .video-card {
+      background: #1a1a1a;
       border-radius: 10px;
-      box-shadow: 0 0 20px red;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease-in-out;
     }
-    .pro-button {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 15px 25px;
-      background-color: #ff0033;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      text-decoration: none;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
+    .video-card:hover {
+      transform: translateY(-5px);
     }
   </style>
 </head>
 <body>
+  <header class="bg-gray-800 p-4 shadow-lg flex justify-between items-center flex-wrap">
+    <h1 class="text-3xl font-bold text-white">Vibe<span class="text-pink-500">XXX</span></h1>
+    <nav class="mt-4 md:mt-0">
+      <ul class="flex flex-wrap gap-4">
+        <li><a href="index.html" class="text-white hover:text-pink-400 transition">Free Videos</a></li>
+        <li><a href="pro.html" class="text-pink-500 font-bold">Pro Videos</a></li>
+        <li><a href="saved.html" class="saved-link text-white hover:text-pink-400 transition" style="display: none;">Saved</a></li>
+        <li><a href="login.html" class="login-link text-white hover:text-pink-400 transition">Login</a></li>
+        <li><a href="register.html" class="register-link text-white hover:text-pink-400 transition">Register</a></li>
+        <li><a href="#" class="logout-link text-white hover:text-pink-400 transition" style="display: none;">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <h1>🔥 LuxFlix Pro Zone 🔥</h1>
+  <main class="p-4">
+    <h2 class="text-2xl font-bold mb-6">🔥 Pro Member Videos</h2>
+    <div id="proVideoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Teaser videos or embedded videos will load here -->
+    </div>
+  </main>
 
-  <div id="teaser" class="teaser">
-    <video src="https://strtape.tech/v/LebleAQkqeiRlYA/lv_0_20250723165624.mp4" autoplay loop muted></video>
-    <p><strong>This content is for Pro Members only.</strong></p>
-    <a href="membership.html" class="pro-button">Become a Pro Member</a>
+  <div id="accessDenied" class="hidden text-center text-xl text-red-500 font-semibold mt-10">
+    🚫 You need to be a <span class="text-pink-500">Pro Member</span> to access these videos.<br/>
+    <a href="membership.html" class="underline text-pink-400 hover:text-pink-500">Upgrade Now</a>
   </div>
 
-  <div id="pro-videos" class="pro-content" style="display: none;">
-    <iframe src="https://strtape.tech/e/1pe3Yo0pMPseqWl/" width="100%" height="360" allowfullscreen></iframe>
-    <h3>Giant dildo destroyed her pussy</h3>
-    <!-- More Pro embeds coming soon -->
-  </div>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-  <script>
-    const isPro = localStorage.getItem("isPro");
-    if (isPro === "true") {
-      document.getElementById("teaser").style.display = "none";
-      document.getElementById("pro-videos").style.display = "block";
-    }
+  <!-- Auth + Pro Checker -->
+  <script type="module">
+    import { firebaseConfig } from './js/firebaseConfig.js';
+    firebase.initializeApp(firebaseConfig);
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    const proGrid = document.getElementById("proVideoGrid");
+    const accessDenied = document.getElementById("accessDenied");
+
+    const videos = [
+      {
+        title: "Giant dildo destroyed her pussy",
+        embed: "https://strtape.tech/e/1pe3Yo0pMPseqWl/"
+      },
+      {
+        title: "She didn't lose the chance",
+        embed: "https://strtape.tech/e/WrlAXXvapBIbDkx/"
+      },
+      {
+        title: "Shemale and two beauties",
+        embed: "https://strtape.tech/e/owPJoQYvYbIJawz/"
+      },
+      {
+        title: "Two elves and one milf",
+        embed: "https://strtape.tech/e/wDJrq9bxgxSoe1/"
+      },
+      {
+        title: "Oiling the body then riding the dick",
+        embed: "https://strtape.tech/e/PqGaZ0MpkMF0qAG/"
+      }
+    ];
+
+    auth.onAuthStateChanged(async user => {
+      if (user) {
+        const doc = await db.collection("users").doc(user.uid).get();
+        const role = doc.data()?.role || "free";
+
+        // Show/hide nav links
+        document.querySelector('.login-link').style.display = "none";
+        document.querySelector('.register-link').style.display = "none";
+        document.querySelector('.logout-link').style.display = "inline-block";
+        document.querySelector('.saved-link').style.display = "inline-block";
+
+        if (role === "pro") {
+          // Load full video embeds
+          videos.forEach(v => {
+            proGrid.innerHTML += `
+              <div class="video-card p-2">
+                <iframe src="${v.embed}" class="w-full aspect-video" frameborder="0" allowfullscreen></iframe>
+                <h3 class="mt-2 text-center">${v.title}</h3>
+              </div>
+            `;
+          });
+        } else {
+          // Show teaser or deny access
+          accessDenied.classList.remove("hidden");
+        }
+      } else {
+        accessDenied.classList.remove("hidden");
+      }
+    });
+
+    // Logout function
+    document.querySelector('.logout-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      auth.signOut().then(() => location.href = "index.html");
+    });
   </script>
 </body>
 </html>

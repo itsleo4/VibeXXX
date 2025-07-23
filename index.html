@@ -34,6 +34,15 @@
         .video-card:hover {
             transform: translateY(-5px);
         }
+        /* Custom Modal Styling for better visibility */
+        #customModal {
+            background-color: rgba(0, 0, 0, 0.8); /* Darker, more opaque background */
+            z-index: 9999; /* Ensure it's on top of everything */
+        }
+        #customModal > div {
+            border: 2px solid #ff3366; /* Stronger border */
+            box-shadow: 0 0 25px rgba(255, 51, 102, 0.7); /* More prominent glow */
+        }
     </style>
 </head>
 <body>
@@ -46,7 +55,7 @@
                 <li><a href="saved.html" class="saved-link text-white hover:text-pink-400 transition duration-300" style="display: none;">Saved</a></li>
                 <li><a href="login.html" class="login-link text-white hover:text-pink-400 transition duration-300">Login</a></li>
                 <li><a href="register.html" class="register-link text-white hover:text-pink-400 transition duration-300">Register</a></li>
-                <li><a href="#" class="logout-link text-white hover:text-pink-400 transition duration-300" style="display: none;" onclick="logout()">Logout</a></li>
+                <li><a href="#" class="logout-link text-white hover:text-pink-400 transition duration-300" style="display: none;" onclick="console.log('Logout button clicked'); logout();">Logout</a></li>
             </ul>
         </nav>
     </header>

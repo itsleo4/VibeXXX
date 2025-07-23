@@ -190,18 +190,27 @@
             const loginForm = document.getElementById('loginForm');
             if (loginForm) {
                 loginForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
+                    e.preventDefault(); // Prevent default form submission
+                    console.log('Login form submitted.'); // Debugging: Confirm submit event fires
+
                     const email = document.getElementById('loginEmail').value.trim();
                     const password = document.getElementById('loginPassword').value;
 
                     if (!email || !password) {
                         window.showModal("Please enter email and password.");
+                        console.log('Validation failed: Email or password missing.'); // Debugging
                         return;
                     }
 
+                    console.log('Attempting login with:', email); // Debugging: Show email being used
                     const success = await loginUser(email, password);
+                    console.log('loginUser returned:', success); // Debugging: Check success value
+
                     if (success) {
+                        console.log('Login successful, redirecting to index.html'); // Debugging
                         window.location.href = 'index.html'; // Redirect only if login was successful
+                    } else {
+                        console.log('Login failed, not redirecting.'); // Debugging
                     }
                 });
             }

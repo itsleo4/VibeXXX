@@ -191,19 +191,28 @@
             const registerForm = document.getElementById('registerForm');
             if (registerForm) {
                 registerForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
+                    e.preventDefault(); // Prevent default form submission
+                    console.log('Register form submitted.'); // Debugging: Confirm submit event fires
+
                     const username = document.getElementById('username').value.trim();
                     const email = document.getElementById('email').value.trim();
                     const password = document.getElementById('password').value;
 
                     if (!username || !email || !password) {
                         window.showModal("Please fill in all fields.");
+                        console.log('Validation failed: Fields missing.'); // Debugging
                         return;
                     }
 
+                    console.log('Attempting registration with:', email, 'and username:', username); // Debugging
                     const success = await registerUser(username, email, password);
+                    console.log('registerUser returned:', success); // Debugging: Check success value
+
                     if (success) {
+                        console.log('Registration successful, redirecting to index.html'); // Debugging
                         window.location.href = 'index.html'; // Redirect only if registration was successful
+                    } else {
+                        console.log('Registration failed, not redirecting.'); // Debugging
                     }
                 });
             }

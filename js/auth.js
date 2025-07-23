@@ -14,8 +14,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Function to show custom modal (exposed globally for main.js and HTML)
-function showModal(message) {
+// Function to show custom modal
+export function showModal(message) { // EXPORTED
     const modalElement = document.getElementById('customModal');
     const modalMessageElement = document.getElementById('modalMessage');
     if (modalElement && modalMessageElement) {
@@ -23,16 +23,14 @@ function showModal(message) {
         modalElement.classList.remove('hidden');
     }
 }
-window.showModal = showModal; // Expose globally
 
-// Function to hide custom modal (exposed globally for HTML onclick)
-function hideModal() {
+// Function to hide custom modal
+export function hideModal() { // EXPORTED
     const modalElement = document.getElementById('customModal');
     if (modalElement) {
         modalElement.classList.add('hidden');
     }
 }
-window.hideModal = hideModal; // Expose globally
 
 // Firebase Authentication state listener
 // This listener updates localStorage and dispatches a custom event

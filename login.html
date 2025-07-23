@@ -182,9 +182,8 @@
     </script>
     <!-- Your auth.js script and page-specific logic -->
     <script type="module">
-        import { loginUser, showModal, hideModal } from './js/auth.js'; // Adjust path if necessary
-        window.showModal = showModal; // Expose globally
-        window.hideModal = hideModal; // Expose globally
+        // Corrected import: import showModal and hideModal directly
+        import { loginUser, showModal, hideModal } from './js/auth.js';
 
         document.addEventListener('DOMContentLoaded', () => {
             const loginForm = document.getElementById('loginForm');
@@ -197,7 +196,7 @@
                     const password = document.getElementById('loginPassword').value;
 
                     if (!email || !password) {
-                        window.showModal("Please enter email and password.");
+                        showModal("Please enter email and password."); // Use imported showModal
                         console.log('Validation failed: Email or password missing.'); // Debugging
                         return;
                     }

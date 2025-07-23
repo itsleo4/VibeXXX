@@ -183,9 +183,8 @@
     </script>
     <!-- Your auth.js script and page-specific logic -->
     <script type="module">
-        import { registerUser, showModal, hideModal } from './js/auth.js'; // Adjust path if necessary
-        window.showModal = showModal; // Expose globally
-        window.hideModal = hideModal; // Expose globally
+        // Corrected import: import showModal and hideModal directly
+        import { registerUser, showModal, hideModal } from './js/auth.js';
 
         document.addEventListener('DOMContentLoaded', () => {
             const registerForm = document.getElementById('registerForm');
@@ -199,7 +198,7 @@
                     const password = document.getElementById('password').value;
 
                     if (!username || !email || !password) {
-                        window.showModal("Please fill in all fields.");
+                        showModal("Please fill in all fields."); // Use imported showModal
                         console.log('Validation failed: Fields missing.'); // Debugging
                         return;
                     }

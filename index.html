@@ -1,39 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>VibeXXX - Premium NSFW Experience</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>VibeXXX - Premium NSFW Experience</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <!-- Tailwind CSS CDN for general styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        /* Basic styling for the body to ensure full height and background */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #111; /* Dark background */
+            color: #fff; /* White text */
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            display: flex;
+            flex-direction: column;
+        }
+        /* Ensure main content takes available space */
+        main {
+            flex-grow: 1;
+        }
+        .video-card {
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease-in-out;
+        }
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1 class="logo">Vibe<span>XXX</span></h1>
-    <nav>
-      <ul class="menu">
-        <li><a href="index.html">Free Videos</a></li>
-        <li><a href="pro.html" class="pro-link" style="display: none;">Pro Videos</a></li>
-        <li><a href="saved.html" class="saved-link" style="display: none;">Saved</a></li>
-        <li><a href="login.html" class="login-link">Login</a></li>
-        <li><a href="register.html" class="register-link">Register</a></li>
-        <li><a href="#" class="logout-link" style="display: none;" onclick="logout()">Logout</a></li>
-      </ul>
-    </nav>
-  </header>
+    <header class="bg-gray-800 p-4 shadow-lg flex justify-between items-center flex-wrap">
+        <h1 class="text-3xl font-bold text-white">Vibe<span class="text-pink-500">XXX</span></h1>
+        <nav class="mt-4 md:mt-0">
+            <ul class="flex flex-wrap gap-4">
+                <li><a href="index.html" class="text-white hover:text-pink-400 transition duration-300">Free Videos</a></li>
+                <li><a href="pro.html" class="pro-link text-white hover:text-pink-400 transition duration-300" style="display: none;">Pro Videos</a></li>
+                <li><a href="saved.html" class="saved-link text-white hover:text-pink-400 transition duration-300" style="display: none;">Saved</a></li>
+                <li><a href="login.html" class="login-link text-white hover:text-pink-400 transition duration-300">Login</a></li>
+                <li><a href="register.html" class="register-link text-white hover:text-pink-400 transition duration-300">Register</a></li>
+                <li><a href="#" class="logout-link text-white hover:text-pink-400 transition duration-300" style="display: none;" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <main>
-    <section class="hero">
-      <h2>Welcome to VibeXXX</h2>
-      <p>Enjoy exclusive NSFW content – Free and Pro categories available.</p>
-      <a href="membership.html" class="cta">Become a Pro Member</a>
-    </section>
+    <main class="p-4">
+        <section class="hero text-center py-8" id="welcomeMessage">
+            <!-- Content will be dynamically updated by main.js -->
+            <h2>Welcome to VibeXXX</h2>
+            <p>Enjoy exclusive NSFW content – Free and Pro categories available.</p>
+            <a href="membership.html" class="cta inline-block mt-4 px-6 py-3 bg-pink-600 text-white font-bold rounded-lg shadow-lg hover:bg-pink-700 transition duration-300">Become a Pro Member</a>
+        </section>
 
-    <section id="videoGrid" class="video-grid">
-      <!-- Videos will appear here -->
-    </section>
-  </main>
+        <section id="videoGrid" class="video-grid">
+            <!-- Videos will appear here, populated by main.js -->
+        </section>
+    </main>
 
-  <script src="js/main.js"></script>
-  <script src="js/auth.js"></script>
+    <!-- Custom Modal HTML -->
+    <div id="customModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 p-6 rounded-lg shadow-xl max-w-sm w-full text-center border border-pink-500">
+            <p id="modalMessage" class="text-white text-lg mb-4"></p>
+            <button
+                onclick="window.hideModal()"
+                class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
+            >
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <!-- These need to be loaded before your scripts that use them -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
+    <!-- Expose global variables for Firebase config -->
+    <script>
+        // These variables are provided by the Canvas environment
+        window.__firebase_config = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+        window.__app_id = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        window.__initial_auth_token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+    </script>
+    <!-- Your JavaScript files -->
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>

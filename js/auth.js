@@ -1,11 +1,10 @@
 // js/auth.js
 // Import Firebase modules directly using their CDN URLs
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import { getAuth, signInAnonymously, signInWithCustomToken, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getAuth, signInWithCustomToken, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 // YOUR FIREBASE CONFIGURATION - EMBEDDED DIRECTLY
-// This ensures Firebase is initialized correctly even if __firebase_config is not provided by the environment.
 const firebaseConfig = {
     apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
     authDomain: "vibexxx-500c6.firebaseapp.com",
@@ -51,7 +50,7 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
         // User is signed in
         localStorage.setItem("loggedIn", "true");
-        localStorage.setItem("userEmail", user.email || 'Anonymous User');
+        localStorage.setItem("userEmail", user.email || 'Anonymous User'); // Will be actual email if logged in
         localStorage.setItem("userId", user.uid);
 
         try {
@@ -63,9 +62,11 @@ onAuthStateChanged(auth, async (user) => {
                 localStorage.setItem("userRole", userData.role || "free");
                 localStorage.setItem("username", userData.username || user.email); // Store username
             } else {
-                // If profile data doesn't exist (e.g., anonymous user or new email user without profile), set default role
+                // If profile data doesn't exist (e.g., new email user without profile), set default role
                 localStorage.setItem("userRole", "free");
                 localStorage.setItem("username", user.email || 'User'); // Default username
+                // CONSIDER: For new email/password users, you might want to create this profile document here
+                // if it wasn't created during registration. However, registerUser already does this.
             }
         } catch (error) {
             console.error("Error fetching user profile in auth state change:", error);
@@ -85,17 +86,14 @@ onAuthStateChanged(auth, async (user) => {
     window.dispatchEvent(new Event('authstatechanged'));
 });
 
-// Initial authentication attempt on page load (for custom token or anonymous sign-in)
+// Initial authentication attempt on page load (only custom token if available, no anonymous)
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         if (initialAuthToken) {
             // This path is usually for Canvas environment's internal auth
             await signInWithCustomToken(auth, initialAuthToken);
-        } else {
-            // Sign in anonymously if no custom token. This allows basic Firestore access
-            // based on your security rules, even if the user isn't explicitly logged in.
-            await signInAnonymously(auth);
         }
+        // Removed the else block with signInAnonymously(auth);
     } catch (error) {
         console.error("Firebase Auth initialization error:", error);
         showModal(`Authentication initialization error: ${error.message}`);

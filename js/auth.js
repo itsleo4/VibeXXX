@@ -156,9 +156,23 @@ export async function loginUser(email, password) { // EXPORTED
         await signInWithEmailAndPassword(auth, email, password);
         showModal("Login successful!");
         return true;
-    } catch (error) {
+    }
+    // IMPORTANT: Catch specific Firebase Auth errors for better messages
+    catch (error) {
         console.error("Error during login:", error);
-        showModal(`Login failed: ${error.message}`);
+        let errorMessage = "Login failed: An unknown error occurred.";
+        if (error.code === 'auth/invalid-email') {
+            errorMessage = "Login failed: Invalid email format.";
+        } else if (error.code === 'auth/user-disabled') {
+            errorMessage = "Login failed: Your account has been disabled.";
+        } else if (error.code === 'auth/user-not-found') {
+            errorMessage = "Login failed: No user found with this email.";
+        } else if (error.code === 'auth/wrong-password') {
+            errorMessage = "Login failed: Incorrect password.";
+        } else if (error.code === 'auth/invalid-credential') { // This is the one you're seeing
+            errorMessage = "Login failed: Invalid credentials. Please check your email and password.";
+        }
+        showModal(errorMessage);
         return false;
     }
 }

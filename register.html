@@ -189,6 +189,10 @@
         import { registerUser, showModal, hideModal } from './js/auth.js';
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Expose showModal and hideModal globally for onclick attributes
+            window.showModal = showModal;
+            window.hideModal = hideModal;
+
             const registerForm = document.getElementById('registerForm');
             if (registerForm) {
                 registerForm.addEventListener('submit', async (e) => {

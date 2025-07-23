@@ -68,8 +68,29 @@
         </section>
 
         <section id="videoGrid" class="video-grid">
-            <!-- Videos will appear here, populated by main.js -->
+            <!-- Injected Free Videos will appear here -->
         </section>
+
+        <script>
+            // Dynamically load free.html content into the videoGrid
+            document.addEventListener('DOMContentLoaded', () => {
+                fetch('free.html')
+                    .then(res => {
+                        if (!res.ok) {
+                            throw new Error(`HTTP error! status: ${res.status}`);
+                        }
+                        return res.text();
+                    })
+                    .then(html => {
+                        const videoGrid = document.getElementById('videoGrid');
+                        if (videoGrid) {
+                            videoGrid.innerHTML = html;
+                        }
+                    })
+                    .catch(err => console.error("❌ Error loading free.html:", err));
+            });
+        </script>
+
     </main>
 
     <!-- Custom Modal HTML -->

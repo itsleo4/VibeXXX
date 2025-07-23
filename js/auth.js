@@ -8,14 +8,15 @@ import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } 
 const firebaseConfig = {
     apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
     authDomain: "vibexxx-500c6.firebaseapp.com",
-    projectId: "vibexxx-500c6",
+    projectId: "vibexxx-500c6", // <--- THIS IS YOUR PROJECT ID
     storageBucket: "vibexxx-500c6.firebasestorage.app",
     messagingSenderId: "880697212397",
     appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
 };
 
-// The appId variable used for Firestore paths
-const appId = firebaseConfig.projectId; // Use projectId as appId for Firestore paths
+// CRITICAL FIX: Ensure appId explicitly matches your Firebase Project ID
+// This is used for the Firestore document paths.
+const appId = firebaseConfig.projectId; // Explicitly use the projectId from your config
 
 // The initialAuthToken is specific to the Canvas environment; set to null for general use
 const initialAuthToken = null; // Set to null unless you have a specific custom token for your environment
@@ -65,12 +66,11 @@ onAuthStateChanged(auth, async (user) => {
                 // If profile data doesn't exist (e.g., new email user without profile), set default role
                 localStorage.setItem("userRole", "free");
                 localStorage.setItem("username", user.email || 'User'); // Default username
-                // CONSIDER: For new email/password users, you might want to create this profile document here
-                // if it wasn't created during registration. However, registerUser already does this.
             }
         } catch (error) {
             console.error("Error fetching user profile in auth state change:", error);
             // Fallback in case of Firestore error
+            showModal(`Error fetching user profile: ${error.message}`); // Show modal for this error too
             localStorage.setItem("userRole", "free");
             localStorage.setItem("username", user.email || 'User');
         }
@@ -130,6 +130,7 @@ export async function registerUser(username, email, password) {
         const user = userCredential.user;
 
         // Store additional user data (username, role) in Firestore
+        // The path is artifacts/{appId}/users/{user.uid}/profile/data
         await setDoc(doc(db, `artifacts/${appId}/users/${user.uid}/profile/data`), {
             username: username,
             email: email,

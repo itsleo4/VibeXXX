@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Unlock Premium Content</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      background: #0e0e0e;
+      color: white;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    h1 {
+      color: #ff4ec3;
+      font-size: 2.2rem;
+      text-align: center;
+    }
+    .teaser {
+      margin: 20px 0;
+      max-width: 400px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .teaser video {
+      width: 100%;
+      border-radius: 12px;
+    }
+    .cta {
+      background: #ff4ec3;
+      color: #fff;
+      padding: 14px 28px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .cta:hover {
+      background: #ff69c9;
+    }
+  </style>
+</head>
+<body>
+
+<h1>This is premium content.<br>Become a member to unlock.</h1>
+
+<div class="teaser">
+  <video autoplay muted loop playsinline>
+    <source src="assets/teaser.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+<a href="membership.html" class="cta">Become a Member</a>
+
+</body>
+</html>

@@ -55,7 +55,6 @@
                 <li><a href="saved.html" class="saved-link text-white hover:text-pink-400 transition duration-300" style="display: none;">Saved</a></li>
                 <li><a href="login.html" class="login-link text-white hover:text-pink-400 transition duration-300">Login</a></li>
                 <li><a href="register.html" class="register-link text-white hover:text-pink-400 transition duration-300">Register</a></li>
-                <!-- Removed inline onclick. Event listener will be added in main.js -->
                 <li><a href="#" class="logout-link text-white hover:text-pink-400 transition duration-300" style="display: none;">Logout</a></li>
             </ul>
         </nav>
@@ -63,7 +62,6 @@
 
     <main class="p-4">
         <section class="hero text-center py-8" id="welcomeMessage">
-            <!-- Content will be dynamically updated by main.js -->
             <h2>Welcome to VibeXXX</h2>
             <p>Enjoy exclusive NSFW content – Free and Pro categories available.</p>
             <a href="membership.html" class="cta inline-block mt-4 px-6 py-3 bg-pink-600 text-white font-bold rounded-lg shadow-lg hover:bg-pink-700 transition duration-300">Become a Pro Member</a>
@@ -87,16 +85,13 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
-    <script>
-        window.__firebase_config = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
-        window.__app_id = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        window.__initial_auth_token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-    </script>
-    <!-- Your JavaScript files -->
+    <!-- Firebase SDKs - Load as non-modules first to ensure global 'firebase' object for older versions/polyfills -->
+    <!-- Then load your module scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <!-- Your JavaScript files (type="module") -->
     <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/main.js"></script>
 </body>

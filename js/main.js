@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (success) {
                 // If registration was successful, redirect to the homepage
                 // The authstatechanged listener will handle UI updates after successful login
-                window.location.href = "index.html";
+                window.location.href = "index.html"; // This was changed in previous step, but keeping for reference
             }
         });
     }

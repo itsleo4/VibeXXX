@@ -8,7 +8,7 @@ import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } 
 const firebaseConfig = {
     apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
     authDomain: "vibexxx-500c6.firebaseapp.com",
-    projectId: "vibexxx-500c6",
+    projectId: "vibexxx-500c6", // <--- THIS IS YOUR PROJECT ID
     storageBucket: "vibexxx-500c6.appspot.com", // Corrected storageBucket
     messagingSenderId: "880697212397",
     appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
@@ -136,7 +136,7 @@ export async function registerUser(username, email, password) { // EXPORTED
             createdAt: new Date(),
         });
 
-        showModal("Registration successful! You are now logged in.");
+        showModal("Registration successful! You are now logged in."); // This modal will show, then redirect
         return true;
     } catch (error) {
         console.error("Error during registration:", error);

@@ -158,11 +158,8 @@
         <div class="auth-container">
             <h2>Register</h2>
             <form id="registerForm" class="space-y-4">
-                <!-- Corrected ID for username input -->
                 <input type="text" id="username" name="username" placeholder="Username" required class="w-full" />
-                <!-- Corrected ID for email input -->
                 <input type="email" id="email" name="email" placeholder="Email" required class="w-full" />
-                <!-- Corrected ID for password input -->
                 <input type="password" id="password" name="password" placeholder="Password" required class="w-full" />
                 <button type="submit" class="w-full">Register</button>
             </form>
@@ -187,7 +184,6 @@
     <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
-    <!-- Your auth.js script and page-specific logic -->
     <script type="module">
         import { registerUser, showModal, hideModal } from './js/auth.js';
 
@@ -198,7 +194,6 @@
                     e.preventDefault();
                     console.log('Register form submitted.');
 
-                    // Corrected ID access from 'regEmail'/'regPassword' to 'email'/'password'
                     const username = document.getElementById('username').value.trim();
                     const email = document.getElementById('email').value.trim();
                     const password = document.getElementById('password').value;
@@ -214,8 +209,8 @@
                     console.log('registerUser returned:', success);
 
                     if (success) {
-                        console.log('Registration successful, redirecting to index.html');
-                        window.location.href = 'index.html';
+                        console.log('Registration successful, redirecting to login.html'); // CHANGED REDIRECT
+                        window.location.href = 'login.html'; // Redirect to login page after successful registration
                     } else {
                         console.log('Registration failed, not redirecting.');
                     }

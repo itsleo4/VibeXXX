@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Get references to the registration and login forms
     const registerForm = document.getElementById("registerForm");
     const loginForm = document.getElementById("loginForm");
+    const logoutLink = document.querySelector(".logout-link"); // Get the logout link element
 
     /**
      * Updates the visibility of navigation links and the welcome message
@@ -18,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const loginLink = document.querySelector(".login-link");
         const registerLink = document.querySelector(".register-link");
-        const logoutLink = document.querySelector(".logout-link");
         const savedLink = document.querySelector(".saved-link");
         const proLink = document.querySelector(".pro-link");
         const welcomeMessageSection = document.getElementById("welcomeMessage"); // The hero section
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Toggle visibility of navigation links
         if (loginLink) loginLink.style.display = isLoggedIn ? "none" : "inline-block";
         if (registerLink) registerLink.style.display = isLoggedIn ? "none" : "inline-block";
-        if (logoutLink) logoutLink.style.display = isLoggedIn ? "inline-block" : "none";
+        if (logoutLink) logoutLink.style.display = isLoggedIn ? "inline-block" : "none"; // Use logoutLink directly
         if (savedLink) savedLink.style.display = isLoggedIn ? "inline-block" : "none";
 
         if (proLink) {
@@ -103,14 +103,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Global logout function (called from index.html's onclick)
-    window.logout = async () => {
-        const success = await logoutUser(); // Call the logoutUser function from auth.js
-        if (success) {
-            // Reload the page to reflect the logged-out state and update UI
-            location.reload();
-        }
-    };
+    // Attach event listener for the Logout button programmatically
+    if (logoutLink) {
+        logoutLink.addEventListener("click", async (e) => {
+            e.preventDefault(); // Prevent default link behavior
+            console.log('Logout button clicked (programmatic)'); // Debugging log
+            const success = await logoutUser(); // Call the logoutUser function from auth.js
+            if (success) {
+                // Reload the page to reflect the logged-out state and update UI
+                location.reload();
+            }
+        });
+    }
 
     // Placeholder for video grid content (from your original main.js)
     const videoGrid = document.getElementById("videoGrid");

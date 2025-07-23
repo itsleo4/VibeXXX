@@ -1,132 +1,157 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pro Videos - VibeXXX</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      background-color: #111;
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-    }
-    .video-card {
-      background: #1a1a1a;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s ease-in-out;
-    }
-    .video-card:hover {
-      transform: translateY(-5px);
-    }
-    video {
-      border-radius: 10px;
-      width: 100%;
-      height: auto;
-    }
-  </style>
-</head>
-<body>
-  <header class="bg-gray-800 p-4 shadow-lg flex justify-between items-center flex-wrap">
-    <h1 class="text-3xl font-bold text-white">Vibe<span class="text-pink-500">XXX</span></h1>
-    <nav class="mt-4 md:mt-0">
-      <ul class="flex flex-wrap gap-4">
-        <li><a href="index.html" class="text-white hover:text-pink-400 transition">Free Videos</a></li>
-        <li><a href="pro.html" class="text-pink-500 font-bold">Pro Videos</a></li>
-        <li><a href="saved.html" class="saved-link text-white hover:text-pink-400 transition" style="display: none;">Saved</a></li>
-        <li><a href="login.html" class="login-link text-white hover:text-pink-400 transition">Login</a></li>
-        <li><a href="register.html" class="register-link text-white hover:text-pink-400 transition">Register</a></li>
-        <li><a href="#" class="logout-link text-white hover:text-pink-400 transition" style="display: none;">Logout</a></li>
-      </ul>
-    </nav>
-  </header>
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+  <title>LuxFlix Pro Membership</title> 
+  <style> 
+    body { 
+      margin: 0; 
+      background: #0f0f0f; 
+      font-family: 'Segoe UI', sans-serif; 
+      color: white; 
+      text-align: center; 
+      padding: 20px; 
+    } 
+    h1 { margin-bottom: 20px; } 
+    .button-group { margin-bottom: 20px; } 
+    button { 
+      padding: 15px 30px; 
+      margin: 10px; 
+      border: none; 
+      border-radius: 10px; 
+      font-size: 16px; 
+      cursor: pointer; 
+    } 
+    .upi-btn { background: #4caf50; color: white; } 
+    .paypal-btn { background: #0070ba; color: white; } 
+    .qr-section, .submit-form { 
+      display: none; 
+      max-width: 400px; 
+      margin: 20px auto; 
+      background: #1c1c1c; 
+      padding: 20px; 
+      border-radius: 20px; 
+    } 
+    .qr-section img { 
+      max-width: 100%; 
+      border-radius: 10px; 
+      margin-bottom: 10px; 
+    } 
+    input, label { 
+      display: block; 
+      width: 100%; 
+      margin: 10px 0; 
+      padding: 10px; 
+      border-radius: 8px; 
+      border: none; 
+    } 
+    input[type="file"] { 
+      background: #222; 
+      color: white; 
+    } 
+    .submit-btn { 
+      background: #e91e63; 
+      color: white; 
+      font-size: 16px; 
+    } 
+    .thankyou { 
+      display: none; 
+      margin-top: 20px; 
+      font-size: 18px; 
+      color: #00ff99; 
+    } 
+    .hint { 
+      font-size: 12px; 
+      color: #ccc; 
+      margin-top: -8px; 
+      margin-bottom: 10px; 
+    } 
+  </style> 
+</head> 
+<body> 
 
-  <main class="p-4">
-    <h2 class="text-2xl font-bold mb-6">🔥 Pro Member Videos</h2>
-    <div id="proVideoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  <h1>💎 Become a Pro Member</h1> 
+  <p>Choose your payment method</p> 
 
-    <!-- Teaser for non-pro users -->
-    <div id="teaserBox" class="hidden text-center">
-      <video src="assets/preview/teaser.mp4" autoplay muted loop controls class="max-w-xl mx-auto"></video>
-      <p class="text-pink-400 mt-4 text-xl font-semibold">Unlock full Pro videos by becoming a <span class="text-white font-bold">Pro Member</span>.</p>
-      <a href="membership.html" class="inline-block mt-3 bg-pink-600 text-white px-6 py-2 rounded-full hover:bg-pink-700 transition">Upgrade Now</a>
-    </div>
-  </main>
+  <div class="button-group"> 
+    <button class="upi-btn" onclick="showPayment('upi')">Pay with UPI</button> 
+    <button class="paypal-btn" onclick="showPayment('paypal')">Pay with PayPal</button> 
+  </div> 
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <!-- UPI QR Section --> 
+  <div id="upi" class="qr-section"> 
+    <img src="https://raw.githubusercontent.com/itsleo4/VibeXXX/main/images/upi.png" alt="UPI QR"> 
+    <p><strong>Pay to:</strong> bharti00077-2@okaxis</p> 
+  </div> 
 
-  <!-- Auth + Pro Checker -->
-  <script type="module">
-    import { firebaseConfig } from './js/firebaseConfig.js';
-    firebase.initializeApp(firebaseConfig);
+  <!-- PayPal QR Section --> 
+  <div id="paypal" class="qr-section"> 
+    <img src="https://raw.githubusercontent.com/itsleo4/VibeXXX/main/images/paypal.png" alt="PayPal QR"> 
+    <p><strong>PayPal:</strong> <a href="https://www.paypal.me/PawanKumar35438" style="color:#00aced;">paypal.me/PawanKumar35438</a></p> 
+  </div> 
 
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+  <!-- Submit Form --> 
+  <form id="paymentForm" class="submit-form" action="https://63ce8a1b-d60e-45e9-8ace-db508feff835-00-nnnhmd8hxoz6.worf.replit.dev/submit" method="POST" enctype="multipart/form-data"> 
+    <label>Your Name</label> 
+    <input type="text" name="name" required /> 
 
-    const proGrid = document.getElementById("proVideoGrid");
-    const teaserBox = document.getElementById("teaserBox");
+    <label>UPI Ref ID or PayPal Email</label> 
+    <input type="text" name="refID" pattern="[a-zA-Z0-9@._-]+" required /> 
+    <div class="hint">Enter your 12-digit UPI Reference ID (from Google Pay, PhonePe etc.) or PayPal email</div> 
 
-    const videos = [
-      {
-        title: "Giant dildo destroyed her pussy",
-        embed: "https://strtape.tech/e/1pe3Yo0pMPseqWl/"
-      },
-      {
-        title: "She didn't lose the chance",
-        embed: "https://strtape.tech/e/WrlAXXvapBIbDkx/"
-      },
-      {
-        title: "Shemale and two beauties",
-        embed: "https://strtape.tech/e/owPJoQYvYbIJawz/"
-      },
-      {
-        title: "Two elves and one milf",
-        embed: "https://strtape.tech/e/wDJrq9bxgxSoe1/"
-      },
-      {
-        title: "Oiling the body then riding the dick",
-        embed: "https://strtape.tech/e/PqGaZ0MpkMF0qAG/"
-      }
-    ];
+    <label>Upload Payment Screenshot</label> 
+    <input type="file" name="screenshot" accept="image/*" required /> 
 
-    auth.onAuthStateChanged(async user => {
-      if (user) {
-        const doc = await db.collection("users").doc(user.uid).get();
-        const role = doc.data()?.role || "free";
+    <button type="submit" class="submit-btn" id="submitBtn">📤 Submit Proof</button> 
+  </form> 
 
-        document.querySelector('.login-link').style.display = "none";
-        document.querySelector('.register-link').style.display = "none";
-        document.querySelector('.logout-link').style.display = "inline-block";
-        document.querySelector('.saved-link').style.display = "inline-block";
+  <!-- Thank You Message --> 
+  <div class="thankyou" id="thankyouMsg"> 
+    ✅ Thank you! Your proof is submitted.<br/>You’ll be upgraded to Pro within 1 hour. 
+  </div> 
 
-        if (role === "pro") {
-          videos.forEach(v => {
-            proGrid.innerHTML += `
-              <div class="video-card p-2">
-                <iframe src="${v.embed}" class="w-full aspect-video" frameborder="0" allowfullscreen></iframe>
-                <h3 class="mt-2 text-center">${v.title}</h3>
-              </div>
-            `;
-          });
-        } else {
-          teaserBox.classList.remove("hidden");
-        }
-      } else {
-        teaserBox.classList.remove("hidden");
-      }
-    });
+  <script> 
+    function showPayment(method) { 
+      document.getElementById('upi').style.display = 'none'; 
+      document.getElementById('paypal').style.display = 'none'; 
+      document.querySelector('.submit-form').style.display = 'block'; 
+      document.getElementById(method).style.display = 'block'; 
+    } 
 
-    document.querySelector('.logout-link').addEventListener('click', (e) => {
-      e.preventDefault();
-      auth.signOut().then(() => location.href = "index.html");
-    });
-  </script>
-</body>
+    document.getElementById('paymentForm').addEventListener('submit', function(e) { 
+      e.preventDefault(); 
+
+      const form = e.target; 
+      const submitBtn = document.getElementById('submitBtn'); 
+      submitBtn.innerText = "⏳ Submitting..."; 
+      submitBtn.disabled = true; 
+
+      const formData = new FormData(form); 
+
+      fetch(form.action, { 
+        method: 'POST', 
+        body: formData 
+      }) 
+      .then(res => { 
+        if (res.ok) { 
+          form.style.display = 'none'; 
+          document.getElementById('upi').style.display = 'none'; 
+          document.getElementById('paypal').style.display = 'none'; 
+          document.getElementById('thankyouMsg').style.display = 'block'; 
+        } else { 
+          alert("❌ Submission failed. Try again."); 
+          submitBtn.innerText = "📤 Submit Proof"; 
+          submitBtn.disabled = false; 
+        } 
+      }) 
+      .catch(err => { 
+        console.error(err); 
+        alert("❌ Error submitting. Please try later."); 
+        submitBtn.innerText = "📤 Submit Proof"; 
+        submitBtn.disabled = false; 
+      }); 
+    }); 
+  </script> 
+</body> 
 </html>

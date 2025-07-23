@@ -174,13 +174,7 @@
     <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
-    <!-- Expose global variables for Firebase config -->
-    <script>
-        window.__firebase_config = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
-        window.__app_id = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        window.__initial_auth_token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-    </script>
-    <!-- Your auth.js script and page-specific logic -->
+    <!-- REMOVED: Expose global variables for Firebase config - now handled directly in auth.js -->
     <script type="module">
         // Corrected import: import showModal and hideModal directly
         import { loginUser, showModal, hideModal } from './js/auth.js';

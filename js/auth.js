@@ -4,10 +4,22 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebas
 import { getAuth, signInAnonymously, signInWithCustomToken, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-// Access global variables provided by index.html
-const firebaseConfig = JSON.parse(window.__firebase_config);
-const appId = window.__app_id;
-const initialAuthToken = window.__initial_auth_token;
+// YOUR FIREBASE CONFIGURATION - EMBEDDED DIRECTLY
+// This ensures Firebase is initialized correctly even if __firebase_config is not provided by the environment.
+const firebaseConfig = {
+    apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
+    authDomain: "vibexxx-500c6.firebaseapp.com",
+    projectId: "vibexxx-500c6",
+    storageBucket: "vibexxx-500c6.firebasestorage.app",
+    messagingSenderId: "880697212397",
+    appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
+};
+
+// The appId variable used for Firestore paths
+const appId = firebaseConfig.projectId; // Use projectId as appId for Firestore paths
+
+// The initialAuthToken is specific to the Canvas environment; set to null for general use
+const initialAuthToken = null; // Set to null unless you have a specific custom token for your environment
 
 // Initialize Firebase app, auth, and firestore instances
 const app = initializeApp(firebaseConfig);
@@ -15,7 +27,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 // Function to show custom modal
-export function showModal(message) { // EXPORTED
+export function showModal(message) {
     const modalElement = document.getElementById('customModal');
     const modalMessageElement = document.getElementById('modalMessage');
     if (modalElement && modalMessageElement) {
@@ -25,7 +37,7 @@ export function showModal(message) { // EXPORTED
 }
 
 // Function to hide custom modal
-export function hideModal() { // EXPORTED
+export function hideModal() {
     const modalElement = document.getElementById('customModal');
     if (modalElement) {
         modalElement.classList.add('hidden');
@@ -73,13 +85,15 @@ onAuthStateChanged(auth, async (user) => {
     window.dispatchEvent(new Event('authstatechanged'));
 });
 
-// Initial authentication attempt on page load (for custom token)
+// Initial authentication attempt on page load (for custom token or anonymous sign-in)
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         if (initialAuthToken) {
+            // This path is usually for Canvas environment's internal auth
             await signInWithCustomToken(auth, initialAuthToken);
         } else {
-            // Sign in anonymously if no custom token, to allow Firestore access based on rules
+            // Sign in anonymously if no custom token. This allows basic Firestore access
+            // based on your security rules, even if the user isn't explicitly logged in.
             await signInAnonymously(auth);
         }
     } catch (error) {

@@ -23,6 +23,11 @@
     .video-card:hover {
       transform: translateY(-5px);
     }
+    video {
+      border-radius: 10px;
+      width: 100%;
+      height: auto;
+    }
   </style>
 </head>
 <body>
@@ -42,15 +47,15 @@
 
   <main class="p-4">
     <h2 class="text-2xl font-bold mb-6">🔥 Pro Member Videos</h2>
-    <div id="proVideoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Teaser videos or embedded videos will load here -->
+    <div id="proVideoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+    <!-- Teaser for non-pro users -->
+    <div id="teaserBox" class="hidden text-center">
+      <video src="assets/preview/teaser.mp4" autoplay muted loop controls class="max-w-xl mx-auto"></video>
+      <p class="text-pink-400 mt-4 text-xl font-semibold">Unlock full Pro videos by becoming a <span class="text-white font-bold">Pro Member</span>.</p>
+      <a href="membership.html" class="inline-block mt-3 bg-pink-600 text-white px-6 py-2 rounded-full hover:bg-pink-700 transition">Upgrade Now</a>
     </div>
   </main>
-
-  <div id="accessDenied" class="hidden text-center text-xl text-red-500 font-semibold mt-10">
-    🚫 You need to be a <span class="text-pink-500">Pro Member</span> to access these videos.<br/>
-    <a href="membership.html" class="underline text-pink-400 hover:text-pink-500">Upgrade Now</a>
-  </div>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -66,7 +71,7 @@
     const db = firebase.firestore();
 
     const proGrid = document.getElementById("proVideoGrid");
-    const accessDenied = document.getElementById("accessDenied");
+    const teaserBox = document.getElementById("teaserBox");
 
     const videos = [
       {
@@ -96,14 +101,12 @@
         const doc = await db.collection("users").doc(user.uid).get();
         const role = doc.data()?.role || "free";
 
-        // Show/hide nav links
         document.querySelector('.login-link').style.display = "none";
         document.querySelector('.register-link').style.display = "none";
         document.querySelector('.logout-link').style.display = "inline-block";
         document.querySelector('.saved-link').style.display = "inline-block";
 
         if (role === "pro") {
-          // Load full video embeds
           videos.forEach(v => {
             proGrid.innerHTML += `
               <div class="video-card p-2">
@@ -113,15 +116,13 @@
             `;
           });
         } else {
-          // Show teaser or deny access
-          accessDenied.classList.remove("hidden");
+          teaserBox.classList.remove("hidden");
         }
       } else {
-        accessDenied.classList.remove("hidden");
+        teaserBox.classList.remove("hidden");
       }
     });
 
-    // Logout function
     document.querySelector('.logout-link').addEventListener('click', (e) => {
       e.preventDefault();
       auth.signOut().then(() => location.href = "index.html");

@@ -2,126 +2,64 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LuxFlix Pro</title>
-  <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      background-color: #0a0a0a;
+      background-color: #000;
       color: #fff;
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 2rem;
-    }
-
-    h1 {
+      font-family: Arial, sans-serif;
       text-align: center;
-      margin-bottom: 2rem;
-      font-size: 2.5rem;
-      color: #ff3399;
+      padding: 30px;
     }
-
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
+    .teaser, .pro-content {
+      margin: 20px auto;
+      max-width: 500px;
     }
-
-    .video-card {
-      background: #1a1a1a;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(255, 51, 153, 0.3);
-      transition: 0.3s;
-    }
-
-    .video-card:hover {
-      transform: scale(1.03);
-    }
-
-    iframe {
+    video {
       width: 100%;
-      height: 200px;
-      border: none;
+      border-radius: 10px;
+      box-shadow: 0 0 20px red;
     }
-
-    .video-title {
-      padding: 1rem;
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #ff66c4;
-    }
-
-    .video-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.5rem 1rem 1rem;
-    }
-
-    .action-btn {
-      background: #ff3399;
+    .pro-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 15px 25px;
+      background-color: #ff0033;
       color: white;
       border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
       cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .action-btn:hover {
-      background: #ff66c4;
     }
   </style>
 </head>
 <body>
-  <h1>💎 LuxFlix Pro Videos</h1>
 
-  <div class="video-grid">
-    <div class="video-card">
-      <iframe src="https://strtape.tech/e/1pe3Yo0pMPseqWl/" allowfullscreen></iframe>
-      <div class="video-title">Giant dildo destroyed her pussy</div>
-      <div class="video-actions">
-        <button class="action-btn">❤️ Like</button>
-        <button class="action-btn">⬇️ Download</button>
-      </div>
-    </div>
+  <h1>🔥 LuxFlix Pro Zone 🔥</h1>
 
-    <div class="video-card">
-      <iframe src="https://strtape.tech/e/WrlAXXvapBIbDkx/" allowfullscreen></iframe>
-      <div class="video-title">She didn't lose the chance</div>
-      <div class="video-actions">
-        <button class="action-btn">❤️ Like</button>
-        <button class="action-btn">⬇️ Download</button>
-      </div>
-    </div>
-
-    <div class="video-card">
-      <iframe src="https://strtape.tech/e/owPJoQYvYbIJawz/" allowfullscreen></iframe>
-      <div class="video-title">Shemale and two beauties</div>
-      <div class="video-actions">
-        <button class="action-btn">❤️ Like</button>
-        <button class="action-btn">⬇️ Download</button>
-      </div>
-    </div>
-
-    <div class="video-card">
-      <iframe src="https://strtape.tech/e/wDJrq9bxgxSoe1/" allowfullscreen></iframe>
-      <div class="video-title">Two elves and one milf</div>
-      <div class="video-actions">
-        <button class="action-btn">❤️ Like</button>
-        <button class="action-btn">⬇️ Download</button>
-      </div>
-    </div>
-
-    <div class="video-card">
-      <iframe src="https://strtape.tech/e/PqGaZ0MpkMF0qAG/" allowfullscreen></iframe>
-      <div class="video-title">Oiling the body then riding the dick</div>
-      <div class="video-actions">
-        <button class="action-btn">❤️ Like</button>
-        <button class="action-btn">⬇️ Download</button>
-      </div>
-    </div>
+  <div id="teaser" class="teaser">
+    <video src="https://replit.com/@NitinKumar226/CourageousBrokenInterpreter#lv_0_20250723165624.mp4" autoplay loop muted></video>
+    <p><strong>This content is for Pro Members only.</strong></p>
+    <a href="membership.html" class="pro-button">Become a Pro Member</a>
   </div>
+
+  <div id="pro-videos" class="pro-content" style="display: none;">
+    <!-- Replace below with real embeds later -->
+    <iframe src="https://strtape.tech/e/1pe3Yo0pMPseqWl/" width="100%" height="360" allowfullscreen></iframe>
+    <h3>Giant dildo destroyed her pussy</h3>
+    <!-- Add more videos here -->
+  </div>
+
+  <script>
+    const isPro = localStorage.getItem("isPro");
+
+    if (isPro === "true") {
+      document.getElementById("teaser").style.display = "none";
+      document.getElementById("pro-videos").style.display = "block";
+    }
+  </script>
 </body>
 </html>

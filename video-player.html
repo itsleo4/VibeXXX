@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pro Video Player</title>
+</head>
+<body>
+  <div id="player"></div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const videoId = params.get("video");
+
+    // Fake database of videos
+    const videos = {
+      "VID123": {
+        title: "Milf Hot Pussy",
+        embed: "https://strtape.tech/e/abc123"
+      },
+      "VID456": {
+        title: "Shemale Surprise",
+        embed: "https://strtape.tech/e/xyz456"
+      }
+    };
+
+    const userRole = localStorage.getItem("userRole");
+
+    if (userRole !== "pro") {
+      window.location.href = "not-pro.html";
+    } else {
+      const video = videos[videoId];
+      if (!video) {
+        document.getElementById("player").innerHTML = "❌ Video not found.";
+      } else {
+        document.getElementById("player").innerHTML = `
+          <h1>${video.title}</h1>
+          <iframe src="${video.embed}" width="100%" height="480" allowfullscreen></iframe>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>

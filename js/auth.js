@@ -1,36 +1,41 @@
 // js/auth.js
 
-document.addEventListener("DOMContentLoaded", function () {
-  const registerForm = document.getElementById("registerForm");
-  const loginForm = document.getElementById("loginForm");
+// Register form logic
+document.getElementById("registerForm")?.addEventListener("submit", function (e) {
+  e.preventDefault();
 
-  if (registerForm) {
-    registerForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const username = document.getElementById("register-username").value;
-      const password = document.getElementById("register-password").value;
+  const username = document.getElementById("username").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
-      // Save to localStorage
-      localStorage.setItem("user", JSON.stringify({ username, password, role: "free" }));
-      alert("Registered! Now login.");
-      window.location.href = "login.html";
-    });
+  if (!username || !email || !password) {
+    alert("Please fill in all fields.");
+    return;
   }
 
-  if (loginForm) {
-    loginForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const username = document.getElementById("login-username").value;
-      const password = document.getElementById("login-password").value;
+  const userData = { username, email, password, role: "free" };
 
-      const savedUser = JSON.parse(localStorage.getItem("user"));
-      if (savedUser && savedUser.username === username && savedUser.password === password) {
-        localStorage.setItem("loggedIn", "true");
-        alert("Login successful!");
-        window.location.href = "index.html";
-      } else {
-        alert("Invalid login");
-      }
-    });
+  localStorage.setItem("user", JSON.stringify(userData));
+  localStorage.setItem("loggedIn", "true");
+
+  alert("Registration successful!");
+  window.location.href = "index.html";
+});
+
+// Login form logic
+document.getElementById("loginForm")?.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+
+  const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+  if (storedUser.email === email && storedUser.password === password) {
+    localStorage.setItem("loggedIn", "true");
+    alert("Login successful!");
+    window.location.href = "index.html";
+  } else {
+    alert("Invalid email or password.");
   }
 });

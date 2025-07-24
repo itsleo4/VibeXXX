@@ -27,164 +27,136 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            transition: transform 0.2s ease-in-out;
-            display: flex;
-            flex-direction: column;
+            transition: transform 0.2s ease;
         }
         .video-card:hover {
             transform: translateY(-5px);
         }
-        /* Specific styling for the responsive video wrapper */
         .video-wrapper {
             position: relative;
-            padding-bottom: 66.66%; /* 4:3 Aspect Ratio (height / width * 100) from 600x400px iframe */
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             height: 0;
             overflow: hidden;
-            border-radius: 8px; /* Matches video-card border-radius */
-            background-color: black; /* Background color for empty space or loading */
         }
-        .video-wrapper iframe, .video-wrapper img {
+        .video-wrapper img, .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ensures video/image covers the area */
         }
-        .video-card h3 {
-            padding: 1rem; /* Adjust padding for titles */
-            font-size: 1.125rem; /* Tailwind text-lg */
-            line-height: 1.75rem; /* Tailwind leading-7 */
-            font-weight: 500; /* Tailwind font-medium */
-            flex-grow: 1; /* Allows title to take available space */
-        }
-        /* Styles for the new Telegram CTA section */
-        .telegram-cta-banner {
-            background: linear-gradient(to right, #ff3366, #ff0077); /* Vibrant gradient */
-            padding: 2.5rem 1.5rem; /* More padding */
-            margin-top: 3rem; /* Space from videos above */
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(255, 51, 102, 0.5); /* Stronger glow effect */
-            animation: pulse-glow 2s infinite alternate; /* Subtle pulse animation */
-        }
-        .telegram-cta-banner h2 {
-            font-size: 2.5rem; /* Larger font for impact */
-            font-weight: 800; /* Extra bold */
-            color: #fff;
-            text-shadow: 0 0 15px rgba(0,0,0,0.5);
-            margin-bottom: 1rem;
-        }
-        .telegram-cta-banner p {
-            font-size: 1.25rem; /* Larger body text */
-            color: #ffe0eb;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-        .telegram-cta-banner a.cta-button {
-            display: inline-block;
-            background: #0088cc; /* Telegram blue */
-            color: #fff;
-            padding: 1.2rem 3rem;
-            border-radius: 50px; /* Pill shape */
-            font-size: 1.5rem; /* Large button text */
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
-        }
-        .telegram-cta-banner a.cta-button:hover {
-            background: #0077b3; /* Darker blue on hover */
-            transform: translateY(-5px) scale(1.02); /* Lift and slight scale */
-            box-shadow: 0 10px 20px rgba(0, 136, 204, 0.6);
-        }
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 8px 25px rgba(255, 51, 102, 0.5); }
-            100% { box-shadow: 0 8px 35px rgba(255, 51, 102, 0.8); }
-        }
-
-        /* Styles for the new per-video "Unlock Pro Access" button */
         .video-cta-link {
-            display: block; /* Make it a block to take full width */
-            margin: 0.5rem 1rem 1rem; /* Adjust margins for spacing */
-            padding: 0.75rem 1.5rem;
-            background: #ffc107; /* Eye-catching yellow/gold */
-            color: #333;
-            font-weight: 700;
+            display: block;
+            background-color: #ff3366;
+            color: white;
+            padding: 8px 12px;
             text-align: center;
-            border-radius: 8px;
+            border-radius: 5px;
+            margin-top: 10px;
             text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            font-size: 0.95rem; /* Slightly smaller to fit */
+            font-weight: 600;
+            transition: background-color 0.2s ease;
         }
         .video-cta-link:hover {
-            background: #e0a800; /* Darker yellow on hover */
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        /* Responsive adjustments for CTA */
-        @media (max-width: 768px) {
-            .telegram-cta-banner h2 {
-                font-size: 1.8rem;
-            }
-            .telegram-cta-banner p {
-                font-size: 1rem;
-            }
-            .telegram-cta-banner a.cta-button {
-                font-size: 1.2rem;
-                padding: 1rem 2rem;
-            }
-            .video-cta-link {
-                font-size: 0.85rem;
-                padding: 0.6rem 1rem;
-            }
+            background-color: #e6005c;
         }
     </style>
 </head>
-<body>
-    <header class="bg-gray-800 p-4 shadow-lg flex justify-between items-center flex-wrap">
-        <h1 class="text-3xl font-bold text-white">Vibe<span class="text-pink-500">XXX</span></h1>
-        <nav>
-            <ul class="flex space-x-4">
-                <li><a href="index.html" class="text-white hover:text-pink-500 transition-colors duration-300">Home</a></li>
-                <li><a href="#" class="text-white hover:text-pink-500 transition-colors duration-300 login-link">Login</a></li>
-                <li><a href="#" class="text-white hover:text-pink-500 transition-colors duration-300 register-link">Register</a></li>
-                <li><a href="unlocked_videos.html" class="text-white hover:text-pink-500 transition-colors duration-300 pro-link">Pro Videos</a></li>
-                <li><a href="#" class="text-white hover:text-pink-500 transition-colors duration-300 logout-link" style="display: none;">Logout</a></li>
-            </ul>
+<body class="bg-gray-900 text-white">
+    <header class="bg-gray-800 p-4 shadow-lg">
+        <nav class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-red-500">VibeXXX</a>
+            <div class="space-x-4">
+                <a href="index.html" class="text-gray-300 hover:text-white">Home</a>
+                <a href="unlocked_videos.html" class="text-gray-300 hover:text-white pro-link">Pro Videos</a>
+                <a href="saved.html" class="text-gray-300 hover:text-white saved-link hidden">Saved</a>
+                <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded login-link">Login</a>
+                <a href="register.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded register-link">Register</a>
+                <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden" onclick="logoutUserAndRedirect()">Logout</button>
+            </div>
         </nav>
     </header>
 
-    <main class="flex-grow container mx-auto p-4">
-        <section id="welcomeMessage" class="text-center py-16 px-4 bg-gray-900 rounded-lg shadow-xl mb-8">
-            <h2 class="text-5xl font-extrabold text-white mb-4 leading-tight">Welcome to <span class="text-pink-500">VibeXXX</span></h2>
-            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Your ultimate destination for premium adult content. Explore a world of exclusive videos and connect with a vibrant community.</p>
-            <a href="register.html" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg">Join Free Now!</a>
+    <main class="container mx-auto p-4">
+        <section id="welcomeMessage" class="text-center py-16 bg-gray-800 rounded-lg shadow-xl mb-8">
+            <h1 class="text-5xl font-extrabold text-red-500 mb-4 animate-pulse">Welcome to VibeXXX!</h1>
+            <p class="text-xl text-gray-300 mb-6">Your ultimate destination for premium adult entertainment.</p>
+            <div id="authButtons">
+                <a href="register.html" class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+                    Join Free Now!
+                </a>
+            </div>
+            <p id="loggedInMessage" class="text-lg text-green-400 mt-4 hidden"></p>
         </section>
 
         <section class="py-8">
-            <h2 class="text-4xl font-bold text-white text-center mb-8">🔥 Free Previews</h2>
-            <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                </div>
+            <h2 class="text-4xl font-bold text-center text-red-400 mb-8">Free Previews</h2>
+            <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="flex justify-center items-center h-48 bg-gray-800 rounded-lg text-gray-400">Loading Free Videos...</div>
+            </div>
         </section>
 
-        <section class="telegram-cta-banner">
-            <h2>🚨 Don't Miss Out! Join Our Telegram! 🚨</h2>
-            <p>Get instant updates, exclusive content, and interact directly with the VibeXXX community. Limited spots available!</p>
-            <a href="https://t.me/yourtelegramchannel" target="_blank" class="cta-button">
-                Join Our Telegram
+        <section class="telegram-cta-banner bg-gradient-to-r from-purple-700 to-indigo-700 text-white text-center py-12 rounded-lg shadow-xl mt-8">
+            <h2 class="text-4xl font-bold mb-4">Join Our Exclusive Telegram Channel!</h2>
+            <p class="text-xl mb-6">Get daily updates, sneak peeks, and interact with the VibeXXX community.</p>
+            <a href="https://t.me/LuxFlix" target="_blank" class="cta-button bg-yellow-400 text-gray-900 font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+                Join Telegram Now!
             </a>
         </section>
-    </main>
 
-    <footer class="bg-gray-900 p-6 text-center text-gray-500 text-sm mt-8">
-        <p>&copy; 2025 VibeXXX. All rights reserved.</p>
-        <p class="mt-2">
-            <a href="#" class="text-gray-400 hover:text-pink-500">Privacy Policy</a> |
-            <a href="#" class="text-gray-400 hover:text-pink-500">Terms of Service</a>
-        </p>
-    </footer>
+        <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-8 rounded-lg shadow-lg">
+            <p>&copy; 2025 VibeXXX. All rights reserved. | <a href="#" class="hover:underline">Privacy Policy</a></p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="hover:text-white">Facebook</a>
+                <a href="#" class="hover:text-white">Twitter</a>
+                <a href="https://t.me/LuxFlix" class="hover:text-white" target="_blank">Telegram</a>
+            </div>
+        </footer>
+
+        <div id="myModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+            <div class="bg-gray-800 p-8 rounded-lg shadow-xl text-center">
+                <p id="modalMessage" class="text-lg mb-4"></p>
+                <button onclick="hideModal()" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-full">Close</button>
+            </div>
+        </div>
+
+        <script>
+            // Function to play the video directly (no modal)
+            function playVideo(event) {
+                const thumbnail = event.currentTarget; // The img tag that was clicked
+                const videoCard = thumbnail.closest('.video-card'); // Get the parent video card
+                const iframe = videoCard.querySelector('iframe'); // Find the iframe within this card
+
+                if (thumbnail && iframe) {
+                    thumbnail.classList.add('hidden'); // Hide the thumbnail using Tailwind
+                    iframe.classList.remove('hidden'); // Show the iframe using Tailwind
+                    // Optional: Autoplay the video
+                    const src = iframe.src;
+                    if (!src.includes('autoplay=1')) {
+                        iframe.src = src + (src.includes('?') ? '&' : '?') + 'autoplay=1';
+                    }
+                }
+            }
+
+            // Script to load free.html content dynamically
+            document.addEventListener('DOMContentLoaded', () => {
+                fetch('free.html')
+                    .then(res => {
+                        if (!res.ok) {
+                            throw new Error(`HTTP error! status: ${res.status}`);
+                        }
+                        return res.text();
+                    })
+                    .then(html => {
+                        const videoGrid = document.getElementById('videoGrid');
+                        if (videoGrid) {
+                            videoGrid.innerHTML = html;
+                        }
+                    })
+                    .catch(err => console.error("❌ Error loading free.html:", err));
+            });
+        </script>
+    </main>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -192,35 +164,5 @@
 
     <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/main.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('free.html')
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error(`HTTP error! status: ${res.status}`);
-                    }
-                    return res.text();
-                })
-                .then(html => {
-                    const videoGrid = document.getElementById('videoGrid');
-                    if (videoGrid) {
-                        videoGrid.innerHTML = html;
-                    }
-                })
-                .catch(err => console.error("❌ Error loading free.html:", err));
-        });
-
-        // Function to play the video directly (no modal)
-        function playVideo(event) {
-            const thumbnail = event.currentTarget; // The img tag that was clicked
-            const iframe = thumbnail.nextElementSibling; // The iframe is the next sibling of the img
-
-            if (thumbnail && iframe) {
-                thumbnail.classList.add('hidden'); // Hide the thumbnail using Tailwind
-                iframe.classList.remove('hidden'); // Show the iframe using Tailwind
-            }
-        }
-    </script>
 </body>
 </html>

@@ -2,42 +2,160 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Pro Video Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VibeXXX - Pro Video Player</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #111; /* Dark background */
+      color: #fff; /* White text */
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center content horizontally */
+      justify-content: flex-start; /* Align content to the top */
+      padding-top: 20px; /* Some padding from the top */
+    }
+    .video-container {
+      width: 90%; /* Responsive width */
+      max-width: 960px; /* Max width for large screens */
+      background: #1a1a1a;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .video-container h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #ff3366; /* Your accent color */
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    .video-container iframe {
+      width: 100%;
+      height: 500px; /* Fixed height, consider aspect ratio for responsiveness */
+      border: none;
+      border-radius: 8px;
+    }
+    .message {
+      font-size: 1.5rem;
+      color: #ef4444; /* Red for errors/denied messages */
+      text-align: center;
+      margin-top: 50px;
+    }
+  </style>
 </head>
-<body>
-  <div id="player"></div>
+<body class="bg-gray-900 text-white">
+  <header class="bg-gray-800 p-4 shadow-lg w-full">
+      <nav class="container mx-auto flex justify-between items-center">
+          <a href="index.html" class="text-2xl font-bold text-red-500">VibeXXX</a>
+          <div class="space-x-4">
+              <a href="index.html" class="text-gray-300 hover:text-white">Home</a>
+              <a href="unlocked_videos.html" class="text-gray-300 hover:text-white pro-link">Pro Videos</a>
+              <a href="saved.html" class="text-gray-300 hover:text-white saved-link hidden">Saved</a>
+              <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded login-link">Login</a>
+              <a href="register.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded register-link">Register</a>
+              <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden" onclick="logoutUserAndRedirect()">Logout</button>
+          </div>
+      </nav>
+  </header>
+
+  <main class="container mx-auto p-4 flex-grow w-full max-w-screen-xl">
+    <div id="player-content" class="video-container">
+      <p class="message">Loading video...</p>
+    </div>
+  </main>
+
+  <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-8 rounded-lg shadow-lg w-full">
+      <p>&copy; 2025 VibeXXX. All rights reserved. | <a href="#" class="hover:underline">Privacy Policy</a></p>
+      <div class="flex justify-center space-x-4 mt-4">
+          <a href="#" class="hover:text-white">Facebook</a>
+          <a href="#" class="hover:text-white">Twitter</a>
+          <a href="https://t.me/LuxFlix" class="hover:text-white" target="_blank">Telegram</a>
+      </div>
+  </footer>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const videoId = params.get("video");
-
-    // Fake database of videos
-    const videos = {
-      "VID123": {
-        title: "Milf Hot Pussy",
-        embed: "https://strtape.tech/e/abc123"
-      },
-      "VID456": {
-        title: "Shemale Surprise",
-        embed: "https://strtape.tech/e/xyz456"
-      }
-    };
-
-    const userRole = localStorage.getItem("userRole");
-
-    if (userRole !== "pro") {
-      window.location.href = "not-pro.html";
-    } else {
-      const video = videos[videoId];
-      if (!video) {
-        document.getElementById("player").innerHTML = "❌ Video not found.";
-      } else {
-        document.getElementById("player").innerHTML = `
-          <h1>${video.title}</h1>
-          <iframe src="${video.embed}" width="100%" height="480" allowfullscreen></iframe>
-        `;
-      }
+    // Function to handle showing/hiding modal messages (copied from auth.js/main.js context)
+    function showModal(message) {
+        const modal = document.getElementById('myModal');
+        const modalMessage = document.getElementById('modalMessage');
+        if (modal && modalMessage) {
+            modalMessage.textContent = message;
+            modal.classList.remove('hidden');
+        }
     }
+    function hideModal() {
+        const modal = document.getElementById('myModal');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const videoId = params.get("video");
+        const playerContent = document.getElementById("player-content");
+
+        // IMPORTANT: THIS IS YOUR VIDEO DATABASE.
+        // REPLACE 'YOUR_VIDEO_ID_HERE', 'YOUR_VIDEO_TITLE', AND 'YOUR_STREAMTAPE_OR_OTHER_EMBED_LINK'
+        // WITH YOUR ACTUAL PRO VIDEO IDs AND EMBEDDED PLAYER LINKS.
+        // Make sure the video IDs here match the 'video=' parameter in unlocked_videos.html.
+        const videos = {
+          "PROVID001": { // This ID must match the one used in unlocked_videos.html
+            title: "Elite Scene: Pro Video 1",
+            embed: "https://strtape.tech/e/YOUR_STREAMTAPE_EMBED_ID_FOR_PROVID001" // Example: "https://strtape.tech/e/abc123xyz"
+          },
+          "PROVID002": { // This ID must match the one used in unlocked_videos.html
+            title: "Uncensored Fun: Pro Video 2",
+            embed: "https://strtape.tech/e/YOUR_STREAMTAPE_EMBED_ID_FOR_PROVID002" // Example: "https://strtape.tech/e/def456uvw"
+          },
+          "PROVID003": { // This ID must match the one used in unlocked_videos.html
+            title: "Hidden Gem: Pro Video 3",
+            embed: "https://strtape.tech/e/YOUR_STREAMTAPE_EMBED_ID_FOR_PROVID003" // Example: "https://strtape.tech/e/ghi789jkl"
+          },
+          // ADD MORE OF YOUR PRO VIDEOS HERE
+          /*
+          "YOUR_NEW_VIDEO_ID": {
+            title: "Your New Awesome Pro Video",
+            embed: "https://strtape.tech/e/your_actual_embed_link_for_new_video"
+          },
+          */
+        };
+
+        // Client-side access check using localStorage (main check is in unlocked_videos.html)
+        const userRole = localStorage.getItem("userRole");
+
+        if (userRole !== "pro") {
+            // If not pro, redirect to the 'not-pro' page
+            window.location.href = "not-pro.html";
+        } else {
+            const video = videos[videoId];
+            if (!video) {
+                playerContent.innerHTML = `<p class="message">❌ Video "${videoId}" not found in our database.</p>`;
+            } else {
+                playerContent.innerHTML = `
+                  <h1>${video.title}</h1>
+                  <iframe src="${video.embed}" width="100%" height="480" allowfullscreen></iframe>
+                `;
+            }
+        }
+    });
   </script>
+
+  <div id="myModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+      <div class="bg-gray-800 p-8 rounded-lg shadow-xl text-center">
+          <p id="modalMessage" class="text-lg mb-4"></p>
+          <button onclick="hideModal()" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-full">Close</button>
+      </div>
+  </div>
+
+  <script type="module" src="js/auth.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

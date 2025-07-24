@@ -103,7 +103,7 @@
   <hr class="border-t-2 border-pink-main w-3/5 my-12 opacity-70">
 
   <script>
-    // Include Firebase SDKs (these lines are moved here from head)
+    // Include Firebase SDKs
     const firebaseAppScript = document.createElement('script');
     firebaseAppScript.src = "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js";
     document.head.appendChild(firebaseAppScript);
@@ -138,7 +138,7 @@
         let selectedPlan = '';
         let selectedMethod = '';
         let selectedPrice = '';
-        let selectedCurrency = ''; // To store the currency (INR or USD)
+        let selectedCurrency = '';
 
         const membershipButtons = document.querySelectorAll('.membership-btn');
         const paymentMethodButtons = document.querySelectorAll('.button-group button');
@@ -152,25 +152,28 @@
         const userNameField = document.getElementById('userNameField');
         const selectedMembershipPlanField = document.getElementById('selectedMembershipPlan');
         const selectedPaymentMethodField = document.getElementById('selectedPaymentMethod');
-        const selectedPriceField = document.getElementById('selectedPrice'); // New field
-        const selectedCurrencyField = document.getElementById('selectedCurrency'); // New field
+        const selectedPriceField = document.getElementById('selectedPrice');
+        const selectedCurrencyField = document.getElementById('selectedCurrency');
 
 
         // Function to show/hide QR sections and main form
         function showPaymentSection() {
+            // Hide all payment sections and form initially
+            upiSection.classList.add('hidden');
+            paypalSection.classList.add('hidden');
+            paymentForm.classList.add('hidden');
+            thankYouMsg.classList.add('hidden');
+
             if (selectedPlan && selectedMethod) {
                 if (selectedMethod === 'upi') {
-                    upiSection.classList.remove('hidden'); // Use Tailwind's hidden class
-                    paypalSection.classList.add('hidden');
-                    selectedCurrency = 'INR'; // Set currency for UPI
+                    upiSection.classList.remove('hidden');
+                    selectedCurrency = 'INR';
                 } else if (selectedMethod === 'paypal') {
                     paypalSection.classList.remove('hidden');
-                    upiSection.classList.add('hidden');
-                    selectedCurrency = 'USD'; // Set currency for PayPal
+                    selectedCurrency = 'USD';
                 }
-                selectedCurrencyField.value = selectedCurrency; // Update hidden field
+                selectedCurrencyField.value = selectedCurrency;
 
-                // Update selectedPrice based on selectedPlan and selectedMethod/Currency
                 const currentPlanButton = document.querySelector(`.membership-btn[data-plan="${selectedPlan}"]`);
                 if (currentPlanButton) {
                     if (selectedCurrency === 'INR') {
@@ -178,32 +181,36 @@
                     } else if (selectedCurrency === 'USD') {
                         selectedPrice = currentPlanButton.dataset.priceUsd;
                     }
-                    selectedPriceField.value = selectedPrice; // Update hidden price field
+                    selectedPriceField.value = selectedPrice;
                 }
 
-                paymentForm.classList.remove('hidden'); // Show form
-                thankYouMsg.classList.add('hidden'); // Hide thank you if visible
+                paymentForm.classList.remove('hidden');
             }
         }
 
         // Event listeners for Membership Plan buttons
         membershipButtons.forEach(button => {
             button.addEventListener('click', () => {
-                membershipButtons.forEach(btn => btn.classList.remove('bg-pink-main', 'border-pink-main', 'shadow-2xl')); // Deactivate all
-                membershipButtons.forEach(btn => btn.classList.add('bg-gray-700', 'border-gray-600', 'shadow-lg')); // Reset to default
-                button.classList.add('bg-pink-main', 'border-pink-main', 'shadow-2xl'); // Activate clicked
-                button.classList.remove('bg-gray-700', 'border-gray-600', 'shadow-lg'); // Remove default
+                // Remove active styling from all membership buttons
+                membershipButtons.forEach(btn => {
+                    btn.classList.remove('bg-pink-main', 'border-pink-main', 'shadow-2xl');
+                    btn.classList.add('bg-gray-700', 'border-gray-600', 'shadow-lg');
+                });
+                // Add active styling to the clicked button
+                button.classList.add('bg-pink-main', 'border-pink-main', 'shadow-2xl');
+                button.classList.remove('bg-gray-700', 'border-gray-600', 'shadow-lg');
+
                 selectedPlan = button.dataset.plan;
-                selectedMembershipPlanField.value = selectedPlan; // Update hidden field
-                showPaymentSection(); // Check if both plan and method are selected
+                selectedMembershipPlanField.value = selectedPlan;
+                showPaymentSection();
             });
         });
 
         // Event listeners for Payment Method buttons
         paymentMethodButtons.forEach(button => {
             button.addEventListener('click', () => {
+                // Remove active styling from all payment method buttons
                 paymentMethodButtons.forEach(btn => {
-                    // Reset styling for all payment method buttons
                     if (btn.dataset.method === 'upi') {
                         btn.classList.remove('bg-green-600', 'shadow-xl');
                         btn.classList.add('bg-green-upi', 'shadow-lg');
@@ -212,7 +219,7 @@
                         btn.classList.add('bg-blue-paypal', 'shadow-lg');
                     }
                 });
-                // Apply active styling to the clicked button
+                // Add active styling to the clicked button
                 if (button.dataset.method === 'upi') {
                     button.classList.remove('bg-green-upi', 'shadow-lg');
                     button.classList.add('bg-green-600', 'shadow-xl');
@@ -220,9 +227,10 @@
                     button.classList.remove('bg-blue-paypal', 'shadow-lg');
                     button.classList.add('bg-blue-600', 'shadow-xl');
                 }
+
                 selectedMethod = button.dataset.method;
-                selectedPaymentMethodField.value = selectedMethod; // Update hidden field
-                showPaymentSection(); // Check if both plan and method are selected
+                selectedPaymentMethodField.value = selectedMethod;
+                showPaymentSection();
             });
         });
 
@@ -230,7 +238,6 @@
         paymentForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Get current Firebase user details
             const user = firebase.auth().currentUser;
 
             if (!user) {
@@ -238,12 +245,10 @@
                 return;
             }
 
-            // Populate hidden fields with Firebase user data
             userFirebaseUIDField.value = user.uid;
             userEmailField.value = user.email || ''; 
             userNameField.value = user.displayName || user.email || user.uid; 
             
-            // Ensure plan and method are selected
             if (!selectedPlan || !selectedMethod) {
                 alert('Please select a membership plan and a payment method first.');
                 return;
@@ -257,14 +262,14 @@
             try {
                 const response = await fetch(paymentForm.action, {
                     method: 'POST',
-                    body: formData // FormData automatically sets Content-Type: multipart/form-data
+                    body: formData
                 });
 
                 if (response.ok) {
-                    paymentForm.classList.add('hidden'); // Hide form
-                    upiSection.classList.add('hidden'); // Hide QR
-                    paypalSection.classList.add('hidden'); // Hide QR
-                    thankYouMsg.classList.remove('hidden'); // Show thank you
+                    paymentForm.classList.add('hidden');
+                    upiSection.classList.add('hidden');
+                    paypalSection.classList.add('hidden');
+                    thankYouMsg.classList.remove('hidden');
                 } else {
                     const errorText = await response.text();
                     console.error("Submission failed:", response.status, errorText);
@@ -288,29 +293,22 @@
                 userNameField.value = user.displayName || user.email || `User ${user.uid.substring(0, 8)}...`;
                 userNameField.readOnly = true; 
 
-                // Enable form interaction if user is logged in
-                paymentForm.classList.remove('pointer-events-none', 'opacity-50'); // Re-enable if disabled
+                paymentForm.classList.remove('pointer-events-none', 'opacity-50');
                 paymentForm.classList.add('pointer-events-auto', 'opacity-100');
-
 
             } else {
                 console.log("No Firebase user logged in.");
                 alert("Please log in to submit your membership payment proof.");
-                // Disable forms or redirect if not logged in
                 paymentForm.classList.add('pointer-events-none', 'opacity-50');
                 paymentForm.classList.remove('pointer-events-auto', 'opacity-100');
             }
         });
 
-        // Initial state: hide forms until selections are made
-        paymentForm.classList.add('hidden');
+        // Initial state: hide all dynamic sections
         upiSection.classList.add('hidden');
         paypalSection.classList.add('hidden');
+        paymentForm.classList.add('hidden');
         thankYouMsg.classList.add('hidden');
-
-        // Apply initial active state for membership buttons (if needed, or user will click)
-        // Example: if you want a default selected plan on load
-        // membershipButtons[0].click(); // Uncomment to auto-select first plan on load
     }); // Close of Promise.all .then()
   </script>
 </body>

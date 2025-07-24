@@ -34,15 +34,6 @@
         .video-card:hover {
             transform: translateY(-5px);
         }
-        /* Custom Modal Styling for better visibility */
-        #customModal {
-            background-color: rgba(0, 0, 0, 0.8); /* Darker, more opaque background */
-            z-index: 9999; /* Ensure it's on top of everything */
-        }
-        #customModal > div {
-            border: 2px solid #ff3366; /* Stronger border */
-            box-shadow: 0 0 25px rgba(255, 51, 102, 0.7); /* More prominent glow */
-        }
         /* Specific styling for the responsive video wrapper */
         .video-wrapper {
             position: relative;
@@ -66,6 +57,63 @@
             line-height: 1.75rem; /* Tailwind leading-7 */
             font-weight: 500; /* Tailwind font-medium */
             flex-grow: 1; /* Allows title to take available space */
+        }
+        /* Styles for the new Telegram CTA section */
+        .telegram-cta-banner {
+            background: linear-gradient(to right, #ff3366, #ff0077); /* Vibrant gradient */
+            padding: 2.5rem 1.5rem; /* More padding */
+            margin-top: 3rem; /* Space from videos above */
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(255, 51, 102, 0.5); /* Stronger glow effect */
+            animation: pulse-glow 2s infinite alternate; /* Subtle pulse animation */
+        }
+        .telegram-cta-banner h2 {
+            font-size: 2.5rem; /* Larger font for impact */
+            font-weight: 800; /* Extra bold */
+            color: #fff;
+            text-shadow: 0 0 15px rgba(0,0,0,0.5);
+            margin-bottom: 1rem;
+        }
+        .telegram-cta-banner p {
+            font-size: 1.25rem; /* Larger body text */
+            color: #ffe0eb;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        .telegram-cta-banner a.cta-button {
+            display: inline-block;
+            background: #0088cc; /* Telegram blue */
+            color: #fff;
+            padding: 1.2rem 3rem;
+            border-radius: 50px; /* Pill shape */
+            font-size: 1.5rem; /* Large button text */
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
+        }
+        .telegram-cta-banner a.cta-button:hover {
+            background: #0077b3; /* Darker blue on hover */
+            transform: translateY(-5px) scale(1.02); /* Lift and slight scale */
+            box-shadow: 0 10px 20px rgba(0, 136, 204, 0.6);
+        }
+        @keyframes pulse-glow {
+            from { box-shadow: 0 8px 25px rgba(255, 51, 102, 0.5); }
+            to { box-shadow: 0 8px 35px rgba(255, 51, 102, 0.8); }
+        }
+        /* Responsive adjustments for CTA */
+        @media (max-width: 768px) {
+            .telegram-cta-banner h2 {
+                font-size: 1.8rem;
+            }
+            .telegram-cta-banner p {
+                font-size: 1rem;
+            }
+            .telegram-cta-banner a.cta-button {
+                font-size: 1.2rem;
+                padding: 1rem 2rem;
+            }
         }
     </style>
 </head>
@@ -99,7 +147,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/MAID.png" alt="Housemaid 2B from Nier Automata" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Housemaid 2B from Nier Automata');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/54234/housemaid-2b-from-nier-automata" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -112,7 +160,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_32.png" alt="Anime girl with big ass begs for cum on thighs!" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Anime girl with big ass begs for cum on thighs!');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/49116/anime-girl-with-big-ass-begs-for" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -125,7 +173,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_599.png" alt="Dva, wanna milk this 12-inch bbc with me tonight?" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Dva, wanna milk this 12-inch bbc with me tonight?');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/34807/dva-wanna-milk-this-12-inch-bbc" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -138,7 +186,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_1366068.png" alt="I can’t get enough of my stepmom’s big milky tits" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'I can’t get enough of my stepmom’s big milky tits');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/82878/i-cant-get-enough-of-my-stepmoms" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -151,7 +199,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_53452.png" alt="Naughty stepsister dominated and fucked hard by three hung studs in rough gangbang" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Naughty stepsister dominated and fucked hard by three hung studs in rough gangbang');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/98463/naughty-stepsister-dominated-and" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -164,7 +212,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_265460.png" alt="Don't tell your girlfriend about this rough party bang!" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Don\'t tell your girlfriend about this rough party bang!');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/84310/dont-tell-your-girlfriend-about" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -177,7 +225,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_45251.png" alt="Step siblings busted banging by their step aunt in uncensored hentai! 😱" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Step siblings busted banging by their step aunt in uncensored hentai! 😱');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/32090/step-siblings-busted-banging-by" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -190,7 +238,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_83406.png" alt="Rainy day fun with lewdfroggo licking hairless babe! So hot! 😜" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Rainy day fun with lewdfroggo licking hairless babe! So hot! 😜');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/43087/rainy-day-fun-with-lewdfroggo" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -203,7 +251,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_3118.png" alt="Hey, can you believe this busty teen is banging a married guy?" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Hey, can you believe this busty teen is banging a married guy?');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/32702/hey-can-you-believe-this-busty" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -216,7 +264,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/01.jpg" alt="Wild H-Cup Nurse Babe Sucks and Fucks Hard in POV Action!" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Wild H-Cup Nurse Babe Sucks and Fucks Hard in POV Action!');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/33446/wild-h-cup-nurse-babe-sucks-and" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -229,7 +277,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/324541_sucking_hentai_anal_01.jpg" alt="Hentai Himawarigayorunisaku 1 With Teen Sucking Big Cock And Taking Anal Action. Watch Her Tits Shake!" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Hentai Himawarigayorunisaku 1 With Teen Sucking Big Cock And Taking Anal Action. Watch Her Tits Shake!');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/92366/hentai-himawarigayorunisaku-1" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -242,7 +290,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/07.jpg" alt="Projekt Passion: Dark Alien Babe Lesbian Fingering in Shower Game Novel" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Projekt Passion: Dark Alien Babe Lesbian Fingering in Shower Game Novel');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/92366/hentai-himawarigayorunisaku-1" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -255,7 +303,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/07-1.jpg" alt="Tifa futa bangs aerith hard, damn that’s some wild cum action in big ass play!" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Tifa futa bangs aerith hard, damn that’s some wild cum action in big ass play!');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/92882/tifa-futa-bangs-aerith-hard-damn" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -268,7 +316,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/09.jpg" alt="Accidental sex from kinky pussy rubbing with hot cumshot finish." 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Accidental sex from kinky pussy rubbing with hot cumshot finish.');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/54123/accidental-sex-from-kinky-pussy" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -281,7 +329,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/04.jpg" alt="Uhh, i banged my sexy cosplayer stepdaughter with huge tits, so hot" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Uhh, i banged my sexy cosplayer stepdaughter with huge tits, so hot');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/82358/uhh-i-banged-my-sexy-cosplayer" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -294,7 +342,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/05.jpg" alt="Stepsister's perfect ass takes huge cock for virgin anal attempt" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Stepsister\'s perfect ass takes huge cock for virgin anal attempt');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/87467/stepsisters-perfect-ass-takes" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -307,7 +355,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/18.jpg" alt="My stepbrother admits craving me, helps with masturbation" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'My stepbrother admits craving me, helps with masturbation');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/82151/my-stepbrother-admits-craving" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -320,7 +368,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/04-1.jpg" alt="Elf banging night elf blindfolded in kitchen parody" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Elf banging night elf blindfolded in kitchen parody');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/34552/elf-banging-night-elf-blindfolded" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -333,7 +381,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/14.jpg" alt="Damn! Tifa Lockhart’s Tight Fantasy in 3D Sex Gameplay!" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Damn! Tifa Lockhart’s Tight Fantasy in 3D Sex Gameplay!');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/76524/damn-tifa-lockharts-tight" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -346,7 +394,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/10.jpg" alt="Hey, wanna see Tifa and friends in Overwatch HMV action?" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Hey, wanna see Tifa and friends in Overwatch HMV action?');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/70203/hey-wanna-see-tifa-and-friends" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -359,7 +407,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/02.jpg" alt="Milfs Deeply Penetrated by Massive Cocks in Wild Hentai Scenes" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Milfs Deeply Penetrated by Massive Cocks in Wild Hentai Scenes');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/34976/milfs-deeply-penetrated-by-massive" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -372,7 +420,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/18-1.jpg" alt="Anime girls twerking for blowjob action?" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Anime girls twerking for blowjob action?');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/69949/anime-girls-twerking-for-blowjob" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -385,7 +433,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_78834.png" alt="Petite asian’s tight pussy creampied in her first uncensored hentai adventure" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Petite asian’s tight pussy creampied in her first uncensored hentai adventure');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/84012/petite-asians-tight-pussy-creampied" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -398,7 +446,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/09-1.jpg" alt="Milf Slut Jill Valentine Begs for Big Cock in Doggystyle" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Milf Slut Jill Valentine Begs for Big Cock in Doggystyle');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/82014/milf-slut-jill-valentine-begs" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -411,7 +459,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/17.jpg" alt="Yo, claire and jill blowjob in resident evil hentai uncensored" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Yo, claire and jill blowjob in resident evil hentai uncensored');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/82944/yo-claire-and-jill-blowjob-in" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -424,7 +472,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/13.jpg" alt="I’m obsessed with kanzaki-chan’s slender big-breasted body in uniform, her blowjob before creampie is unreal on that shaved beauty." 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'I’m obsessed with kanzaki-chan’s slender big-breasted body in uniform, her blowjob before creampie is unreal on that shaved beauty.');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/91745/im-obsessed-with-kanzaki-chans" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -437,7 +485,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/08.jpg" alt="Why finger when i can pound your tight asshole hard?" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Why finger when i can pound your tight asshole hard?');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/74467/why-finger-when-i-can-pound-your" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -450,7 +498,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/19.jpg" alt="I was home alone when my roommate fucked me during kinky panty teasing" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'I was home alone when my roommate fucked me during kinky panty teasing');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/72766/i-was-home-alone-when-my-roommate" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -463,7 +511,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/05-1.jpg" alt="Shy pianist rides a massive cock deep in her tight hole." 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Shy pianist rides a massive cock deep in her tight hole.');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/69503/shy-pianist-rides-a-massive-cock" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -476,7 +524,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/09-2.jpg" alt="Wow! Huge-Titted Cutie in Wild 3-Way Blowjob and Creampie Action!" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Wow! Huge-Titted Cutie in Wild 3-Way Blowjob and Creampie Action!');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/68001/wow-huge-titted-cutie-in-wild" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -489,7 +537,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/09-3.jpg" alt="Ever Seen Real Homemade Fingering and Squirting Like This?" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Ever Seen Real Homemade Fingering and Squirting Like This?');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/44574/ever-seen-real-homemade-fingering" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -502,7 +550,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/02-1.jpg" alt="Hentai Uraraka and Midoria in Steamy Anime Action Scene" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Hentai Uraraka and Midoria in Steamy Anime Action Scene');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/95189/hentai-uraraka-and-midoria-in" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -515,7 +563,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/06.jpg" alt="Madre E Hijo In Steamy Hentai Creampie Action" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Madre E Hijo In Steamy Hentai Creampie Action');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/43270/madre-e-hijo-in-steamy-hentai" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -528,7 +576,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/13-1.jpg" alt="What's hotter than a steamy, wet doggystyle session in anime?" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'What\'s hotter than a steamy, wet doggystyle session in anime?');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/72376/whats-hotter-than-a-steamy-wet" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -541,7 +589,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/19-1.jpg" alt="3D BBW Hot Mature Engages in Cuckold Sex with Big Black Cock for Intense Creampie." 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, '3D BBW Hot Mature Engages in Cuckold Sex with Big Black Cock for Intense Creampie.');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/92169/3d-bbw-hot-mature-engages-in-cuckold" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -554,7 +602,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/17-1.jpg" alt="Sissy Ladyboy Devours Ass While Banged in Wild Trans Threesome Group" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Sissy Ladyboy Devours Ass While Banged in Wild Trans Threesome Group');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/91291/sissy-ladyboy-devours-ass-while" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -567,7 +615,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/19-2.jpg" alt="Stuffing My Friend's Girlfriend's Tight Vagina with Cum After Wild Fucking" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Stuffing My Friend\'s Girlfriend\'s Tight Vagina with Cum After Wild Fucking');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.animehentaivideos.xxx/v/66886/stuffing-my-friends-girlfriends" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -580,7 +628,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/02-2.jpg" alt="Brickzilla's bbc dominates freya von doom's petite frame" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Brickzilla\'s bbc dominates freya von doom\'s petite frame');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.blacksexvideos.xxx/v/27905/brickzillas-bbc-dominates-freya" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -593,7 +641,7 @@
                     <div class="video-wrapper">
                         <img src="http://luxflix.free.nf/wp-content/uploads/2025/07/15.jpg" alt="Black beauty gets her boss’s cock in her mouth" 
                              class="cursor-pointer z-10" 
-                             onclick="showTelegramModalAndPlayVideo(event, 'Black beauty gets her boss’s cock in her mouth');">
+                             onclick="playVideo(event);">
                         <iframe src="https://www.blacksexvideos.xxx/v/60000/black-beauty-gets-her-bosss" 
                                 frameborder="0" scrolling="no" allowfullscreen
                                 class="hidden z-0">
@@ -603,6 +651,19 @@
                 </div>
 
             </div>
+        </section>
+        <section class="telegram-cta-banner max-w-5xl mx-auto px-4">
+            <h2>🔥 Unlock ALL Exclusive Content! 🔥</h2>
+            <p>
+                Watching this sample? There's SO much more waiting for you! 
+                Get full access to our entire library of premium videos, updated daily.
+            </p>
+            <a href="https://t.me/LuxFlix" target="_blank" class="cta-button">
+                🚀 DM Admin on Telegram for Full Access! 🚀
+            </a>
+            <p class="text-sm text-gray-200 mt-4">
+                (Clicking this will open Telegram. Press 'Send Message' to chat with @LuxFlix directly.)
+            </p>
         </section>
         <section id="videoGrid" class="video-grid">
             </section>
@@ -626,33 +687,8 @@
                     .catch(err => console.error("❌ Error loading free.html:", err));
             });
 
-            // Function to show the custom modal with Telegram message and start video playback
-            // It now accepts a 'title' parameter to show which video was clicked
-            function showTelegramModalAndPlayVideo(event, videoTitle) {
-                const modal = document.getElementById('customModal');
-                const modalMessage = document.getElementById('modalMessage');
-                
-                // Define your Telegram Username here
-                const telegramUsername = "@LuxFlix"; 
-                const telegramLink = `https://t.me/${telegramUsername}`;
-
-                // Set the message content for your modal
-                modalMessage.innerHTML = `
-                    <p class="text-white text-xl mb-4">You clicked on: <span class="text-pink-500 font-bold">"${videoTitle}"</span></p>
-                    <p class="text-white text-lg mb-4">Want full access to this and all other exclusive videos?</p>
-                    <p class="text-pink-500 font-bold text-2xl my-4">Text the Admin on Telegram:</p>
-                    <p class="text-white text-3xl font-extrabold mb-4">${telegramUsername}</p>
-                    <a href="${telegramLink}" target="_blank" 
-                       class="inline-block px-8 py-4 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-xl transition duration-300 ease-in-out transform hover:scale-105 text-lg shadow-lg">
-                       Click here to chat with Admin!
-                    </a>
-                    <p class="text-xs text-gray-400 mt-5">(After clicking, press 'Send Message' in Telegram to start the chat.)</p>
-                `;
-
-                // Show the modal by removing the 'hidden' Tailwind class
-                modal.classList.remove('hidden'); 
-
-                // Play the video: hide thumbnail, show iframe
+            // Function to play the video directly (no modal)
+            function playVideo(event) {
                 const thumbnail = event.currentTarget; // The img tag that was clicked
                 const iframe = thumbnail.nextElementSibling; // The iframe is the next sibling of the img
 
@@ -661,44 +697,10 @@
                     iframe.classList.remove('hidden'); // Show the iframe using Tailwind
                 }
             }
-
-            // Ensure window.hideModal exists (it's used by your customModal HTML)
-            // If you already have a 'hideModal' function in your 'js/main.js' or 'js/auth.js',
-            // you can remove this block. This is a fallback in case it's not global.
-            if (typeof window.hideModal !== 'function') {
-                window.hideModal = function() {
-                    document.getElementById('customModal').classList.add('hidden');
-                    // Optional: pause video or reset to thumbnail when modal hides
-                    // This finds the *last* played video's iframe and resets it
-                    const playingIframe = document.querySelector('.video-wrapper iframe:not(.hidden)');
-                    if (playingIframe) {
-                        playingIframe.classList.add('hidden'); // Hide iframe
-                        // This might be the previous sibling (img) or an older iframe if multiple are played
-                        // Best to target the direct sibling
-                        const correspondingThumbnail = playingIframe.previousElementSibling;
-                        if (correspondingThumbnail && correspondingThumbnail.tagName === 'IMG') {
-                           correspondingThumbnail.classList.remove('hidden'); // Show thumbnail again
-                        }
-                        // To force stop playback, you can reset the iframe's src. 
-                        // playingIframe.src = playingIframe.src; 
-                    }
-                };
-            }
+            // Removed customModal HTML and related JS as per your request
         </script>
 
     </main>
-
-    <div id="customModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-gray-800 p-6 rounded-lg shadow-xl max-w-sm w-full text-center border border-pink-500">
-            <p id="modalMessage" class="text-white text-lg mb-4"></p>
-            <button
-                onclick="window.hideModal()"
-                class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
-            >
-                Close
-            </button>
-        </div>
-    </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>

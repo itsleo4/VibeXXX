@@ -3,70 +3,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>VibeXXX Pro Membership</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
+  <title>Support VibeXXX & Get Access!</title> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"> <style>
     body {
       margin: 0;
       background: #0f0f0f;
-      font-family: 'Inter', sans-serif; /* Changed font to Inter */
+      font-family: 'Inter', sans-serif;
       color: white;
       text-align: center;
       padding: 20px;
-      display: flex; /* Use flexbox for centering content */
+      display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh; /* Ensure it takes full viewport height */
-      box-sizing: border-box; /* Include padding in element's total width and height */
+      min-height: 100vh;
+      box-sizing: border-box;
     }
     h1 {
-      margin-top: 20px; /* Adjust top margin */
+      margin-top: 20px;
       margin-bottom: 15px;
-      font-size: 2.5em; /* Larger heading */
-      color: #ff3366; /* Eye-catching color */
-      text-shadow: 0 0 10px rgba(255, 51, 102, 0.5); /* Subtle glow */
+      font-size: 2.8em; /* Even Larger heading */
+      color: #ff3366;
+      text-shadow: 0 0 15px rgba(255, 51, 102, 0.7); /* Stronger glow */
+      font-weight: 800; /* Extra bold */
     }
     p {
-      font-size: 1.1em;
+      font-size: 1.2em; /* Slightly larger text */
       margin-bottom: 25px;
       color: #ccc;
     }
     .membership-options, .button-group {
-      display: flex; /* Use flexbox for buttons */
-      flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+      display: flex;
+      flex-wrap: wrap;
       justify-content: center;
-      gap: 15px; /* Space between buttons */
+      gap: 15px;
       margin-bottom: 30px;
       width: 100%;
-      max-width: 600px; /* Limit width for larger screens */
+      max-width: 600px;
     }
     button {
       padding: 15px 30px;
       border: none;
-      border-radius: 12px; /* More rounded corners */
-      font-size: 1.1em; /* Slightly larger font */
+      border-radius: 12px;
+      font-size: 1.1em;
       cursor: pointer;
-      transition: all 0.3s ease; /* Smooth transitions */
-      font-weight: 600; /* Bolder text */
-      flex-grow: 1; /* Allow buttons to grow */
-      min-width: 180px; /* Minimum width for buttons */
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Subtle shadow */
+      transition: all 0.3s ease;
+      font-weight: 600;
+      flex-grow: 1;
+      min-width: 180px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
     .membership-btn {
         background: #333;
         color: white;
-        border: 2px solid #555; /* Thicker border */
+        border: 2px solid #555;
     }
     .membership-btn:hover {
         background: #444;
         border-color: #ff3366;
-        transform: translateY(-3px); /* Lift effect */
+        transform: translateY(-3px);
         box-shadow: 0 6px 15px rgba(255, 51, 102, 0.3);
     }
     .membership-btn.active {
-        background: linear-gradient(to right, #ff1493, #ff416c); /* Gradient for active */
+        background: linear-gradient(to right, #ff1493, #ff416c);
         border-color: #ff3366;
-        box-shadow: 0 0 15px rgba(255, 51, 102, 0.7); /* Stronger glow for active */
+        box-shadow: 0 0 15px rgba(255, 51, 102, 0.7);
         transform: translateY(-2px);
     }
     .upi-btn { background: #4caf50; color: white; }
@@ -76,24 +75,23 @@
 
     .qr-section, .submit-form {
       display: none;
-      width: 90%; /* Use percentage for responsiveness */
-      max-width: 450px; /* Slightly larger max-width for forms/QR */
+      width: 90%;
+      max-width: 450px;
       margin: 20px auto;
       background: #1c1c1c;
-      padding: 25px; /* More padding */
+      padding: 25px;
       border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Stronger shadow for depth */
-      /* This margin-top was already there in your last working code, keeping it */
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
       margin-top: 40px; 
     }
     .qr-section img {
-      max-width: 70%; /* Slightly smaller QR image for better fit */
+      max-width: 70%;
       height: auto;
       border-radius: 10px;
-      margin-bottom: 20px; /* More margin */
-      border: 5px solid #ff3366; /* Border around QR */
-      padding: 5px; /* Padding inside border */
-      background: white; /* White background for QR */
+      margin-bottom: 20px;
+      border: 5px solid #ff3366;
+      padding: 5px;
+      background: white;
     }
     .qr-section p {
         font-size: 1.1em;
@@ -101,7 +99,7 @@
         margin-top: 10px;
     }
     .qr-section a {
-        color: #00ff99; /* Link color */
+        color: #00ff99;
         text-decoration: none;
         font-weight: 600;
     }
@@ -109,52 +107,43 @@
         text-decoration: underline;
     }
     /* --- START OF MINIMAL CSS CHANGES FOR SPACING --- */
-    /* Apply margin-bottom to inputs/textareas, and ensure full width */
     input:not([type="file"]), select, textarea { 
       background: #2d2d2d;
       color: #fff;
       border: 1px solid #444;
-      margin-bottom: 20px; /* Increased spacing after inputs */
+      margin-bottom: 20px;
       font-size: 1rem;
       padding: 12px;
       border-radius: 8px;
-      width: 100%; /* Ensure inputs take full width */
-      box-sizing: border-box; /* Include padding in width */
+      width: 100%;
+      box-sizing: border-box;
     }
-
-    /* Styles for labels to ensure proper vertical spacing and alignment */
     label {
-      display: block; /* Make labels block-level to apply vertical margins */
-      text-align: left; /* Align text to the left */
-      margin-top: 20px; /* Space above each label */
-      margin-bottom: 5px; /* Small space between label and its input */
-      font-size: 1rem; /* Ensure consistent font size */
-      color: #ddd; /* Slightly lighter color for labels */
+      display: block;
+      text-align: left;
+      margin-top: 20px;
+      margin-bottom: 5px;
+      font-size: 1rem;
+      color: #ddd;
     }
-
-    /* Override for the very first label in the form to prevent excessive top margin */
     #paymentForm label:first-of-type {
         margin-top: 0;
     }
-
-    /* Specific adjustment for file input's margin-bottom */
     input[type="file"] {
       background: #222;
       color: white;
       padding: 10px;
       border: 1px dashed #ff3366;
       cursor: pointer;
-      margin-bottom: 20px; /* Ensure spacing after file input */
-      width: 100%; /* Full width */
+      margin-bottom: 20px;
+      width: 100%;
       box-sizing: border-box;
     }
-
-    /* Adjust hint text spacing */
     .hint {
       font-size: 0.9em;
       color: #aaa;
-      margin-top: -15px; /* Adjust spacing to be closer to input, but still separate */
-      margin-bottom: 25px; /* More space after hint */
+      margin-top: -15px;
+      margin-bottom: 25px;
       text-align: left;
       padding-left: 5px;
     }
@@ -162,9 +151,9 @@
 
     hr {
         border-color: #ff3366;
-        margin: 50px auto; /* More vertical margin */
-        width: 60%; /* Wider separator */
-        border-top: 2px solid; /* Thicker line */
+        margin: 50px auto;
+        width: 60%;
+        border-top: 2px solid;
         opacity: 0.7;
     }
 
@@ -180,20 +169,57 @@
         color: #aaa;
         margin-top: 5px;
     }
+
+    /* Telegram CTA on Membership Page */
+    .membership-telegram-cta {
+        background: linear-gradient(to bottom, #2a0000, #4d0000); /* Darker, subtle red gradient */
+        border: 2px solid #ff3366;
+        padding: 1.5rem;
+        margin: 40px auto;
+        border-radius: 15px;
+        text-align: center;
+        max-width: 700px;
+        box-shadow: 0 0 20px rgba(255, 51, 102, 0.4);
+    }
+    .membership-telegram-cta h3 {
+        font-size: 1.8em;
+        color: #fff;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
+    }
+    .membership-telegram-cta a {
+        display: inline-block;
+        background: #0088cc; /* Telegram blue */
+        color: #fff;
+        padding: 1rem 2rem;
+        border-radius: 30px;
+        font-size: 1.3em;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
+    }
+    .membership-telegram-cta a:hover {
+        background: #0077b3;
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 6px 15px rgba(0, 136, 204, 0.5);
+    }
+
     /* Responsive adjustments */
     @media (max-width: 600px) {
         h1 {
-            font-size: 2em;
+            font-size: 2.2em;
         }
         p {
             font-size: 1em;
         }
         .membership-options, .button-group {
-            flex-direction: column; /* Stack buttons vertically on small screens */
+            flex-direction: column;
             gap: 10px;
         }
         button {
-            width: 100%; /* Full width buttons */
+            width: 100%;
             min-width: unset;
         }
         .qr-section, .submit-form {
@@ -202,49 +228,49 @@
         .qr-section img {
             max-width: 90%;
         }
+        .membership-telegram-cta h3 {
+            font-size: 1.4em;
+        }
+        .membership-telegram-cta a {
+            font-size: 1.1em;
+            padding: 0.8rem 1.5rem;
+        }
     }
   </style>
 </head>
 <body>
 
-  <!-- Removed the <video> element as requested -->
+  <h1>💖 Support VibeXXX & Unlock Elite Content! 💖</h1>
+  <p>Your generous support helps us bring you more exclusive, high-quality videos daily. Choose your contribution level below to get full access!</p>
 
-  <h1>💎 Become a Pro Member</h1>
-  <p>Choose your membership plan and payment method</p>
-
-  <!-- Membership Plan Selection -->
   <div class="membership-options">
-    <button class="membership-btn" data-plan="1_MONTH" data-price-inr="249" data-price-usd="5.99">
-        1 Month Membership
+    <button class="membership-btn" data-plan="1_MONTH_ACCESS" data-price-inr="249" data-price-usd="5.99">
+        🔥 1 Month Elite Access 🔥
         <div class="price-display">₹249 / $5.99</div>
     </button>
-    <button class="membership-btn" data-plan="3_MONTH" data-price-inr="599" data-price-usd="14.99">
-        3 Month Membership
+    <button class="membership-btn" data-plan="3_MONTH_ACCESS" data-price-inr="599" data-price-usd="14.99">
+        ✨ 3 Months Pro Pass ✨
         <div class="price-display">₹599 / $14.99</div>
     </button>
-    <!-- Add more plans if needed -->
-  </div>
+    </div>
 
   <div class="button-group">
     <button class="upi-btn" data-method="upi">Pay with UPI</button>
     <button class="paypal-btn" data-method="paypal">Pay with PayPal</button>
   </div>
 
-  <!-- UPI QR Section -->
   <div id="upi" class="qr-section">
     <img src="https://raw.githubusercontent.com/itsleo4/VibeXXX/main/images/upi.png" alt="UPI QR">
     <p><strong>Pay to:</strong> bharti00077-2@okaxis</p>
-    <p class="currency-note">For 1 Month: ₹249 | For 3 Months: ₹599</p>
+    <p class="currency-note">For 1 Month Access: ₹249 | For 3 Months Access: ₹599</p>
   </div>
 
-  <!-- PayPal QR Section -->
   <div id="paypal" class="qr-section">
     <img src="https://raw.githubusercontent.com/itsleo4/VibeXXX/main/images/paypal.png" alt="PayPal QR">
-    <p><strong>PayPal:</strong> <a href="https://www.paypal.me/PawanKumar35438" style="color:#00aced;">paypal.me/PawanKumar35438</a></p>
-    <p class="currency-note">For 1 Month: $5.99 USD | For 3 Months: $14.99 USD</p>
+    <p><strong>PayPal:</strong> <a href="https://www.paypal.me/PawanKumar35438" style="color:#00aced;" target="_blank">paypal.me/PawanKumar35438</a></p>
+    <p class="currency-note">For 1 Month Access: $5.99 USD | For 3 Months Access: $14.99 USD</p>
   </div>
 
-  <!-- Main Payment Submission Form (for screenshot uploads) -->
   <form id="paymentForm" class="submit-form" action="https://luxflixbotv3.vercel.app/api/webhook" method="POST" enctype="multipart/form-data">
     <label for="userNameField">Your Name (as on VibeXXX)</label>
     <input type="text" name="name" id="userNameField" readonly /> 
@@ -267,12 +293,21 @@
     <button type="submit" class="submit-btn" id="submitBtn">📤 Submit Proof</button>
   </form>
 
-  <!-- Thank You Message -->
   <div class="thankyou" id="thankyouMsg">
     ✅ Thank you! Your proof is submitted.<br/>You’ll be upgraded to Pro soon.
   </div>
 
   <hr>
+
+  <section class="membership-telegram-cta">
+      <h3>Need More Videos? Want Custom Content?</h3>
+      <a href="https://t.me/LuxFlix" target="_blank">
+          💬 Chat with Admin on Telegram! 💬
+      </a>
+      <p class="text-sm text-gray-400 mt-3">
+          (Click to open Telegram and send a message to @LuxFlix for exclusive links, custom requests, or any questions!)
+      </p>
+  </section>
 
   <script>
     // Include Firebase SDKs
@@ -398,7 +433,7 @@
             userNameField.value = user.displayName || user.email || user.uid; 
             
             if (!selectedPlan || !selectedMethod) {
-                alert('Please select a membership plan and a payment method first.');
+                alert('Please select a contribution plan and a payment method first.'); // Changed alert message
                 return;
             }
 
@@ -446,7 +481,7 @@
 
             } else {
                 console.log("No Firebase user logged in.");
-                alert("Please log in to submit your membership payment proof.");
+                alert("Please log in to submit your contribution proof."); // Changed alert message
                 paymentForm.style.pointerEvents = 'none'; 
                 paymentForm.style.opacity = '0.5';
             }
@@ -454,9 +489,9 @@
 
         // Initial state: hide forms until selections are made
         paymentForm.style.display = 'none';
-        upiSection.style.display = 'none'; /* Ensure QR sections are hidden on load */
-        paypalSection.style.display = 'none'; /* Ensure QR sections are hidden on load */
-        thankYouMsg.style.display = 'none'; /* Ensure thank you message is hidden on load */
+        upiSection.style.display = 'none';
+        paypalSection.style.display = 'none';
+        thankYouMsg.style.display = 'none';
     }); // Close of Promise.all .then()
   </script>
 </body>

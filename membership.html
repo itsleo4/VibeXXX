@@ -14,6 +14,7 @@
       padding: 20px;
     }
     h1 { margin-bottom: 20px; }
+    .membership-options { margin-bottom: 20px; } /* New container for membership buttons */
     .button-group { margin-bottom: 20px; }
     button {
       padding: 15px 30px;
@@ -22,6 +23,16 @@
       border-radius: 10px;
       font-size: 16px;
       cursor: pointer;
+    }
+    .membership-btn { /* Style for membership buttons */
+        background: #333;
+        color: white;
+        border: 1px solid #555;
+        transition: background 0.3s, border-color 0.3s;
+    }
+    .membership-btn.active { /* Style for active/selected membership button */
+        background: #ff3366;
+        border-color: #ff3366;
     }
     .upi-btn { background: #4caf50; color: white; }
     .paypal-btn { background: #0070ba; color: white; }
@@ -38,13 +49,14 @@
       border-radius: 10px;
       margin-bottom: 10px;
     }
-    input, label {
+    input, label, select, textarea { /* Added select and textarea here */
       display: block;
       width: 100%;
       margin: 10px 0;
       padding: 10px;
       border-radius: 8px;
       border: none;
+      box-sizing: border-box; /* Ensures padding doesn't increase width */
     }
     input[type="file"] {
       background: #222;
@@ -78,7 +90,71 @@
         display: block; /* Ensure it takes its own line */
         object-fit: cover; /* Cover the area, cropping if necessary */
     }
+    /* Styles for the new form */
+    .new-payment-form-container { /* We will repurpose or remove this later */
+        display: none; /* Keep hidden for now, might simplify to one form */
+        max-width: 400px;
+        margin: 40px auto;
+        background: #1c1c1c;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 0 15px rgba(255, 51, 102, 0.3);
+    }
+    .new-payment-form-container h2 {
+        color: #ff3366;
+        margin-bottom: 20px;
+    }
+    .new-payment-form-container input,
+    .new-payment-form-container textarea {
+        background: #2d2d2d;
+        color: #fff;
+        border: 1px solid #444;
+        margin-bottom: 15px;
+        font-size: 1rem;
+    }
+    .new-payment-form-container input:focus,
+    .new-payment-form-container textarea:focus {
+        outline: none;
+        border-color: #ff1493;
+        box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.3);
+    }
+    .new-payment-form-container button {
+        background: linear-gradient(to right, #ff1493, #ff416c);
+        color: white;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(255, 65, 108, 0.3);
+    }
+    .new-payment-form-container button:hover {
+        background: linear-gradient(to right, #ff416c, #ff1493);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(255, 65, 108, 0.5);
+    }
   </style>
+    <!-- Include Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <!-- If you use Firestore or other services, include them here too -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script> -->
+
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
+            authDomain: "vibexxx-500c6.firebaseapp.com",
+            projectId: "vibexxx-500c6",
+            storageBucket: "vibexxx-500c6.firebasestorage.app",
+            messagingSenderId: "880697212397",
+            appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
+        };
+
+        // Initialize Firebase if not already initialized
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        // Initialize Firebase Authentication
+        const auth = firebase.auth();
+    </script>
 </head>
 <body>
 
@@ -89,11 +165,18 @@
   </video>
 
   <h1>💎 Become a Pro Member</h1>
-  <p>Choose your payment method</p>
+  <p>Choose your membership plan and payment method</p>
+
+  <!-- New: Membership Plan Selection -->
+  <div class="membership-options">
+    <button class="membership-btn" data-plan="1_MONTH">1 Month Membership</button>
+    <button class="membership-btn" data-plan="3_MONTH">3 Month Membership</button>
+    <!-- Add more plans if needed -->
+  </div>
 
   <div class="button-group">
-    <button class="upi-btn" onclick="showPayment('upi')">Pay with UPI</button>
-    <button class="paypal-btn" onclick="showPayment('paypal')">Pay with PayPal</button>
+    <button class="upi-btn" data-method="upi" onclick="showPayment('upi')">Pay with UPI</button>
+    <button class="paypal-btn" data-method="paypal" onclick="showPayment('paypal')">Pay with PayPal</button>
   </div>
 
   <!-- UPI QR Section -->
@@ -108,14 +191,20 @@
     <p><strong>PayPal:</strong> <a href="https://www.paypal.me/PawanKumar35438" style="color:#00aced;">paypal.me/PawanKumar35438</a></p>
   </div>
 
-  <!-- Submit Form -->
-  <form id="paymentForm" class="submit-form" action="https://63ce8a1b-d60e-45e9-8ace-db508feff835-00-nnnhmd8hxoz6.worf.replit.dev/submit" method="POST" enctype="multipart/form-data">
-    <label>Your Name</label>
-    <input type="text" name="name" required />
+  <!-- Main Payment Submission Form (for screenshot uploads) -->
+  <form id="paymentForm" class="submit-form" action="https://luxflixbotv3.vercel.app/api/webhook" method="POST" enctype="multipart/form-data">
+    <label>Your Name (as on VibeXXX)</label>
+    <input type="text" name="name" id="userNameField" readonly /> <!-- Readonly field for display -->
 
-    <label>UPI Ref ID or PayPal Email</label>
+    <input type="hidden" name="user_firebase_uid" id="userFirebaseUID" /> <!-- HIDDEN: To store Firebase UID -->
+    <input type="hidden" name="user_email" id="userEmail" /> <!-- HIDDEN: To store Firebase Email -->
+    <input type="hidden" name="membership_plan" id="selectedMembershipPlan" /> <!-- HIDDEN: To store selected plan -->
+    <input type="hidden" name="payment_method" id="selectedPaymentMethod" /> <!-- HIDDEN: To store selected method -->
+
+
+    <label>UPI Ref ID or PayPal Email / Transaction ID</label>
     <input type="text" name="refID" pattern="[a-zA-Z0-9@._-]+" required />
-    <div class="hint">Enter your 12-digit UPI Reference ID (from Google Pay, PhonePe etc.) or PayPal email</div>
+    <div class="hint">Enter your 12-digit UPI Reference ID (from Google Pay, PhonePe etc.) or PayPal email/transaction ID.</div>
 
     <label>Upload Payment Screenshot</label>
     <input type="file" name="screenshot" accept="image/*" required />
@@ -125,49 +214,230 @@
 
   <!-- Thank You Message -->
   <div class="thankyou" id="thankyouMsg">
-    ✅ Thank you! Your proof is submitted.<br/>You’ll be upgraded to Pro within 1 hour.
+    ✅ Thank you! Your proof is submitted.<br/>You’ll be upgraded to Pro soon.
   </div>
 
+  <hr style="border-color: #ff3366; margin: 40px auto; width: 50%;">
+
+  <!-- We will remove or repurpose this section later if the main form works well -->
+  <div class="new-payment-form-container">
+    <h2>Alternatively, Submit Basic Details</h2>
+    <p style="font-size: 0.9em; color: #ccc; margin-bottom: 20px;">Use this if you cannot upload a screenshot or prefer to send text details.</p>
+    <form id="simplePaymentForm">
+      <input type="text" id="simpleUsername" placeholder="Your VibeXXX Username" required>
+      <textarea id="simpleMessage" placeholder="Enter payment details (e.g., UPI Ref ID, PayPal email, transaction date/time)" rows="4" required></textarea>
+      <button type="submit" class="submit-btn">Submit Payment Proof</button>
+    </form>
+    <p id="responseMessage" style="margin-top:10px; color: lime;"></p>
+  </div>
+
+
   <script>
-    function showPayment(method) {
-      document.getElementById('upi').style.display = 'none';
-      document.getElementById('paypal').style.display = 'none';
-      document.querySelector('.submit-form').style.display = 'block';
-      document.getElementById(method).style.display = 'block';
+    let selectedPlan = '';
+    let selectedMethod = '';
+
+    const membershipButtons = document.querySelectorAll('.membership-btn');
+    const paymentMethodButtons = document.querySelectorAll('.button-group button');
+    const paymentForm = document.getElementById('paymentForm');
+    const upiSection = document.getElementById('upi');
+    const paypalSection = document.getElementById('paypal');
+    const thankYouMsg = document.getElementById('thankyouMsg');
+    const submitBtn = document.getElementById('submitBtn');
+    const userFirebaseUIDField = document.getElementById('userFirebaseUID');
+    const userEmailField = document.getElementById('userEmail');
+    const userNameField = document.getElementById('userNameField');
+    const selectedMembershipPlanField = document.getElementById('selectedMembershipPlan');
+    const selectedPaymentMethodField = document.getElementById('selectedPaymentMethod');
+    const simplePaymentFormContainer = document.querySelector('.new-payment-form-container'); // Get the container
+
+    // Function to show/hide QR sections and main form
+    function showPaymentSection() {
+        if (selectedPlan && selectedMethod) {
+            if (selectedMethod === 'upi') {
+                upiSection.style.display = 'block';
+                paypalSection.style.display = 'none';
+            } else if (selectedMethod === 'paypal') {
+                paypalSection.style.display = 'block';
+                upiSection.style.display = 'none';
+            }
+            paymentForm.style.display = 'block';
+            thankYouMsg.style.display = 'none'; // Hide thank you if visible
+            simplePaymentFormContainer.style.display = 'none'; // Hide simple form
+        }
     }
 
-    document.getElementById('paymentForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+    // Event listeners for Membership Plan buttons
+    membershipButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            membershipButtons.forEach(btn => btn.classList.remove('active')); // Deactivate all
+            button.classList.add('active'); // Activate clicked
+            selectedPlan = button.dataset.plan;
+            selectedMembershipPlanField.value = selectedPlan; // Update hidden field
+            showPaymentSection(); // Check if both plan and method are selected
+        });
+    });
 
-      const form = e.target;
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.innerText = "⏳ Submitting...";
-      submitBtn.disabled = true;
+    // Event listeners for Payment Method buttons
+    paymentMethodButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            paymentMethodButtons.forEach(btn => btn.classList.remove('active')); // Optional: remove active class
+            button.classList.add('active'); // Optional: add active class
+            selectedMethod = button.dataset.method;
+            selectedPaymentMethodField.value = selectedMethod; // Update hidden field
+            showPaymentSection(); // Check if both plan and method are selected
+        });
+    });
 
-      const formData = new FormData(form);
+    // Handle form submission for paymentForm
+    paymentForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
 
-      fetch(form.action, {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => {
-        if (res.ok) {
-          form.style.display = 'none';
-          document.getElementById('upi').style.display = 'none';
-          document.getElementById('paypal').style.display = 'none';
-          document.getElementById('thankyouMsg').style.display = 'block';
-        } else {
-          alert("❌ Submission failed. Try again.");
-          submitBtn.innerText = "📤 Submit Proof";
-          submitBtn.disabled = false;
+        // Get current Firebase user details
+        const user = firebase.auth().currentUser;
+
+        if (!user) {
+            alert('You must be logged in to submit payment proof.');
+            return;
         }
-      })
-      .catch(err => {
-        console.error(err);
-        alert("❌ Error submitting. Please try later.");
-        submitBtn.innerText = "📤 Submit Proof";
-        submitBtn.disabled = false;
-      });
+
+        // Populate hidden fields with Firebase user data
+        userFirebaseUIDField.value = user.uid;
+        userEmailField.value = user.email || ''; // Email might be null/empty for some providers
+        userNameField.value = user.displayName || user.email || user.uid; // For display, if not set by Firebase
+
+        if (!selectedPlan || !selectedMethod) {
+            alert('Please select a membership plan and a payment method first.');
+            return;
+        }
+
+        submitBtn.innerText = "⏳ Submitting...";
+        submitBtn.disabled = true;
+
+        const formData = new FormData(paymentForm);
+
+        try {
+            const response = await fetch(paymentForm.action, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                paymentForm.style.display = 'none';
+                upiSection.style.display = 'none';
+                paypalSection.style.display = 'none';
+                thankYouMsg.style.display = 'block';
+            } else {
+                const errorText = await response.text();
+                console.error("Submission failed:", response.status, errorText);
+                alert("❌ Submission failed. Please try again. Error: " + (errorText || "Unknown"));
+            }
+        } catch (err) {
+            console.error("Network error submitting form:", err);
+            alert("❌ Network error. Please check your internet and try again.");
+        } finally {
+            submitBtn.innerText = "📤 Submit Proof";
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Initial check for logged-in user to pre-fill name field (optional)
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            userNameField.value = user.displayName || user.email || ''; // Pre-fill name if available
+        }
+    });
+
+    // NEW: simplePaymentForm Event Listener - Modify or Remove
+    // This part currently posts to localhost. We need to decide if you still need this form.
+    // If you do, it needs to send the Firebase UID/Email as well.
+    document.getElementById("simplePaymentForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        const user = firebase.auth().currentUser;
+        if (!user) {
+            alert('You must be logged in to submit payment proof.');
+            return;
+        }
+
+        const simpleUsernameInput = document.getElementById("simpleUsername");
+        const simpleMessageInput = document.getElementById("simpleMessage");
+        const responseMessage = document.getElementById("responseMessage");
+
+        const usernameProvided = simpleUsernameInput.value; // This is the user-provided username
+        const paymentDetails = simpleMessageInput.value; // Renamed for clarity
+
+        if (!usernameProvided.trim() || !paymentDetails.trim()) {
+            responseMessage.style.color = 'red';
+            responseMessage.innerText = "Please fill in all details.";
+            return;
+        }
+
+        const submitButton = e.submitter;
+        const originalButtonText = submitButton.innerText;
+        submitButton.innerText = "⏳ Sending...";
+        submitButton.disabled = true;
+        responseMessage.innerText = "";
+
+        // Construct data to send for the simple form
+        const dataToSend = {
+            firebase_uid: user.uid,
+            firebase_email: user.email || '',
+            username_from_form: usernameProvided, // The name user typed
+            payment_details_text: paymentDetails,
+            membership_plan: selectedPlan, // Send selected plan here too
+            payment_method: selectedMethod // Send selected method here too
+        };
+
+        // You MUST update this URL to your Vercel webhook
+        const webhookUrl = "https://luxflixbotv3.vercel.app/api/webhook";
+
+        try {
+            const response = await fetch(webhookUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json" // Use application/json for text data
+                },
+                body: JSON.stringify(dataToSend)
+            });
+
+            const result = await response.json(); // Assuming your webhook will send a JSON response
+            if (response.ok) { // Check for successful HTTP status (2xx)
+                responseMessage.style.color = 'lime';
+                responseMessage.innerText = "✅ Payment proof sent to admin!";
+                simpleUsernameInput.value = '';
+                simpleMessageInput.value = '';
+            } else {
+                responseMessage.style.color = 'red';
+                responseMessage.innerText = result.message || `❌ Failed: ${response.status} ${response.statusText}`;
+            }
+        } catch (error) {
+            console.error("Error sending payment proof:", error);
+            responseMessage.style.color = 'red';
+            responseMessage.innerText = "❌ Network error. Please try again later.";
+        } finally {
+            submitButton.innerText = originalButtonText;
+            submitButton.disabled = false;
+        }
+    });
+
+    // Hide simplePaymentFormContainer by default until we decide its fate
+    simplePaymentFormContainer.style.display = 'none';
+
+    // Important: Listen for Firebase auth state changes to ensure user is logged in
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+            console.log("Firebase user is logged in:", user.uid, user.email);
+            userFirebaseUIDField.value = user.uid;
+            userEmailField.value = user.email || '';
+            userNameField.value = user.displayName || user.email || `User ${user.uid.substring(0, 8)}...`;
+            userNameField.readOnly = true;
+        } else {
+            console.log("No Firebase user logged in.");
+            alert("Please log in to submit your membership payment proof.");
+            paymentForm.style.pointerEvents = 'none';
+            paymentForm.style.opacity = '0.5';
+            simplePaymentFormContainer.style.pointerEvents = 'none';
+            simplePaymentFormContainer.style.opacity = '0.5';
+        }
     });
   </script>
 </body>

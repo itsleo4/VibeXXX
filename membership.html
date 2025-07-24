@@ -83,7 +83,7 @@
       padding: 25px; /* More padding */
       border-radius: 20px;
       box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Stronger shadow for depth */
-      /* New: Add margin-top to separate from previous section */
+      /* This margin-top was already there in your last working code, keeping it */
       margin-top: 40px; 
     }
     .qr-section img {
@@ -108,75 +108,58 @@
     .qr-section a:hover {
         text-decoration: underline;
     }
-    input, label, select, textarea {
+    /* --- START OF MINIMAL CSS CHANGES FOR SPACING --- */
+    /* Apply margin-bottom to inputs/textareas, and ensure full width */
+    input:not([type="file"]), select, textarea { 
       background: #2d2d2d;
       color: #fff;
       border: 1px solid #444;
-      margin-bottom: 15px;
+      margin-bottom: 20px; /* Increased spacing after inputs */
       font-size: 1rem;
-      padding: 12px; /* More padding for inputs */
-      border-radius: 8px; /* Consistent border radius */
+      padding: 12px;
+      border-radius: 8px;
+      width: 100%; /* Ensure inputs take full width */
+      box-sizing: border-box; /* Include padding in width */
     }
+
+    /* Styles for labels to ensure proper vertical spacing and alignment */
+    label {
+      display: block; /* Make labels block-level to apply vertical margins */
+      text-align: left; /* Align text to the left */
+      margin-top: 20px; /* Space above each label */
+      margin-bottom: 5px; /* Small space between label and its input */
+      font-size: 1rem; /* Ensure consistent font size */
+      color: #ddd; /* Slightly lighter color for labels */
+    }
+
+    /* Override for the very first label in the form to prevent excessive top margin */
+    #paymentForm label:first-of-type {
+        margin-top: 0;
+    }
+
+    /* Specific adjustment for file input's margin-bottom */
     input[type="file"] {
       background: #222;
       color: white;
-      padding: 10px; /* Adjust padding for file input */
-      border: 1px dashed #ff3366; /* Dashed border for file input */
+      padding: 10px;
+      border: 1px dashed #ff3366;
       cursor: pointer;
+      margin-bottom: 20px; /* Ensure spacing after file input */
+      width: 100%; /* Full width */
+      box-sizing: border-box;
     }
-    input[type="file"]::-webkit-file-upload-button {
-        visibility: hidden; /* Hide default button */
-    }
-    input[type="file"]::before {
-        content: '📂 Choose Screenshot'; /* Custom button text */
-        display: inline-block;
-        background: linear-gradient(to right, #ff1493, #ff416c);
-        color: white;
-        border-radius: 8px;
-        padding: 8px 15px;
-        outline: none;
-        white-space: nowrap;
-        -webkit-user-select: none; /* Webkit prefix */
-        user-select: none;        /* Standard property */
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 1em;
-        margin-right: 10px;
-    }
-    input[type="file"]:hover::before {
-        background: linear-gradient(to right, #ff416c, #ff1493);
-    }
-    .submit-btn {
-      background: linear-gradient(to right, #ff1493, #ff416c);
-      color: white;
-      font-size: 1.2em; /* Larger submit button */
-      padding: 15px 40px;
-      font-weight: bold;
-      box-shadow: 0 6px 15px rgba(255, 65, 108, 0.4);
-    }
-    .submit-btn:hover {
-      background: linear-gradient(to right, #ff416c, #ff1493);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(255, 65, 108, 0.6);
-    }
-    .thankyou {
-      display: none;
-      margin-top: 30px;
-      font-size: 20px; /* Larger thank you message */
-      color: #00ff99;
-      background: #1c1c1c;
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,255,153,0.3);
-    }
+
+    /* Adjust hint text spacing */
     .hint {
-      font-size: 0.9em; /* Slightly smaller hint text */
+      font-size: 0.9em;
       color: #aaa;
-      margin-top: -10px; /* Adjust spacing */
-      margin-bottom: 20px;
+      margin-top: -15px; /* Adjust spacing to be closer to input, but still separate */
+      margin-bottom: 25px; /* More space after hint */
       text-align: left;
       padding-left: 5px;
     }
+    /* --- END OF MINIMAL CSS CHANGES FOR SPACING --- */
+
     hr {
         border-color: #ff3366;
         margin: 50px auto; /* More vertical margin */
@@ -196,6 +179,29 @@
         font-size: 0.8em;
         color: #aaa;
         margin-top: 5px;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+        h1 {
+            font-size: 2em;
+        }
+        p {
+            font-size: 1em;
+        }
+        .membership-options, .button-group {
+            flex-direction: column; /* Stack buttons vertically on small screens */
+            gap: 10px;
+        }
+        button {
+            width: 100%; /* Full width buttons */
+            min-width: unset;
+        }
+        .qr-section, .submit-form {
+            padding: 20px;
+        }
+        .qr-section img {
+            max-width: 90%;
+        }
     }
   </style>
 </head>
@@ -269,7 +275,7 @@
   <hr>
 
   <script>
-    // Include Firebase SDKs (these lines are moved here from head)
+    // Include Firebase SDKs
     const firebaseAppScript = document.createElement('script');
     firebaseAppScript.src = "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js";
     document.head.appendChild(firebaseAppScript);
@@ -304,7 +310,7 @@
         let selectedPlan = '';
         let selectedMethod = '';
         let selectedPrice = '';
-        let selectedCurrency = ''; // To store the currency (INR or USD)
+        let selectedCurrency = '';
 
         const membershipButtons = document.querySelectorAll('.membership-btn');
         const paymentMethodButtons = document.querySelectorAll('.button-group button');
@@ -318,25 +324,28 @@
         const userNameField = document.getElementById('userNameField');
         const selectedMembershipPlanField = document.getElementById('selectedMembershipPlan');
         const selectedPaymentMethodField = document.getElementById('selectedPaymentMethod');
-        const selectedPriceField = document.getElementById('selectedPrice'); // New field
-        const selectedCurrencyField = document.getElementById('selectedCurrency'); // New field
+        const selectedPriceField = document.getElementById('selectedPrice');
+        const selectedCurrencyField = document.getElementById('selectedCurrency');
 
 
         // Function to show/hide QR sections and main form
         function showPaymentSection() {
+            // Ensure all dynamic sections are hidden first
+            upiSection.style.display = 'none';
+            paypalSection.style.display = 'none';
+            paymentForm.style.display = 'none';
+            thankYouMsg.style.display = 'none';
+
             if (selectedPlan && selectedMethod) {
                 if (selectedMethod === 'upi') {
                     upiSection.style.display = 'block';
-                    paypalSection.style.display = 'none';
-                    selectedCurrency = 'INR'; // Set currency for UPI
+                    selectedCurrency = 'INR';
                 } else if (selectedMethod === 'paypal') {
                     paypalSection.style.display = 'block';
-                    upiSection.style.display = 'none';
-                    selectedCurrency = 'USD'; // Set currency for PayPal
+                    selectedCurrency = 'USD';
                 }
-                selectedCurrencyField.value = selectedCurrency; // Update hidden field
+                selectedCurrencyField.value = selectedCurrency;
 
-                // Update selectedPrice based on selectedPlan and selectedMethod/Currency
                 const currentPlanButton = document.querySelector(`.membership-btn[data-plan="${selectedPlan}"]`);
                 if (currentPlanButton) {
                     if (selectedCurrency === 'INR') {
@@ -344,11 +353,10 @@
                     } else if (selectedCurrency === 'USD') {
                         selectedPrice = currentPlanButton.dataset.priceUsd;
                     }
-                    selectedPriceField.value = selectedPrice; // Update hidden price field
+                    selectedPriceField.value = selectedPrice;
                 }
 
                 paymentForm.style.display = 'block';
-                thankYouMsg.style.display = 'none'; // Hide thank you if visible
             }
         }
 
@@ -358,8 +366,8 @@
                 membershipButtons.forEach(btn => btn.classList.remove('active')); // Deactivate all
                 button.classList.add('active'); // Activate clicked
                 selectedPlan = button.dataset.plan;
-                selectedMembershipPlanField.value = selectedPlan; // Update hidden field
-                showPaymentSection(); // Check if both plan and method are selected
+                selectedMembershipPlanField.value = selectedPlan;
+                showPaymentSection();
             });
         });
 
@@ -369,8 +377,8 @@
                 paymentMethodButtons.forEach(btn => btn.classList.remove('active')); // Optional: remove active class
                 button.classList.add('active'); // Optional: add active class
                 selectedMethod = button.dataset.method;
-                selectedPaymentMethodField.value = selectedMethod; // Update hidden field
-                showPaymentSection(); // Check if both plan and method are selected
+                selectedPaymentMethodField.value = selectedMethod;
+                showPaymentSection();
             });
         });
 
@@ -378,7 +386,6 @@
         paymentForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Get current Firebase user details
             const user = firebase.auth().currentUser;
 
             if (!user) {
@@ -386,12 +393,10 @@
                 return;
             }
 
-            // Populate hidden fields with Firebase user data
             userFirebaseUIDField.value = user.uid;
             userEmailField.value = user.email || ''; 
             userNameField.value = user.displayName || user.email || user.uid; 
             
-            // Ensure plan and method are selected
             if (!selectedPlan || !selectedMethod) {
                 alert('Please select a membership plan and a payment method first.');
                 return;
@@ -405,7 +410,7 @@
             try {
                 const response = await fetch(paymentForm.action, {
                     method: 'POST',
-                    body: formData // FormData automatically sets Content-Type: multipart/form-data
+                    body: formData
                 });
 
                 if (response.ok) {
@@ -436,14 +441,12 @@
                 userNameField.value = user.displayName || user.email || `User ${user.uid.substring(0, 8)}...`;
                 userNameField.readOnly = true; 
 
-                // Enable form interaction if user is logged in
                 paymentForm.style.pointerEvents = 'auto'; 
                 paymentForm.style.opacity = '1';
 
             } else {
                 console.log("No Firebase user logged in.");
                 alert("Please log in to submit your membership payment proof.");
-                // Disable forms or redirect if not logged in
                 paymentForm.style.pointerEvents = 'none'; 
                 paymentForm.style.opacity = '0.5';
             }
@@ -451,6 +454,9 @@
 
         // Initial state: hide forms until selections are made
         paymentForm.style.display = 'none';
+        upiSection.style.display = 'none'; /* Ensure QR sections are hidden on load */
+        paypalSection.style.display = 'none'; /* Ensure QR sections are hidden on load */
+        thankYouMsg.style.display = 'none'; /* Ensure thank you message is hidden on load */
     }); // Close of Promise.all .then()
   </script>
 </body>

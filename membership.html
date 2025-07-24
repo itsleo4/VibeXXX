@@ -4,131 +4,206 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>VibeXXX Pro Membership</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       background: #0f0f0f;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Inter', sans-serif; /* Changed font to Inter */
       color: white;
       text-align: center;
       padding: 20px;
+      display: flex; /* Use flexbox for centering content */
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh; /* Ensure it takes full viewport height */
+      box-sizing: border-box; /* Include padding in element's total width and height */
     }
-    h1 { margin-bottom: 20px; }
-    .membership-options { margin-bottom: 20px; } /* New container for membership buttons */
-    .button-group { margin-bottom: 20px; }
+    h1 {
+      margin-top: 20px; /* Adjust top margin */
+      margin-bottom: 15px;
+      font-size: 2.5em; /* Larger heading */
+      color: #ff3366; /* Eye-catching color */
+      text-shadow: 0 0 10px rgba(255, 51, 102, 0.5); /* Subtle glow */
+    }
+    p {
+      font-size: 1.1em;
+      margin-bottom: 25px;
+      color: #ccc;
+    }
+    .membership-options, .button-group {
+      display: flex; /* Use flexbox for buttons */
+      flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+      justify-content: center;
+      gap: 15px; /* Space between buttons */
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 600px; /* Limit width for larger screens */
+    }
     button {
       padding: 15px 30px;
-      margin: 10px;
       border: none;
-      border-radius: 10px;
-      font-size: 16px;
+      border-radius: 12px; /* More rounded corners */
+      font-size: 1.1em; /* Slightly larger font */
       cursor: pointer;
+      transition: all 0.3s ease; /* Smooth transitions */
+      font-weight: 600; /* Bolder text */
+      flex-grow: 1; /* Allow buttons to grow */
+      min-width: 180px; /* Minimum width for buttons */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Subtle shadow */
     }
-    .membership-btn { /* Style for membership buttons */
+    .membership-btn {
         background: #333;
         color: white;
-        border: 1px solid #555;
-        transition: background 0.3s, border-color 0.3s;
+        border: 2px solid #555; /* Thicker border */
     }
-    .membership-btn.active { /* Style for active/selected membership button */
-        background: #ff3366;
+    .membership-btn:hover {
+        background: #444;
         border-color: #ff3366;
+        transform: translateY(-3px); /* Lift effect */
+        box-shadow: 0 6px 15px rgba(255, 51, 102, 0.3);
+    }
+    .membership-btn.active {
+        background: linear-gradient(to right, #ff1493, #ff416c); /* Gradient for active */
+        border-color: #ff3366;
+        box-shadow: 0 0 15px rgba(255, 51, 102, 0.7); /* Stronger glow for active */
+        transform: translateY(-2px);
     }
     .upi-btn { background: #4caf50; color: white; }
     .paypal-btn { background: #0070ba; color: white; }
+    .upi-btn:hover { background: #5cb85c; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3); }
+    .paypal-btn:hover { background: #008cdd; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0, 112, 186, 0.3); }
+
     .qr-section, .submit-form {
       display: none;
-      max-width: 400px;
+      width: 90%; /* Use percentage for responsiveness */
+      max-width: 450px; /* Slightly larger max-width for forms/QR */
       margin: 20px auto;
       background: #1c1c1c;
-      padding: 20px;
+      padding: 25px; /* More padding */
       border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Stronger shadow for depth */
     }
     .qr-section img {
-      max-width: 100%;
+      max-width: 80%; /* Smaller QR image for better fit */
+      height: auto;
       border-radius: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 20px; /* More margin */
+      border: 5px solid #ff3366; /* Border around QR */
+      padding: 5px; /* Padding inside border */
+      background: white; /* White background for QR */
     }
-    input, label, select, textarea { /* Added select and textarea here */
-      display: block;
-      width: 100%;
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      box-sizing: border-box; /* Ensures padding doesn't increase width */
+    .qr-section p {
+        font-size: 1.1em;
+        color: #ddd;
+        margin-top: 10px;
+    }
+    .qr-section a {
+        color: #00ff99; /* Link color */
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .qr-section a:hover {
+        text-decoration: underline;
+    }
+    input, label, select, textarea {
+      background: #2d2d2d;
+      color: #fff;
+      border: 1px solid #444;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      padding: 12px; /* More padding for inputs */
+      border-radius: 8px; /* Consistent border radius */
     }
     input[type="file"] {
       background: #222;
       color: white;
+      padding: 10px; /* Adjust padding for file input */
+      border: 1px dashed #ff3366; /* Dashed border for file input */
+      cursor: pointer;
+    }
+    input[type="file"]::-webkit-file-upload-button {
+        visibility: hidden; /* Hide default button */
+    }
+    input[type="file"]::before {
+        content: '📂 Choose Screenshot'; /* Custom button text */
+        display: inline-block;
+        background: linear-gradient(to right, #ff1493, #ff416c);
+        color: white;
+        border-radius: 8px;
+        padding: 8px 15px;
+        outline: none;
+        white-space: nowrap;
+        -webkit-user-select: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1em;
+        margin-right: 10px;
+    }
+    input[type="file"]:hover::before {
+        background: linear-gradient(to right, #ff416c, #ff1493);
     }
     .submit-btn {
-      background: #e91e63;
+      background: linear-gradient(to right, #ff1493, #ff416c);
       color: white;
-      font-size: 16px;
+      font-size: 1.2em; /* Larger submit button */
+      padding: 15px 40px;
+      font-weight: bold;
+      box-shadow: 0 6px 15px rgba(255, 65, 108, 0.4);
+    }
+    .submit-btn:hover {
+      background: linear-gradient(to right, #ff416c, #ff1493);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 65, 108, 0.6);
     }
     .thankyou {
       display: none;
-      margin-top: 20px;
-      font-size: 18px;
+      margin-top: 30px;
+      font-size: 20px; /* Larger thank you message */
       color: #00ff99;
+      background: #1c1c1c;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,255,153,0.3);
     }
     .hint {
-      font-size: 12px;
-      color: #ccc;
-      margin-top: -8px;
-      margin-bottom: 10px;
+      font-size: 0.9em; /* Slightly smaller hint text */
+      color: #aaa;
+      margin-top: -10px; /* Adjust spacing */
+      margin-bottom: 20px;
+      text-align: left;
+      padding-left: 5px;
     }
-    /* Styling for the video teaser */
-    .teaser-video {
-        width: 100%; /* Make it responsive */
-        max-width: 640px; /* Limit max width for larger screens */
-        height: auto; /* Maintain aspect ratio */
-        border-radius: 15px; /* More rounded corners */
-        box-shadow: 0 0 20px rgba(255, 51, 102, 0.7); /* Pink glow effect */
-        margin: 0 auto 30px auto; /* Center and add more bottom margin */
-        display: block; /* Ensure it takes its own line */
-        object-fit: cover; /* Cover the area, cropping if necessary */
+    hr {
+        border-color: #ff3366;
+        margin: 50px auto; /* More vertical margin */
+        width: 60%; /* Wider separator */
+        border-top: 2px solid; /* Thicker line */
+        opacity: 0.7;
     }
-    /* Styles for the new form */
-    .new-payment-form-container { /* We will repurpose or remove this later */
-        display: none; /* Keep hidden for now, might simplify to one form */
-        max-width: 400px;
-        margin: 40px auto;
-        background: #1c1c1c;
-        padding: 20px;
-        border-radius: 20px;
-        box-shadow: 0 0 15px rgba(255, 51, 102, 0.3);
-    }
-    .new-payment-form-container h2 {
-        color: #ff3366;
-        margin-bottom: 20px;
-    }
-    .new-payment-form-container input,
-    .new-payment-form-container textarea {
-        background: #2d2d2d;
-        color: #fff;
-        border: 1px solid #444;
-        margin-bottom: 15px;
-        font-size: 1rem;
-    }
-    .new-payment-form-container input:focus,
-    .new-payment-form-container textarea:focus {
-        outline: none;
-        border-color: #ff1493;
-        box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.3);
-    }
-    .new-payment-form-container button {
-        background: linear-gradient(to right, #ff1493, #ff416c);
-        color: white;
-        font-weight: bold;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 10px rgba(255, 65, 108, 0.3);
-    }
-    .new-payment-form-container button:hover {
-        background: linear-gradient(to right, #ff416c, #ff1493);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(255, 65, 108, 0.5);
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+        h1 {
+            font-size: 2em;
+        }
+        p {
+            font-size: 1em;
+        }
+        .membership-options, .button-group {
+            flex-direction: column; /* Stack buttons vertically on small screens */
+            gap: 10px;
+        }
+        button {
+            width: 100%; /* Full width buttons */
+            min-width: unset;
+        }
+        .qr-section, .submit-form {
+            padding: 20px;
+        }
+        .qr-section img {
+            max-width: 90%;
+        }
     }
   </style>
     <!-- Include Firebase SDKs -->
@@ -158,16 +233,12 @@
 </head>
 <body>
 
-  <!-- Erotic Teaser Video -->
-  <video autoplay muted loop playsinline class="teaser-video">
-    <source src="assets/media/teaser.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
+  <!-- Removed the <video> element as requested -->
 
   <h1>💎 Become a Pro Member</h1>
   <p>Choose your membership plan and payment method</p>
 
-  <!-- New: Membership Plan Selection -->
+  <!-- Membership Plan Selection -->
   <div class="membership-options">
     <button class="membership-btn" data-plan="1_MONTH">1 Month Membership</button>
     <button class="membership-btn" data-plan="3_MONTH">3 Month Membership</button>
@@ -175,8 +246,8 @@
   </div>
 
   <div class="button-group">
-    <button class="upi-btn" data-method="upi" onclick="showPayment('upi')">Pay with UPI</button>
-    <button class="paypal-btn" data-method="paypal" onclick="showPayment('paypal')">Pay with PayPal</button>
+    <button class="upi-btn" data-method="upi">Pay with UPI</button>
+    <button class="paypal-btn" data-method="paypal">Pay with PayPal</button>
   </div>
 
   <!-- UPI QR Section -->
@@ -193,21 +264,21 @@
 
   <!-- Main Payment Submission Form (for screenshot uploads) -->
   <form id="paymentForm" class="submit-form" action="https://luxflixbotv3.vercel.app/api/webhook" method="POST" enctype="multipart/form-data">
-    <label>Your Name (as on VibeXXX)</label>
-    <input type="text" name="name" id="userNameField" readonly /> <!-- Readonly field for display -->
+    <label for="userNameField">Your Name (as on VibeXXX)</label>
+    <input type="text" name="name" id="userNameField" readonly /> 
 
-    <input type="hidden" name="user_firebase_uid" id="userFirebaseUID" /> <!-- HIDDEN: To store Firebase UID -->
-    <input type="hidden" name="user_email" id="userEmail" /> <!-- HIDDEN: To store Firebase Email -->
-    <input type="hidden" name="membership_plan" id="selectedMembershipPlan" /> <!-- HIDDEN: To store selected plan -->
-    <input type="hidden" name="payment_method" id="selectedPaymentMethod" /> <!-- HIDDEN: To store selected method -->
+    <input type="hidden" name="user_firebase_uid" id="userFirebaseUID" /> 
+    <input type="hidden" name="user_email" id="userEmail" /> 
+    <input type="hidden" name="membership_plan" id="selectedMembershipPlan" /> 
+    <input type="hidden" name="payment_method" id="selectedPaymentMethod" /> 
 
 
-    <label>UPI Ref ID or PayPal Email / Transaction ID</label>
-    <input type="text" name="refID" pattern="[a-zA-Z0-9@._-]+" required />
+    <label for="refID">UPI Ref ID or PayPal Email / Transaction ID</label>
+    <input type="text" name="refID" id="refID" pattern="[a-zA-Z0-9@._-]+" required />
     <div class="hint">Enter your 12-digit UPI Reference ID (from Google Pay, PhonePe etc.) or PayPal email/transaction ID.</div>
 
-    <label>Upload Payment Screenshot</label>
-    <input type="file" name="screenshot" accept="image/*" required />
+    <label for="screenshot">Upload Payment Screenshot</label>
+    <input type="file" name="screenshot" id="screenshot" accept="image/*" required />
 
     <button type="submit" class="submit-btn" id="submitBtn">📤 Submit Proof</button>
   </form>
@@ -217,22 +288,15 @@
     ✅ Thank you! Your proof is submitted.<br/>You’ll be upgraded to Pro soon.
   </div>
 
-  <hr style="border-color: #ff3366; margin: 40px auto; width: 50%;">
+  <hr> <!-- Simplified hr tag -->
 
-  <!-- We will remove or repurpose this section later if the main form works well -->
-  <div class="new-payment-form-container">
-    <h2>Alternatively, Submit Basic Details</h2>
-    <p style="font-size: 0.9em; color: #ccc; margin-bottom: 20px;">Use this if you cannot upload a screenshot or prefer to send text details.</p>
-    <form id="simplePaymentForm">
-      <input type="text" id="simpleUsername" placeholder="Your VibeXXX Username" required>
-      <textarea id="simpleMessage" placeholder="Enter payment details (e.g., UPI Ref ID, PayPal email, transaction date/time)" rows="4" required></textarea>
-      <button type="submit" class="submit-btn">Submit Payment Proof</button>
-    </form>
-    <p id="responseMessage" style="margin-top:10px; color: lime;"></p>
-  </div>
+  <!-- Removed the "Alternatively, Submit Basic Details" section as it complicates the flow and we want to consolidate -->
+  <!-- <div class="new-payment-form-container"> ... </div> -->
 
 
   <script>
+    // Firebase initialization is already handled in the <head> section
+
     let selectedPlan = '';
     let selectedMethod = '';
 
@@ -248,7 +312,7 @@
     const userNameField = document.getElementById('userNameField');
     const selectedMembershipPlanField = document.getElementById('selectedMembershipPlan');
     const selectedPaymentMethodField = document.getElementById('selectedPaymentMethod');
-    const simplePaymentFormContainer = document.querySelector('.new-payment-form-container'); // Get the container
+    // Removed reference to simplePaymentFormContainer as that section is removed
 
     // Function to show/hide QR sections and main form
     function showPaymentSection() {
@@ -262,7 +326,6 @@
             }
             paymentForm.style.display = 'block';
             thankYouMsg.style.display = 'none'; // Hide thank you if visible
-            simplePaymentFormContainer.style.display = 'none'; // Hide simple form
         }
     }
 
@@ -302,9 +365,10 @@
 
         // Populate hidden fields with Firebase user data
         userFirebaseUIDField.value = user.uid;
-        userEmailField.value = user.email || ''; // Email might be null/empty for some providers
-        userNameField.value = user.displayName || user.email || user.uid; // For display, if not set by Firebase
-
+        userEmailField.value = user.email || ''; 
+        userNameField.value = user.displayName || user.email || user.uid; 
+        
+        // Ensure plan and method are selected
         if (!selectedPlan || !selectedMethod) {
             alert('Please select a membership plan and a payment method first.');
             return;
@@ -313,12 +377,12 @@
         submitBtn.innerText = "⏳ Submitting...";
         submitBtn.disabled = true;
 
-        const formData = new FormData(paymentForm);
+        const formData = new new FormData(paymentForm); // Use the form element directly to create FormData
 
         try {
             const response = await fetch(paymentForm.action, {
                 method: 'POST',
-                body: formData
+                body: formData // FormData automatically sets Content-Type: multipart/form-data
             });
 
             if (response.ok) {
@@ -340,88 +404,6 @@
         }
     });
 
-    // Initial check for logged-in user to pre-fill name field (optional)
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            userNameField.value = user.displayName || user.email || ''; // Pre-fill name if available
-        }
-    });
-
-    // NEW: simplePaymentForm Event Listener - Modify or Remove
-    // This part currently posts to localhost. We need to decide if you still need this form.
-    // If you do, it needs to send the Firebase UID/Email as well.
-    document.getElementById("simplePaymentForm").addEventListener("submit", async function(e) {
-        e.preventDefault();
-        const user = firebase.auth().currentUser;
-        if (!user) {
-            alert('You must be logged in to submit payment proof.');
-            return;
-        }
-
-        const simpleUsernameInput = document.getElementById("simpleUsername");
-        const simpleMessageInput = document.getElementById("simpleMessage");
-        const responseMessage = document.getElementById("responseMessage");
-
-        const usernameProvided = simpleUsernameInput.value; // This is the user-provided username
-        const paymentDetails = simpleMessageInput.value; // Renamed for clarity
-
-        if (!usernameProvided.trim() || !paymentDetails.trim()) {
-            responseMessage.style.color = 'red';
-            responseMessage.innerText = "Please fill in all details.";
-            return;
-        }
-
-        const submitButton = e.submitter;
-        const originalButtonText = submitButton.innerText;
-        submitButton.innerText = "⏳ Sending...";
-        submitButton.disabled = true;
-        responseMessage.innerText = "";
-
-        // Construct data to send for the simple form
-        const dataToSend = {
-            firebase_uid: user.uid,
-            firebase_email: user.email || '',
-            username_from_form: usernameProvided, // The name user typed
-            payment_details_text: paymentDetails,
-            membership_plan: selectedPlan, // Send selected plan here too
-            payment_method: selectedMethod // Send selected method here too
-        };
-
-        // You MUST update this URL to your Vercel webhook
-        const webhookUrl = "https://luxflixbotv3.vercel.app/api/webhook";
-
-        try {
-            const response = await fetch(webhookUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json" // Use application/json for text data
-                },
-                body: JSON.stringify(dataToSend)
-            });
-
-            const result = await response.json(); // Assuming your webhook will send a JSON response
-            if (response.ok) { // Check for successful HTTP status (2xx)
-                responseMessage.style.color = 'lime';
-                responseMessage.innerText = "✅ Payment proof sent to admin!";
-                simpleUsernameInput.value = '';
-                simpleMessageInput.value = '';
-            } else {
-                responseMessage.style.color = 'red';
-                responseMessage.innerText = result.message || `❌ Failed: ${response.status} ${response.statusText}`;
-            }
-        } catch (error) {
-            console.error("Error sending payment proof:", error);
-            responseMessage.style.color = 'red';
-            responseMessage.innerText = "❌ Network error. Please try again later.";
-        } finally {
-            submitButton.innerText = originalButtonText;
-            submitButton.disabled = false;
-        }
-    });
-
-    // Hide simplePaymentFormContainer by default until we decide its fate
-    simplePaymentFormContainer.style.display = 'none';
-
     // Important: Listen for Firebase auth state changes to ensure user is logged in
     firebase.auth().onAuthStateChanged(user => {
         if (user) {
@@ -429,16 +411,24 @@
             userFirebaseUIDField.value = user.uid;
             userEmailField.value = user.email || '';
             userNameField.value = user.displayName || user.email || `User ${user.uid.substring(0, 8)}...`;
-            userNameField.readOnly = true;
+            userNameField.readOnly = true; 
+
+            // Enable form interaction if user is logged in
+            paymentForm.style.pointerEvents = 'auto'; 
+            paymentForm.style.opacity = '1';
+
         } else {
             console.log("No Firebase user logged in.");
             alert("Please log in to submit your membership payment proof.");
-            paymentForm.style.pointerEvents = 'none';
+            // Disable forms or redirect if not logged in
+            paymentForm.style.pointerEvents = 'none'; 
             paymentForm.style.opacity = '0.5';
-            simplePaymentFormContainer.style.pointerEvents = 'none';
-            simplePaymentFormContainer.style.opacity = '0.5';
         }
     });
+
+    // Initial state: hide forms until selections are made
+    paymentForm.style.display = 'none';
+
   </script>
 </body>
 </html>

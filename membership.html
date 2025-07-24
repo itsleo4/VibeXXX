@@ -83,9 +83,11 @@
       padding: 25px; /* More padding */
       border-radius: 20px;
       box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Stronger shadow for depth */
+      /* New: Add margin-top to separate from previous section */
+      margin-top: 40px; 
     }
     .qr-section img {
-      max-width: 80%; /* Smaller QR image for better fit */
+      max-width: 70%; /* Slightly smaller QR image for better fit */
       height: auto;
       border-radius: 10px;
       margin-bottom: 20px; /* More margin */
@@ -183,30 +185,6 @@
         opacity: 0.7;
     }
 
-    /* Responsive adjustments */
-    @media (max-width: 600px) {
-        h1 {
-            font-size: 2em;
-        }
-        p {
-            font-size: 1em;
-        }
-        .membership-options, .button-group {
-            flex-direction: column; /* Stack buttons vertically on small screens */
-            gap: 10px;
-        }
-        button {
-            width: 100%; /* Full width buttons */
-            min-width: unset;
-        }
-        .qr-section, .submit-form {
-            padding: 20px;
-        }
-        .qr-section img {
-            max-width: 90%;
-        }
-    }
-
     /* New styles for pricing display */
     .price-display {
         font-size: 1.2em;
@@ -269,8 +247,8 @@
     <input type="hidden" name="user_email" id="userEmail" /> 
     <input type="hidden" name="membership_plan" id="selectedMembershipPlan" /> 
     <input type="hidden" name="payment_method" id="selectedPaymentMethod" /> 
-    <input type="hidden" name="selected_price" id="selectedPrice" /> <!-- New: to store selected price -->
-    <input type="hidden" name="selected_currency" id="selectedCurrency" /> <!-- New: to store selected currency -->
+    <input type="hidden" name="selected_price" id="selectedPrice" /> 
+    <input type="hidden" name="selected_currency" id="selectedCurrency" /> 
 
 
     <label for="refID">UPI Ref ID or PayPal Email / Transaction ID</label>

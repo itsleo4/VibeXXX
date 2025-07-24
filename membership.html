@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Support VibeXXX & Get Access!</title> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"> <style>
+  <title>Support VibeXXX & Get Access!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
     body {
       margin: 0;
       background: #0f0f0f;
@@ -20,13 +22,13 @@
     h1 {
       margin-top: 20px;
       margin-bottom: 15px;
-      font-size: 2.8em; /* Even Larger heading */
+      font-size: 2.8em;
       color: #ff3366;
-      text-shadow: 0 0 15px rgba(255, 51, 102, 0.7); /* Stronger glow */
-      font-weight: 800; /* Extra bold */
+      text-shadow: 0 0 15px rgba(255, 51, 102, 0.7);
+      font-weight: 800;
     }
     p {
-      font-size: 1.2em; /* Slightly larger text */
+      font-size: 1.2em;
       margin-bottom: 25px;
       color: #ccc;
     }
@@ -206,6 +208,48 @@
         box-shadow: 0 6px 15px rgba(0, 136, 204, 0.5);
     }
 
+    /* New "Buy CP Packs" CTA */
+    .cp-pack-cta {
+        background: linear-gradient(to right, #6a0dad, #8a2be2); /* Purple gradient */
+        border: 2px solid #9932cc;
+        padding: 1.5rem;
+        margin: 30px auto;
+        border-radius: 15px;
+        text-align: center;
+        max-width: 700px;
+        box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+        animation: pulse-purple 2s infinite alternate;
+    }
+    .cp-pack-cta h3 {
+        font-size: 1.8em;
+        color: #fff;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .cp-pack-cta a {
+        display: inline-block;
+        background: #0088cc; /* Telegram blue */
+        color: #fff;
+        padding: 1rem 2rem;
+        border-radius: 30px;
+        font-size: 1.3em;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
+    }
+    .cp-pack-cta a:hover {
+        background: #0077b3;
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 6px 15px rgba(0, 136, 204, 0.5);
+    }
+    @keyframes pulse-purple {
+        from { box-shadow: 0 0 20px rgba(138, 43, 226, 0.5); }
+        to { box-shadow: 0 0 30px rgba(138, 43, 226, 0.8); }
+    }
+
+
     /* Responsive adjustments */
     @media (max-width: 600px) {
         h1 {
@@ -228,10 +272,10 @@
         .qr-section img {
             max-width: 90%;
         }
-        .membership-telegram-cta h3 {
+        .membership-telegram-cta h3, .cp-pack-cta h3 {
             font-size: 1.4em;
         }
-        .membership-telegram-cta a {
+        .membership-telegram-cta a, .cp-pack-cta a {
             font-size: 1.1em;
             padding: 0.8rem 1.5rem;
         }
@@ -240,8 +284,8 @@
 </head>
 <body>
 
-  <h1>💖 Support VibeXXX & Unlock Elite Content! 💖</h1>
-  <p>Your generous support helps us bring you more exclusive, high-quality videos daily. Choose your contribution level below to get full access!</p>
+  <h1>👑 Empower VibeXXX: Donate Now for Premium Access! 👑</h1>
+  <p>Your generous contribution directly fuels new content and features. Choose your support tier below to unlock exclusive benefits!</p>
 
   <div class="membership-options">
     <button class="membership-btn" data-plan="1_MONTH_ACCESS" data-price-inr="249" data-price-usd="5.99">
@@ -299,15 +343,28 @@
 
   <hr>
 
+  <section class="cp-pack-cta">
+      <h3>💎 Craving Exclusive Content? Dive Deeper! 💎</h3>
+      <p>Want more than just access? DM admin to acquire exclusive, high-value CP packs and custom video links directly!</p>
+      <a href="https://t.me/LuxFlix" target="_blank">
+          📥 Get Exclusive CP Packs Now! 📥
+      </a>
+      <p class="text-sm text-gray-400 mt-3">
+          (Click to open Telegram and message @LuxFlix for details on CP packs & custom requests.)
+      </p>
+  </section>
+
   <section class="membership-telegram-cta">
-      <h3>Need More Videos? Want Custom Content?</h3>
+      <h3>Need Help? Have Questions?</h3>
+      <p>For any inquiries, support, or special requests, feel free to reach out to the admin.</p>
       <a href="https://t.me/LuxFlix" target="_blank">
           💬 Chat with Admin on Telegram! 💬
       </a>
       <p class="text-sm text-gray-400 mt-3">
-          (Click to open Telegram and send a message to @LuxFlix for exclusive links, custom requests, or any questions!)
+          (Click to open Telegram and send a message to @LuxFlix.)
       </p>
   </section>
+
 
   <script>
     // Include Firebase SDKs
@@ -433,7 +490,7 @@
             userNameField.value = user.displayName || user.email || user.uid; 
             
             if (!selectedPlan || !selectedMethod) {
-                alert('Please select a contribution plan and a payment method first.'); // Changed alert message
+                alert('Please select a contribution plan and a payment method first.');
                 return;
             }
 
@@ -481,7 +538,7 @@
 
             } else {
                 console.log("No Firebase user logged in.");
-                alert("Please log in to submit your contribution proof."); // Changed alert message
+                alert("Please log in to submit your contribution proof.");
                 paymentForm.style.pointerEvents = 'none'; 
                 paymentForm.style.opacity = '0.5';
             }

@@ -27,42 +27,99 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease-in-out;
         }
         .video-card:hover {
             transform: translateY(-5px);
+        }
+        .video-card img {
+            width: 100%;
+            height: 200px; /* Adjust as needed */
+            object-fit: cover;
+            display: block; /* Ensure no extra space below image */
         }
         .video-wrapper {
             position: relative;
             padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             height: 0;
             overflow: hidden;
+            background-color: #000; /* Ensures black background when thumbnail hides */
         }
-        .video-wrapper img, .video-wrapper iframe {
+        .video-wrapper img,
+        .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
         }
+        .video-wrapper iframe {
+            border: none;
+            display: block; /* Ensure iframe takes full space */
+        }
         .video-cta-link {
-            display: block;
-            background-color: #ff3366;
+            display: inline-block;
+            background-color: #e60073;
             color: white;
-            padding: 8px 12px;
-            text-align: center;
+            padding: 8px 15px;
             border-radius: 5px;
             margin-top: 10px;
             text-decoration: none;
-            font-weight: 600;
-            transition: background-color 0.2s ease;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
         }
         .video-cta-link:hover {
-            background-color: #e6005c;
+            background-color: #ff0066;
+        }
+
+        /* Modal styles (from auth.js) - ensure these are present */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #2a2a2a;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            color: white;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
+
     <header class="bg-gray-800 p-4 shadow-lg">
         <nav class="container mx-auto flex justify-between items-center">
             <a href="index.html" class="text-2xl font-bold text-red-500">VibeXXX</a>
@@ -72,91 +129,87 @@
                 <a href="saved.html" class="text-gray-300 hover:text-white saved-link hidden">Saved</a>
                 <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded login-link">Login</a>
                 <a href="register.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded register-link">Register</a>
-                <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden" onclick="logoutUserAndRedirect()">Logout</button>
+                <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden">Logout</button>
             </div>
         </nav>
     </header>
 
-    <main class="container mx-auto p-4">
-        <section id="welcomeMessage" class="text-center py-16 bg-gray-800 rounded-lg shadow-xl mb-8">
-            <h1 class="text-5xl font-extrabold text-red-500 mb-4 animate-pulse">Welcome to VibeXXX!</h1>
-            <p class="text-xl text-gray-300 mb-6">Your ultimate destination for premium adult entertainment.</p>
-            <div id="authButtons">
-                <a href="register.html" class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
-                    Join Free Now!
-                </a>
-            </div>
-            <p id="loggedInMessage" class="text-lg text-green-400 mt-4 hidden"></p>
+    <main class="container mx-auto p-4 flex-grow">
+        <section id="welcomeMessage" class="text-center py-16 px-4 bg-gradient-to-r from-purple-800 to-pink-600 rounded-lg shadow-xl mb-8">
+            <h2 class="text-5xl font-extrabold text-white mb-4 leading-tight">Welcome to <span class="text-pink-500">VibeXXX</span></h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Your ultimate destination for premium adult content. Explore a world of exclusive videos and connect with a vibrant community.</p>
+            <a href="register.html" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg">Join Free Now!</a>
         </section>
 
-        <section class="py-8">
-            <h2 class="text-4xl font-bold text-center text-red-400 mb-8">Free Previews</h2>
-            <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="flex justify-center items-center h-48 bg-gray-800 rounded-lg text-gray-400">Loading Free Videos...</div>
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold text-center text-pink-500 mb-6">Explore Our Free Collection</h2>
+            <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <p class="text-center text-gray-400">Loading free videos...</p>
             </div>
         </section>
+    </main>
 
-        <section class="telegram-cta-banner bg-gradient-to-r from-purple-700 to-indigo-700 text-white text-center py-12 rounded-lg shadow-xl mt-8">
-            <h2 class="text-4xl font-bold mb-4">Join Our Exclusive Telegram Channel!</h2>
-            <p class="text-xl mb-6">Get daily updates, sneak peeks, and interact with the VibeXXX community.</p>
-            <a href="https://t.me/LuxFlix" target="_blank" class="cta-button bg-yellow-400 text-gray-900 font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
-                Join Telegram Now!
-            </a>
-        </section>
-
-        <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-8 rounded-lg shadow-lg">
-            <p>© 2025 VibeXXX. All rights reserved. | <a href="#" class="hover:underline">Privacy Policy</a></p>
-            <div class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="hover:text-white">Facebook</a>
-                <a href="#" class="hover:text-white">Twitter</a>
-                <a href="https://t.me/LuxFlix" class="hover:text-white" target="_blank">Telegram</a>
-            </div>
-        </footer>
-
-        <div id="myModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
-            <div class="bg-gray-800 p-8 rounded-lg shadow-xl text-center">
-                <p id="modalMessage" class="text-lg mb-4"></p>
-                <button onclick="hideModal()" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-full">Close</button>
-            </div>
+    <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-8 rounded-lg shadow-lg">
+        <p>&copy; 2025 VibeXXX. All rights reserved. | <a href="#" class="hover:underline">Privacy Policy</a></p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="hover:text-white">Facebook</a>
+            <a href="#" class="hover:text-white">Twitter</a>
+            <a href="https://t.me/LuxFlix" class="hover:text-white" target="_blank">Telegram</a>
         </div>
+    </footer>
 
-        <script>
-            // Function to play the video directly (no modal)
-            function playVideo(event) {
-                const thumbnail = event.currentTarget; // The img tag that was clicked
-                const videoCard = thumbnail.closest('.video-card'); // Get the parent video card
-                const iframe = videoCard.querySelector('iframe'); // Find the iframe within this card
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
 
-                if (thumbnail && iframe) {
-                    thumbnail.classList.add('hidden'); // Hide the thumbnail using Tailwind
-                    iframe.classList.remove('hidden'); // Show the iframe using Tailwind
-                    // Autoplay the video
-                    const src = iframe.src;
-                    if (!src.includes('autoplay=1')) { // Prevent adding autoplay multiple times
-                        iframe.src = src + (src.includes('?') ? '&' : '?') + 'autoplay=1';
-                    }
+
+    <script>
+        // Function to play the video directly (no modal) - MOVED TO GLOBAL SCOPE
+        function playVideo(event) {
+            const thumbnail = event.currentTarget; // The img tag that was clicked
+            const videoWrapper = thumbnail.closest('.video-wrapper'); // Get the parent video-wrapper
+            const iframe = videoWrapper.querySelector('iframe'); // Find the iframe within that wrapper
+
+            if (thumbnail && iframe) {
+                thumbnail.classList.add('hidden'); // Hide the thumbnail using Tailwind
+                iframe.classList.remove('hidden'); // Show the iframe using Tailwind
+
+                // Add autoplay to the iframe src
+                const src = iframe.src;
+                if (!src.includes('autoplay=1')) { // Prevent adding autoplay multiple times
+                    iframe.src = src + (src.includes('?') ? '&' : '?') + 'autoplay=1';
                 }
             }
+        }
 
-            // Script to load free.html content dynamically
-            document.addEventListener('DOMContentLoaded', () => {
-                fetch('free.html')
-                    .then(res => {
-                        if (!res.ok) {
-                            throw new Error(`HTTP error! status: ${res.status}`);
-                        }
-                        return res.text();
-                    })
-                    .then(html => {
-                        const videoGrid = document.getElementById('videoGrid');
-                        if (videoGrid) {
-                            videoGrid.innerHTML = html;
-                        }
-                    })
-                    .catch(err => console.error("❌ Error loading free.html:", err));
-            });
-        </script>
-    </main>
+        // Script to load free.html content dynamically
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('free.html')
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.text();
+                })
+                .then(html => {
+                    const videoGrid = document.getElementById('videoGrid');
+                    if (videoGrid) {
+                        videoGrid.innerHTML = html;
+                    }
+                })
+                .catch(err => console.error("❌ Error loading free.html:", err));
+        });
+
+        // The logout link needs to call the logoutUser function from auth.js
+        // Since main.js handles the logout, we need to ensure the logout button
+        // is properly hooked up there. For now, assume main.js handles this.
+        // If you need an inline onclick, you would import and expose it:
+        // import { logoutUser } from './js/auth.js';
+        // window.logoutUserAndRedirect = async () => { /* ... call logoutUser and redirect ... */ };
+    </script>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>

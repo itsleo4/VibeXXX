@@ -5,75 +5,243 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>VibeXXX Pro Membership</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            inter: ['Inter', 'sans-serif'],
-          },
-          colors: {
-            'dark-bg': '#0f0f0f',
-            'card-bg': '#1c1c1c',
-            'input-bg': '#2d2d2d',
-            'pink-main': '#ff3366',
-            'pink-light': '#ff1493',
-            'pink-dark': '#ff416c',
-            'green-upi': '#4caf50',
-            'blue-paypal': '#0070ba',
-            'success-green': '#00ff99',
-          }
-        }
-      }
+  <style>
+    body {
+      margin: 0;
+      background: #0f0f0f;
+      font-family: 'Inter', sans-serif; /* Changed font to Inter */
+      color: white;
+      text-align: center;
+      padding: 20px;
+      display: flex; /* Use flexbox for centering content */
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh; /* Ensure it takes full viewport height */
+      box-sizing: border-box; /* Include padding in element's total width and height */
     }
-  </script>
-</head>
-<body class="bg-dark-bg font-inter text-white flex flex-col items-center justify-center min-h-screen p-4">
+    h1 {
+      margin-top: 20px; /* Adjust top margin */
+      margin-bottom: 15px;
+      font-size: 2.5em; /* Larger heading */
+      color: #ff3366; /* Eye-catching color */
+      text-shadow: 0 0 10px rgba(255, 51, 102, 0.5); /* Subtle glow */
+    }
+    p {
+      font-size: 1.1em;
+      margin-bottom: 25px;
+      color: #ccc;
+    }
+    .membership-options, .button-group {
+      display: flex; /* Use flexbox for buttons */
+      flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+      justify-content: center;
+      gap: 15px; /* Space between buttons */
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 600px; /* Limit width for larger screens */
+    }
+    button {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px; /* More rounded corners */
+      font-size: 1.1em; /* Slightly larger font */
+      cursor: pointer;
+      transition: all 0.3s ease; /* Smooth transitions */
+      font-weight: 600; /* Bolder text */
+      flex-grow: 1; /* Allow buttons to grow */
+      min-width: 180px; /* Minimum width for buttons */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Subtle shadow */
+    }
+    .membership-btn {
+        background: #333;
+        color: white;
+        border: 2px solid #555; /* Thicker border */
+    }
+    .membership-btn:hover {
+        background: #444;
+        border-color: #ff3366;
+        transform: translateY(-3px); /* Lift effect */
+        box-shadow: 0 6px 15px rgba(255, 51, 102, 0.3);
+    }
+    .membership-btn.active {
+        background: linear-gradient(to right, #ff1493, #ff416c); /* Gradient for active */
+        border-color: #ff3366;
+        box-shadow: 0 0 15px rgba(255, 51, 102, 0.7); /* Stronger glow for active */
+        transform: translateY(-2px);
+    }
+    .upi-btn { background: #4caf50; color: white; }
+    .paypal-btn { background: #0070ba; color: white; }
+    .upi-btn:hover { background: #5cb85c; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3); }
+    .paypal-btn:hover { background: #008cdd; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0, 112, 186, 0.3); }
 
-  <h1 class="text-4xl md:text-5xl font-bold text-pink-main mb-4 drop-shadow-lg">
-    💎 Become a Pro Member
-  </h1>
-  <p class="text-lg md:text-xl text-gray-300 mb-8">
-    Choose your membership plan and payment method
-  </p>
+    .qr-section, .submit-form {
+      display: none;
+      width: 90%; /* Use percentage for responsiveness */
+      max-width: 450px; /* Slightly larger max-width for forms/QR */
+      margin: 20px auto;
+      background: #1c1c1c;
+      padding: 25px; /* More padding */
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Stronger shadow for depth */
+      /* New: Add margin-top to separate from previous section */
+      margin-top: 40px; 
+    }
+    .qr-section img {
+      max-width: 70%; /* Slightly smaller QR image for better fit */
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 20px; /* More margin */
+      border: 5px solid #ff3366; /* Border around QR */
+      padding: 5px; /* Padding inside border */
+      background: white; /* White background for QR */
+    }
+    .qr-section p {
+        font-size: 1.1em;
+        color: #ddd;
+        margin-top: 10px;
+    }
+    .qr-section a {
+        color: #00ff99; /* Link color */
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .qr-section a:hover {
+        text-decoration: underline;
+    }
+    input, label, select, textarea {
+      background: #2d2d2d;
+      color: #fff;
+      border: 1px solid #444;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      padding: 12px; /* More padding for inputs */
+      border-radius: 8px; /* Consistent border radius */
+    }
+    input[type="file"] {
+      background: #222;
+      color: white;
+      padding: 10px; /* Adjust padding for file input */
+      border: 1px dashed #ff3366; /* Dashed border for file input */
+      cursor: pointer;
+    }
+    input[type="file"]::-webkit-file-upload-button {
+        visibility: hidden; /* Hide default button */
+    }
+    input[type="file"]::before {
+        content: '📂 Choose Screenshot'; /* Custom button text */
+        display: inline-block;
+        background: linear-gradient(to right, #ff1493, #ff416c);
+        color: white;
+        border-radius: 8px;
+        padding: 8px 15px;
+        outline: none;
+        white-space: nowrap;
+        -webkit-user-select: none; /* Webkit prefix */
+        user-select: none;        /* Standard property */
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1em;
+        margin-right: 10px;
+    }
+    input[type="file"]:hover::before {
+        background: linear-gradient(to right, #ff416c, #ff1493);
+    }
+    .submit-btn {
+      background: linear-gradient(to right, #ff1493, #ff416c);
+      color: white;
+      font-size: 1.2em; /* Larger submit button */
+      padding: 15px 40px;
+      font-weight: bold;
+      box-shadow: 0 6px 15px rgba(255, 65, 108, 0.4);
+    }
+    .submit-btn:hover {
+      background: linear-gradient(to right, #ff416c, #ff1493);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 65, 108, 0.6);
+    }
+    .thankyou {
+      display: none;
+      margin-top: 30px;
+      font-size: 20px; /* Larger thank you message */
+      color: #00ff99;
+      background: #1c1c1c;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,255,153,0.3);
+    }
+    .hint {
+      font-size: 0.9em; /* Slightly smaller hint text */
+      color: #aaa;
+      margin-top: -10px; /* Adjust spacing */
+      margin-bottom: 20px;
+      text-align: left;
+      padding-left: 5px;
+    }
+    hr {
+        border-color: #ff3366;
+        margin: 50px auto; /* More vertical margin */
+        width: 60%; /* Wider separator */
+        border-top: 2px solid; /* Thicker line */
+        opacity: 0.7;
+    }
+
+    /* New styles for pricing display */
+    .price-display {
+        font-size: 1.2em;
+        margin-top: 10px;
+        color: #00ff99;
+        font-weight: bold;
+    }
+    .currency-note {
+        font-size: 0.8em;
+        color: #aaa;
+        margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Removed the <video> element as requested -->
+
+  <h1>💎 Become a Pro Member</h1>
+  <p>Choose your membership plan and payment method</p>
 
   <!-- Membership Plan Selection -->
-  <div class="flex flex-wrap justify-center gap-4 mb-10 w-full max-w-2xl">
-    <button class="membership-btn bg-gray-700 text-white border-2 border-gray-600 rounded-xl px-6 py-4 text-lg font-semibold flex-grow min-w-[180px] shadow-lg transition-all duration-300 ease-in-out hover:bg-gray-800 hover:border-pink-main hover:translate-y-[-3px] hover:shadow-xl" data-plan="1_MONTH" data-price-inr="249" data-price-usd="5.99">
+  <div class="membership-options">
+    <button class="membership-btn" data-plan="1_MONTH" data-price-inr="249" data-price-usd="5.99">
         1 Month Membership
-        <div class="text-success-green font-bold text-xl mt-2">₹249 / $5.99</div>
+        <div class="price-display">₹249 / $5.99</div>
     </button>
-    <button class="membership-btn bg-gray-700 text-white border-2 border-gray-600 rounded-xl px-6 py-4 text-lg font-semibold flex-grow min-w-[180px] shadow-lg transition-all duration-300 ease-in-out hover:bg-gray-800 hover:border-pink-main hover:translate-y-[-3px] hover:shadow-xl" data-plan="3_MONTH" data-price-inr="599" data-price-usd="14.99">
+    <button class="membership-btn" data-plan="3_MONTH" data-price-inr="599" data-price-usd="14.99">
         3 Month Membership
-        <div class="text-success-green font-bold text-xl mt-2">₹599 / $14.99</div>
+        <div class="price-display">₹599 / $14.99</div>
     </button>
+    <!-- Add more plans if needed -->
   </div>
 
-  <div class="flex flex-wrap justify-center gap-4 mb-10 w-full max-w-2xl">
-    <button class="upi-btn bg-green-upi text-white rounded-xl px-8 py-4 text-lg font-semibold flex-grow min-w-[180px] shadow-lg transition-all duration-300 ease-in-out hover:bg-green-600 hover:translate-y-[-3px] hover:shadow-xl" data-method="upi">Pay with UPI</button>
-    <button class="paypal-btn bg-blue-paypal text-white rounded-xl px-8 py-4 text-lg font-semibold flex-grow min-w-[180px] shadow-lg transition-all duration-300 ease-in-out hover:bg-blue-600 hover:translate-y-[-3px] hover:shadow-xl" data-method="paypal">Pay with PayPal</button>
+  <div class="button-group">
+    <button class="upi-btn" data-method="upi">Pay with UPI</button>
+    <button class="paypal-btn" data-method="paypal">Pay with PayPal</button>
   </div>
 
   <!-- UPI QR Section -->
-  <div id="upi" class="qr-section bg-card-bg p-6 rounded-2xl shadow-2xl w-11/12 max-w-md mx-auto mb-8 hidden">
-    <img src="https://raw.githubusercontent.com/itsleo4/VibeXXX/main/images/upi.png" alt="UPI QR" class="max-w-[70%] h-auto mx-auto mb-6 rounded-lg border-4 border-pink-main p-1 bg-white">
-    <p class="text-lg text-gray-200 mb-2"><strong>Pay to:</strong> bharti00077-2@okaxis</p>
-    <p class="text-sm text-gray-400 mt-1">For 1 Month: ₹249 | For 3 Months: ₹599</p>
+  <div id="upi" class="qr-section">
+    <img src="https://raw.githubusercontent.com/itsleo4/VibeXXX/main/images/upi.png" alt="UPI QR">
+    <p><strong>Pay to:</strong> bharti00077-2@okaxis</p>
+    <p class="currency-note">For 1 Month: ₹249 | For 3 Months: ₹599</p>
   </div>
 
   <!-- PayPal QR Section -->
-  <div id="paypal" class="qr-section bg-card-bg p-6 rounded-2xl shadow-2xl w-11/12 max-w-md mx-auto mb-8 hidden">
-    <img src="https://raw.githubusercontent.com/itsleo4/VibeXXX/main/images/paypal.png" alt="PayPal QR" class="max-w-[70%] h-auto mx-auto mb-6 rounded-lg border-4 border-pink-main p-1 bg-white">
-    <p class="text-lg text-gray-200 mb-2"><strong>PayPal:</strong> <a href="https://www.paypal.me/PawanKumar35438" class="text-blue-400 hover:underline font-semibold">paypal.me/PawanKumar35438</a></p>
-    <p class="text-sm text-gray-400 mt-1">For 1 Month: $5.99 USD | For 3 Months: $14.99 USD</p>
+  <div id="paypal" class="qr-section">
+    <img src="https://raw.githubusercontent.com/itsleo4/VibeXXX/main/images/paypal.png" alt="PayPal QR">
+    <p><strong>PayPal:</strong> <a href="https://www.paypal.me/PawanKumar35438" style="color:#00aced;">paypal.me/PawanKumar35438</a></p>
+    <p class="currency-note">For 1 Month: $5.99 USD | For 3 Months: $14.99 USD</p>
   </div>
 
-  <!-- Main Payment Submission Form -->
-  <form id="paymentForm" class="submit-form bg-card-bg p-6 rounded-2xl shadow-2xl w-11/12 max-w-md mx-auto mb-8 hidden">
-    <label for="userNameField" class="block text-left text-gray-300 text-sm font-medium mb-1">Your Name (as on VibeXXX)</label>
-    <input type="text" name="name" id="userNameField" readonly class="w-full p-3 mb-4 rounded-lg bg-input-bg text-white border border-gray-600 focus:outline-none focus:border-pink-main focus:ring-1 focus:ring-pink-main" /> 
+  <!-- Main Payment Submission Form (for screenshot uploads) -->
+  <form id="paymentForm" class="submit-form" action="https://luxflixbotv3.vercel.app/api/webhook" method="POST" enctype="multipart/form-data">
+    <label for="userNameField">Your Name (as on VibeXXX)</label>
+    <input type="text" name="name" id="userNameField" readonly /> 
 
     <input type="hidden" name="user_firebase_uid" id="userFirebaseUID" /> 
     <input type="hidden" name="user_email" id="userEmail" /> 
@@ -82,28 +250,26 @@
     <input type="hidden" name="selected_price" id="selectedPrice" /> 
     <input type="hidden" name="selected_currency" id="selectedCurrency" /> 
 
-    <label for="refID" class="block text-left text-gray-300 text-sm font-medium mb-1">UPI Ref ID or PayPal Email / Transaction ID</label>
-    <input type="text" name="refID" id="refID" pattern="[a-zA-Z0-9@._-]+" required class="w-full p-3 mb-2 rounded-lg bg-input-bg text-white border border-gray-600 focus:outline-none focus:border-pink-main focus:ring-1 focus:ring-pink-main" />
-    <div class="text-xs text-gray-400 text-left mb-4">Enter your 12-digit UPI Reference ID (from Google Pay, PhonePe etc.) or PayPal email/transaction ID.</div>
 
-    <label for="screenshot" class="block text-left text-gray-300 text-sm font-medium mb-2">Upload Payment Screenshot</label>
-    <input type="file" name="screenshot" id="screenshot" accept="image/*" required class="w-full p-3 mb-6 rounded-lg bg-input-bg text-white border border-gray-600 focus:outline-none focus:border-pink-main focus:ring-1 focus:ring-pink-main file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-pink-light file:text-white hover:file:bg-pink-dark hover:file:cursor-pointer transition-all duration-300" />
+    <label for="refID">UPI Ref ID or PayPal Email / Transaction ID</label>
+    <input type="text" name="refID" id="refID" pattern="[a-zA-Z0-9@._-]+" required /> 
+    <div class="hint">Enter your 12-digit UPI Reference ID (from Google Pay, PhonePe etc.) or PayPal email/transaction ID.</div>
 
-    <button type="submit" class="submit-btn bg-gradient-to-r from-pink-light to-pink-dark text-white font-bold text-xl px-10 py-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out hover:from-pink-dark hover:to-pink-light hover:translate-y-[-3px] hover:shadow-xl" id="submitBtn">
-      📤 Submit Proof
-    </button>
+    <label for="screenshot">Upload Payment Screenshot</label>
+    <input type="file" name="screenshot" id="screenshot" accept="image/*" required />
+
+    <button type="submit" class="submit-btn" id="submitBtn">📤 Submit Proof</button>
   </form>
 
   <!-- Thank You Message -->
-  <div class="thankyou bg-card-bg p-6 rounded-2xl shadow-2xl w-11/12 max-w-md mx-auto mb-8 hidden">
-    <p class="text-success-green text-2xl font-semibold">✅ Thank you! Your proof is submitted.</p>
-    <p class="text-gray-300 text-lg mt-2">You’ll be upgraded to Pro soon.</p>
+  <div class="thankyou" id="thankyouMsg">
+    ✅ Thank you! Your proof is submitted.<br/>You’ll be upgraded to Pro soon.
   </div>
 
-  <hr class="border-t-2 border-pink-main w-3/5 my-12 opacity-70">
+  <hr>
 
   <script>
-    // Include Firebase SDKs
+    // Include Firebase SDKs (these lines are moved here from head)
     const firebaseAppScript = document.createElement('script');
     firebaseAppScript.src = "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js";
     document.head.appendChild(firebaseAppScript);
@@ -138,7 +304,7 @@
         let selectedPlan = '';
         let selectedMethod = '';
         let selectedPrice = '';
-        let selectedCurrency = '';
+        let selectedCurrency = ''; // To store the currency (INR or USD)
 
         const membershipButtons = document.querySelectorAll('.membership-btn');
         const paymentMethodButtons = document.querySelectorAll('.button-group button');
@@ -152,28 +318,25 @@
         const userNameField = document.getElementById('userNameField');
         const selectedMembershipPlanField = document.getElementById('selectedMembershipPlan');
         const selectedPaymentMethodField = document.getElementById('selectedPaymentMethod');
-        const selectedPriceField = document.getElementById('selectedPrice');
-        const selectedCurrencyField = document.getElementById('selectedCurrency');
+        const selectedPriceField = document.getElementById('selectedPrice'); // New field
+        const selectedCurrencyField = document.getElementById('selectedCurrency'); // New field
 
 
         // Function to show/hide QR sections and main form
         function showPaymentSection() {
-            // Hide all payment sections and form initially
-            upiSection.classList.add('hidden');
-            paypalSection.classList.add('hidden');
-            paymentForm.classList.add('hidden');
-            thankYouMsg.classList.add('hidden');
-
             if (selectedPlan && selectedMethod) {
                 if (selectedMethod === 'upi') {
-                    upiSection.classList.remove('hidden');
-                    selectedCurrency = 'INR';
+                    upiSection.style.display = 'block';
+                    paypalSection.style.display = 'none';
+                    selectedCurrency = 'INR'; // Set currency for UPI
                 } else if (selectedMethod === 'paypal') {
-                    paypalSection.classList.remove('hidden');
-                    selectedCurrency = 'USD';
+                    paypalSection.style.display = 'block';
+                    upiSection.style.display = 'none';
+                    selectedCurrency = 'USD'; // Set currency for PayPal
                 }
-                selectedCurrencyField.value = selectedCurrency;
+                selectedCurrencyField.value = selectedCurrency; // Update hidden field
 
+                // Update selectedPrice based on selectedPlan and selectedMethod/Currency
                 const currentPlanButton = document.querySelector(`.membership-btn[data-plan="${selectedPlan}"]`);
                 if (currentPlanButton) {
                     if (selectedCurrency === 'INR') {
@@ -181,56 +344,33 @@
                     } else if (selectedCurrency === 'USD') {
                         selectedPrice = currentPlanButton.dataset.priceUsd;
                     }
-                    selectedPriceField.value = selectedPrice;
+                    selectedPriceField.value = selectedPrice; // Update hidden price field
                 }
 
-                paymentForm.classList.remove('hidden');
+                paymentForm.style.display = 'block';
+                thankYouMsg.style.display = 'none'; // Hide thank you if visible
             }
         }
 
         // Event listeners for Membership Plan buttons
         membershipButtons.forEach(button => {
             button.addEventListener('click', () => {
-                // Remove active styling from all membership buttons
-                membershipButtons.forEach(btn => {
-                    btn.classList.remove('bg-pink-main', 'border-pink-main', 'shadow-2xl');
-                    btn.classList.add('bg-gray-700', 'border-gray-600', 'shadow-lg');
-                });
-                // Add active styling to the clicked button
-                button.classList.add('bg-pink-main', 'border-pink-main', 'shadow-2xl');
-                button.classList.remove('bg-gray-700', 'border-gray-600', 'shadow-lg');
-
+                membershipButtons.forEach(btn => btn.classList.remove('active')); // Deactivate all
+                button.classList.add('active'); // Activate clicked
                 selectedPlan = button.dataset.plan;
-                selectedMembershipPlanField.value = selectedPlan;
-                showPaymentSection();
+                selectedMembershipPlanField.value = selectedPlan; // Update hidden field
+                showPaymentSection(); // Check if both plan and method are selected
             });
         });
 
         // Event listeners for Payment Method buttons
         paymentMethodButtons.forEach(button => {
             button.addEventListener('click', () => {
-                // Remove active styling from all payment method buttons
-                paymentMethodButtons.forEach(btn => {
-                    if (btn.dataset.method === 'upi') {
-                        btn.classList.remove('bg-green-600', 'shadow-xl');
-                        btn.classList.add('bg-green-upi', 'shadow-lg');
-                    } else if (btn.dataset.method === 'paypal') {
-                        btn.classList.remove('bg-blue-600', 'shadow-xl');
-                        btn.classList.add('bg-blue-paypal', 'shadow-lg');
-                    }
-                });
-                // Add active styling to the clicked button
-                if (button.dataset.method === 'upi') {
-                    button.classList.remove('bg-green-upi', 'shadow-lg');
-                    button.classList.add('bg-green-600', 'shadow-xl');
-                } else if (button.dataset.method === 'paypal') {
-                    button.classList.remove('bg-blue-paypal', 'shadow-lg');
-                    button.classList.add('bg-blue-600', 'shadow-xl');
-                }
-
+                paymentMethodButtons.forEach(btn => btn.classList.remove('active')); // Optional: remove active class
+                button.classList.add('active'); // Optional: add active class
                 selectedMethod = button.dataset.method;
-                selectedPaymentMethodField.value = selectedMethod;
-                showPaymentSection();
+                selectedPaymentMethodField.value = selectedMethod; // Update hidden field
+                showPaymentSection(); // Check if both plan and method are selected
             });
         });
 
@@ -238,6 +378,7 @@
         paymentForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
+            // Get current Firebase user details
             const user = firebase.auth().currentUser;
 
             if (!user) {
@@ -245,10 +386,12 @@
                 return;
             }
 
+            // Populate hidden fields with Firebase user data
             userFirebaseUIDField.value = user.uid;
             userEmailField.value = user.email || ''; 
             userNameField.value = user.displayName || user.email || user.uid; 
             
+            // Ensure plan and method are selected
             if (!selectedPlan || !selectedMethod) {
                 alert('Please select a membership plan and a payment method first.');
                 return;
@@ -262,14 +405,14 @@
             try {
                 const response = await fetch(paymentForm.action, {
                     method: 'POST',
-                    body: formData
+                    body: formData // FormData automatically sets Content-Type: multipart/form-data
                 });
 
                 if (response.ok) {
-                    paymentForm.classList.add('hidden');
-                    upiSection.classList.add('hidden');
-                    paypalSection.classList.add('hidden');
-                    thankYouMsg.classList.remove('hidden');
+                    paymentForm.style.display = 'none';
+                    upiSection.style.display = 'none';
+                    paypalSection.style.display = 'none';
+                    thankYouMsg.style.display = 'block';
                 } else {
                     const errorText = await response.text();
                     console.error("Submission failed:", response.status, errorText);
@@ -293,22 +436,21 @@
                 userNameField.value = user.displayName || user.email || `User ${user.uid.substring(0, 8)}...`;
                 userNameField.readOnly = true; 
 
-                paymentForm.classList.remove('pointer-events-none', 'opacity-50');
-                paymentForm.classList.add('pointer-events-auto', 'opacity-100');
+                // Enable form interaction if user is logged in
+                paymentForm.style.pointerEvents = 'auto'; 
+                paymentForm.style.opacity = '1';
 
             } else {
                 console.log("No Firebase user logged in.");
                 alert("Please log in to submit your membership payment proof.");
-                paymentForm.classList.add('pointer-events-none', 'opacity-50');
-                paymentForm.classList.remove('pointer-events-auto', 'opacity-100');
+                // Disable forms or redirect if not logged in
+                paymentForm.style.pointerEvents = 'none'; 
+                paymentForm.style.opacity = '0.5';
             }
         });
 
-        // Initial state: hide all dynamic sections
-        upiSection.classList.add('hidden');
-        paypalSection.classList.add('hidden');
-        paymentForm.classList.add('hidden');
-        thankYouMsg.classList.add('hidden');
+        // Initial state: hide forms until selections are made
+        paymentForm.style.display = 'none';
     }); // Close of Promise.all .then()
   </script>
 </body>

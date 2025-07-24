@@ -16,132 +16,107 @@ document.addEventListener("DOMContentLoaded", () => {
         const isLoggedIn = localStorage.getItem("loggedIn") === "true";
         const userRole = localStorage.getItem("userRole");
         const username = localStorage.getItem("username"); // Get username from localStorage
+        const unlockedAccess = localStorage.getItem("unlockedAccess") === "true"; // Get unlocked access status
 
         const loginLink = document.querySelector(".login-link");
         const registerLink = document.querySelector(".register-link");
         const savedLink = document.querySelector(".saved-link");
         const proLink = document.querySelector(".pro-link");
         const welcomeMessageSection = document.getElementById("welcomeMessage"); // The hero section
+        const welcomeUserText = document.getElementById("welcomeUserText"); // The span for username
 
         // Toggle visibility of navigation links
         if (loginLink) loginLink.style.display = isLoggedIn ? "none" : "inline-block";
         if (registerLink) registerLink.style.display = isLoggedIn ? "none" : "inline-block";
-        if (logoutLink) logoutLink.style.display = isLoggedIn ? "inline-block" : "none"; // Use logoutLink directly
+        if (logoutLink) logoutLink.style.display = isLoggedIn ? "inline-block" : "none";
+
+        // "Saved" and "Pro Videos" links only visible when logged in
         if (savedLink) savedLink.style.display = isLoggedIn ? "inline-block" : "none";
+        // Pro link is visible if logged in and has unlocked access
+        if (proLink) proLink.style.display = isLoggedIn && unlockedAccess ? "inline-block" : "none";
 
-        if (proLink) {
-            proLink.style.display = (isLoggedIn && userRole === "pro") ? "inline-block" : "none";
-        }
 
-        // Update the welcome message in the hero section
+        // Update welcome message
         if (welcomeMessageSection) {
-            if (isLoggedIn) {
+            if (isLoggedIn && username) {
                 welcomeMessageSection.innerHTML = `
-                    <h2 class="text-4xl font-bold mb-4 text-pink-400">Welcome, ${username || 'User'}!</h2>
-                    <p class="text-lg text-gray-300 mb-6">Enjoy exclusive NSFW content – Free and Pro categories available.</p>
-                    <a href="membership.html" class="cta inline-block mt-4 px-6 py-3 bg-pink-600 text-white font-bold rounded-lg shadow-lg hover:bg-pink-700 transition duration-300">Become a Pro Member</a>
+                    <h2 class="text-5xl font-extrabold text-white mb-4 leading-tight">Welcome, <span class="text-pink-500">${username}!</span></h2>
+                    <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Explore a world of exclusive videos and connect with a vibrant community.</p>
+                    <a href="unlocked_videos.html" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg">Go to Pro Videos!</a>
                 `;
             } else {
+                // Revert to original welcome message if not logged in
                 welcomeMessageSection.innerHTML = `
-                    <h2 class="text-4xl font-bold mb-4 text-pink-400">Welcome to VibeXXX</h2>
-                    <p class="text-lg text-gray-300 mb-6">Enjoy exclusive NSFW content – Free and Pro categories available.</p>
-                    <a href="membership.html" class="cta inline-block mt-4 px-6 py-3 bg-pink-600 text-white font-bold rounded-lg shadow-lg hover:bg-pink-700 transition duration-300">Become a Pro Member</a>
+                    <h2 class="text-5xl font-extrabold text-white mb-4 leading-tight">Welcome to <span class="text-pink-500">VibeXXX</span></h2>
+                    <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Your ultimate destination for premium adult content. Explore a world of exclusive videos and connect with a vibrant community.</p>
+                    <a href="register.html" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg">Join Free Now!</a>
                 `;
             }
         }
     };
 
-    // Initial update of navigation links when the DOM is loaded
+    // Initial update when the page loads
     updateNavLinks();
 
-    // Listen for the custom 'authstatechanged' event dispatched by auth.js
-    // This ensures UI updates whenever the Firebase authentication state changes.
-    window.addEventListener('authstatechanged', updateNavLinks);
-
-    // Handle Register Form Submission
+    // Event listener for registration form submission
     if (registerForm) {
-        registerForm.addEventListener("submit", async (e) => {
-            e.preventDefault(); // Prevent default form submission
-            const username = document.getElementById("username").value.trim();
-            const email = document.getElementById("email").value.trim();
-            const password = document.getElementById("password").value;
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
 
             if (!username || !email || !password) {
-                window.showModal("Please fill in all fields."); // Use the global modal function
+                // Assuming showModal is available globally or imported
+                showModal("Please fill in all fields.");
                 return;
             }
 
-            // Call the registerUser function from auth.js
             const success = await registerUser(username, email, password);
             if (success) {
-                // If registration was successful, redirect to the homepage
-                // The authstatechanged listener will handle UI updates after successful login
-                window.location.href = "index.html"; // This was changed in previous step, but keeping for reference
+                window.location.href = 'login.html'; // Redirect to login page after successful registration
             }
         });
     }
 
-    // Handle Login Form Submission
+    // Event listener for login form submission
     if (loginForm) {
-        loginForm.addEventListener("submit", async (e) => {
-            e.preventDefault(); // Prevent default form submission
-            const email = document.getElementById("loginEmail").value.trim();
-            const password = document.getElementById("loginPassword").value;
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
 
             if (!email || !password) {
-                window.showModal("Please enter email and password."); // Use the global modal function
+                showModal("Please enter email and password.");
                 return;
             }
 
-            // Call the loginUser function from auth.js
             const success = await loginUser(email, password);
             if (success) {
-                // If login was successful, redirect to the homepage
-                // The authstatechanged listener will handle UI updates
-                window.location.href = "index.html";
+                // After successful login, update navigation and redirect to index
+                updateNavLinks();
+                window.location.href = 'index.html';
             }
         });
     }
 
-    // Attach event listener for the Logout button programmatically
+    // Event listener for logout link click
     if (logoutLink) {
-        logoutLink.addEventListener("click", async (e) => {
-            e.preventDefault(); // Prevent default link behavior
-            console.log('Logout button clicked (programmatic)'); // Debugging log
-            const success = await logoutUser(); // Call the logoutUser function from auth.js
+        logoutLink.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const success = await logoutUser();
             if (success) {
-                // Reload the page to reflect the logged-out state and update UI
-                location.reload();
+                // After successful logout, update navigation and redirect to index
+                updateNavLinks();
+                window.location.href = 'index.html';
             }
         });
     }
 
-    // Placeholder for video grid content (from your original main.js)
-    const videoGrid = document.getElementById("videoGrid");
-    if (videoGrid) {
-        // Example: Add some placeholder videos
-        videoGrid.innerHTML = `
-            <div class="video-card bg-gray-800 rounded-lg overflow-hidden shadow-lg">
-                <img src="https://placehold.co/300x200/222/FFF?text=Video+1" alt="Video 1" class="w-full h-40 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold text-white">Free Video Title 1</h3>
-                    <p class="text-gray-400 text-sm">Description of free video content.</p>
-                </div>
-            </div>
-            <div class="video-card bg-gray-800 rounded-lg overflow-hidden shadow-lg">
-                <img src="https://placehold.co/300x200/222/FFF?text=Video+2" alt="Video 2" class="w-full h-40 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold text-white">Free Video Title 2</h3>
-                    <p class="text-gray-400 text-sm">Description of free video content.</p>
-                </div>
-            </div>
-            <div class="video-card bg-gray-800 rounded-lg overflow-hidden shadow-lg">
-                <img src="https://placehold.co/300x200/222/FFF?text=Video+3" alt="Video 3" class="w-full h-40 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold text-white">Free Video Title 3</h3>
-                    <p class="text-gray-400 text-sm">Description of free video content.</p>
-                </div>
-            </div>
-        `;
-    }
+    // Ensure the modal functions are globally available if they are used by inline event handlers
+    // or other scripts not using modules. This is a common pattern for older HTML structures.
+    // However, with type="module" scripts, it's better to import them directly if needed.
+    // If showModal/hideModal are still undefined errors in the console,
+    // consider making them truly global or importing them where they are used.
+    // For now, assuming they are imported/defined via auth.js and accessible.
 });

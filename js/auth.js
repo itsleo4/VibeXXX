@@ -17,144 +17,112 @@ const firebaseConfig = {
 // The appId variable used for Firestore paths (should be your projectId)
 const appId = firebaseConfig.projectId;
 
-// The initialAuthToken is specific to the Canvas environment; set to null for general use
-const initialAuthToken = null; // Set to null unless you have a specific custom token for your environment
-
-// Initialize Firebase app, auth, and firestore instances
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Function to show custom modal (EXPORTED)
+// Global modal elements and functions (defined here to be accessible by other modules)
+const modal = document.getElementById('modal');
+const modalMessage = document.getElementById('modalMessage');
+const closeModalButton = document.getElementById('closeModal');
+
+// Check if modal and closeModalButton exist before adding event listeners
+if (modal && closeModalButton) {
+    closeModalButton.addEventListener('click', () => {
+        hideModal();
+    });
+}
+
 export function showModal(message) {
-    const modalElement = document.getElementById('customModal');
-    const modalMessageElement = document.getElementById('modalMessage');
-    if (modalElement && modalMessageElement) {
-        modalMessageElement.textContent = message;
-        modalElement.classList.remove('hidden');
+    if (modal && modalMessage) {
+        modalMessage.textContent = message;
+        modal.classList.remove('hidden');
     }
 }
 
-// Function to hide custom modal (EXPORTED)
 export function hideModal() {
-    const modalElement = document.getElementById('customModal');
-    if (modalElement) {
-        modalElement.classList.add('hidden');
+    if (modal) {
+        modal.classList.add('hidden');
     }
 }
 
-// Firebase Authentication state listener
-// This listener updates localStorage and dispatches a custom event
-// so main.js can react to login/logout changes.
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        // User is signed in
-        localStorage.setItem("loggedIn", "true");
-        localStorage.setItem("userEmail", user.email || 'Anonymous User'); // Will be actual email if logged in
-        localStorage.setItem("userId", user.uid);
-
-        try {
-            // Fetch user profile data from Firestore
-            const userDocRef = doc(db, `artifacts/${appId}/users/${user.uid}/profile/data`);
-            const userDocSnap = await getDoc(userDocRef);
-            if (userDocSnap.exists()) {
-                const userData = userDocSnap.data();
-                localStorage.setItem("userRole", userData.role || "free");
-                localStorage.setItem("username", userData.username || user.email); // Store username
-            } else {
-                // If profile data doesn't exist (e.g., new email user without profile), set default role
-                localStorage.setItem("userRole", "free");
-                localStorage.setItem("username", user.email || 'User'); // Default username
-            }
-        } catch (error) {
-            console.error("Error fetching user profile in auth state change:", error);
-            showModal(`Error fetching user profile: ${error.message}`); // Show modal for this error too
-            localStorage.setItem("userRole", "free");
-            localStorage.setItem("username", user.email || 'User');
-        }
-    } else {
-        // User is signed out
-        localStorage.removeItem("loggedIn");
-        localStorage.removeItem("userEmail");
-        localStorage.removeItem("userId");
-        localStorage.removeItem("userRole");
-        localStorage.removeItem("username");
-    }
-    // Dispatch a custom event to notify main.js (or any other script) about auth state change
-    window.dispatchEvent(new Event('authstatechanged'));
-});
-
-// Initial authentication attempt on page load (only custom token if available, no anonymous)
-document.addEventListener("DOMContentLoaded", async () => {
-    try {
-        if (initialAuthToken) {
-            // This path is usually for Canvas environment's internal auth
-            await signInWithCustomToken(auth, initialAuthToken);
-        }
-        // Removed the else block with signInAnonymously(auth);
-    } catch (error) {
-        console.error("Firebase Auth initialization error:", error);
-        showModal(`Authentication initialization error: ${error.message}`);
-    }
-});
 
 /**
- * Registers a new user with email and password, and stores additional profile data in Firestore.
+ * Registers a new user with email and password and creates a user document in Firestore.
  * @param {string} username - The desired username.
- * @param {string} email - The user's email address.
+ * @param {string} email - The user's email.
  * @param {string} password - The user's password.
  * @returns {Promise<boolean>} - True if registration is successful, false otherwise.
  */
 export async function registerUser(username, email, password) { // EXPORTED
     try {
-        // Check if username or email already exists in Firestore
-        const usersRef = collection(db, `artifacts/${appId}/users`);
-        const qEmail = query(usersRef, where("email", "==", email));
-        const qUsername = query(usersRef, where("username", "==", username));
-
-        const [emailSnap, usernameSnap] = await Promise.all([getDocs(qEmail), getDocs(qUsername)]);
-
-        if (!emailSnap.empty) {
-            showModal("Email already registered. Please use a different email or log in.");
-            return false;
-        }
-        if (!usernameSnap.empty) {
-            showModal("Username already taken. Please choose a different username.");
-            return false;
-        }
-
-        // Create user with Firebase Authentication (handles password hashing)
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // Store additional user data (username, role) in Firestore
-        // The path is artifacts/{appId}/users/{user.uid}/profile/data
-        await setDoc(doc(db, `artifacts/${appId}/users/${user.uid}/profile/data`), {
+        // Save user data to Firestore
+        await setDoc(doc(db, "users", user.uid), {
             username: username,
             email: email,
-            role: "free", // Default role for new users
             createdAt: new Date(),
+            userRole: "basic", // Default role
+            unlocked_access: false // Default to no pro access
         });
 
-        showModal("Registration successful! You are now logged in."); // This modal will show, then redirect
+        console.log("User registered and data saved:", user.uid);
+        showModal("Registration successful! Please log in.");
         return true;
     } catch (error) {
         console.error("Error during registration:", error);
-        showModal(`Registration failed: ${error.message}`);
+        let errorMessage = "Registration failed: An unknown error occurred.";
+        if (error.code === 'auth/email-already-in-use') {
+            errorMessage = "Registration failed: Email is already in use.";
+        } else if (error.code === 'auth/weak-password') {
+            errorMessage = "Registration failed: Password is too weak (min 6 characters).";
+        } else if (error.code === 'auth/invalid-email') {
+            errorMessage = "Registration failed: Invalid email format.";
+        }
+        showModal(errorMessage);
         return false;
     }
 }
 
 /**
  * Logs in an existing user with email and password.
- * @param {string} email - The user's email address.
+ * @param {string} email - The user's email.
  * @param {string} password - The user's password.
  * @returns {Promise<boolean>} - True if login is successful, false otherwise.
  */
 export async function loginUser(email, password) { // EXPORTED
     try {
-        await signInWithEmailAndPassword(auth, email, password);
-        showModal("Login successful!");
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Fetch user data from Firestore
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+            const userData = userSnap.data();
+            localStorage.setItem("loggedIn", "true");
+            localStorage.setItem("userUID", user.uid);
+            localStorage.setItem("username", userData.username || user.email);
+            localStorage.setItem("userRole", userData.userRole || "basic");
+            // Store unlocked_access status
+            localStorage.setItem("unlockedAccess", userData.unlocked_access ? "true" : "false");
+            console.log("User logged in successfully:", userData.username);
+            showModal("Logged in successfully!");
+        } else {
+            // If user document doesn't exist (shouldn't happen with registerUser),
+            // log them out or set default basic access.
+            console.warn("User document not found for UID:", user.uid);
+            localStorage.setItem("loggedIn", "true");
+            localStorage.setItem("userUID", user.uid);
+            localStorage.setItem("username", user.email);
+            localStorage.setItem("userRole", "basic");
+            localStorage.setItem("unlockedAccess", "false");
+            showModal("Logged in successfully (basic access).");
+        }
         return true;
     }
     // IMPORTANT: Catch specific Firebase Auth errors for better messages
@@ -184,6 +152,11 @@ export async function loginUser(email, password) { // EXPORTED
 export async function logoutUser() { // EXPORTED
     try {
         await signOut(auth);
+        localStorage.removeItem("loggedIn");
+        localStorage.removeItem("userUID");
+        localStorage.removeItem("username");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("unlockedAccess");
         showModal("Logged out successfully!");
         return true;
     } catch (error) {
@@ -192,3 +165,6 @@ export async function logoutUser() { // EXPORTED
         return false;
     }
 }
+
+// Export auth and db instances for direct use in other modules if needed
+export { auth, db };

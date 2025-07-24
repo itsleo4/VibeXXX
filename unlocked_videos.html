@@ -41,167 +41,140 @@
             margin-bottom: 2rem;
         }
         .access-denied-screen a {
-            display: inline-block;
-            background: #ff3366;
+            background-color: #ff3366;
             color: white;
-            padding: 1rem 2rem;
-            border-radius: 8px;
+            padding: 10px 20px;
+            border-radius: 5px;
             text-decoration: none;
             font-weight: 600;
-            transition: background 0.3s ease;
+            transition: background-color 0.3s ease;
         }
         .access-denied-screen a:hover {
-            background: #e02b55;
+            background-color: #e6005c;
         }
-        .video-card {
-            background: #1a1a1a;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            transition: transform 0.2s ease-in-out;
-            display: flex; /* Ensure flex behavior */
-            flex-direction: column; /* Stack content vertically */
-        }
-        .video-card:hover {
-            transform: translateY(-5px);
-        }
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 66.66%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 8px;
-            background-color: black;
-        }
-        .video-wrapper iframe, .video-wrapper img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .video-card h3 {
-            padding: 1rem;
-            font-size: 1.125rem;
-            line-height: 1.75rem;
-            font-weight: 500;
-            flex-grow: 1;
-        }
-
         /* Spinner CSS */
         .spinner {
             border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
             border-top: 4px solid #ff3366;
-            width: 40px;
-            height: 40px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
             animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        /* Hidden utility class */
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
 <body>
     <header class="bg-gray-800 p-4 shadow-lg flex justify-between items-center flex-wrap">
         <h1 class="text-3xl font-bold text-white">Vibe<span class="text-pink-500">XXX</span></h1>
-        <nav class="mt-4 md:mt-0">
-            <ul class="flex flex-wrap gap-4">
-                <li><a href="index.html" class="text-white hover:text-pink-400 transition duration-300">Free Videos</a></li>
-                <li><a href="unlocked_videos.html" class="pro-link text-white hover:text-pink-400 transition duration-300">Pro Videos</a></li>
-                <li><a href="#" class="login-link text-white hover:text-pink-400 transition duration-300">Login</a></li>
-                <li><a href="#" class="register-link text-white hover:text-pink-400 transition duration-300">Register</a></li>
-                <li><a href="#" class="logout-link text-white hover:text-pink-400 transition duration-300" style="display: none;">Logout</a></li>
+        <nav>
+            <ul class="flex space-x-4">
+                <li><a href="index.html" class="text-white hover:text-pink-500 transition-colors duration-300">Home</a></li>
+                <li><a href="#" class="text-white hover:text-pink-500 transition-colors duration-300 login-link">Login</a></li>
+                <li><a href="#" class="text-white hover:text-pink-500 transition-colors duration-300 register-link">Register</a></li>
+                <li><a href="unlocked_videos.html" class="text-white hover:text-pink-500 transition-colors duration-300 pro-link">Pro Videos</a></li>
+                <li><a href="#" class="text-white hover:text-pink-500 transition-colors duration-300 logout-link" style="display: none;">Logout</a></li>
             </ul>
         </nav>
     </header>
 
-    <main>
+    <main class="flex-grow container mx-auto p-4 flex flex-col justify-center items-center">
         <section id="loadingScreen" class="loading-screen">
-            <h2>Checking your access...</h2>
-            <p>Please wait a moment.</p>
             <div class="spinner"></div>
+            <h2>Loading Pro Content...</h2>
+            <p>Please wait while we verify your access.</p>
         </section>
 
-        <section id="accessDeniedScreen" class="access-denied-screen hidden">
-            <h2>Access Denied! 🚫</h2>
-            <p>It looks like you don't have Pro Access yet. Become a member to unlock these exclusive videos!</p>
-            <a href="membership.html">Become a Pro Member Now!</a>
-            <p class="mt-4">If you believe this is an error, please ensure you are logged in with the correct account or contact admin via Telegram: <a href="https://t.me/LuxFlix" target="_blank" class="text-blue-400 hover:underline">@LuxFlix</a></p>
-        </section>
-
-        <section id="proVideoGrid" class="pro-video-grid p-4 hidden">
-            <h2 class="text-3xl font-bold text-white mb-8 text-center">Your Exclusive Pro Videos!</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <div class="video-card">
-                    <div class="video-wrapper">
-                        <iframe src="https://www.animehentaivideos.xxx/v/54234/housemaid-2b-from-nier-automata" 
-                                frameborder="0" scrolling="no" allowfullscreen>
-                        </iframe>
-                    </div>
-                    <h3>🔥 PRO: Housemaid 2B Unleashed!</h3>
-                </div>
-                <div class="video-card">
-                    <div class="video-wrapper">
-                        <iframe src="https://www.animehentaivideos.xxx/v/49116/anime-girl-with-big-ass-begs-for" 
-                                frameborder="0" scrolling="no" allowfullscreen>
-                        </iframe>
-                    </div>
-                    <h3>🍑 PRO: Anime Girl Begs for Cum!</h3>
+        <section id="proVideoGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden w-full">
+            <div class="video-card bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                <a href="video-player.html?video=VID123">
+                    <img src="https://placehold.co/300x200/ff3366/FFF?text=Pro+Video+1" alt="Pro Video 1" class="w-full h-40 object-cover">
+                </a>
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold text-white">Milf Hot Pussy</h3>
+                    <p class="text-gray-400 text-sm">Exclusive content for pro members.</p>
                 </div>
             </div>
+            <div class="video-card bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                <a href="video-player.html?video=VID456">
+                    <img src="https://placehold.co/300x200/ff3366/FFF?text=Pro+Video+2" alt="Pro Video 2" class="w-full h-40 object-cover">
+                </a>
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold text-white">Shemale Surprise</h3>
+                    <p class="text-gray-400 text-sm">Another premium video for pro members.</p>
+                </div>
+            </div>
+            </section>
+
+        <section id="accessDeniedScreen" class="access-denied-screen hidden">
+            <h2>Access Denied</h2>
+            <p>You need Pro Access to view this content. Please log in with a Pro account or upgrade your membership.</p>
+            <a href="membership.html">Get Pro Access Now!</a>
         </section>
     </main>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <script>
-        // Your Firebase project configuration - REPLACE WITH YOURS FROM STEP 4 (Firebase Setup)
+    <footer class="bg-gray-900 p-6 text-center text-gray-500 text-sm mt-8">
+        <p>&copy; 2025 VibeXXX. All rights reserved.</p>
+        <p class="mt-2">
+            <a href="#" class="text-gray-400 hover:text-pink-500">Privacy Policy</a> |
+            <a href="#" class="text-gray-400 hover:text-pink-500">Terms of Service</a>
+        </p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase configuration (ensure this matches your auth.js for consistency)
         const firebaseConfig = {
-          apiKey: "AIzaSyAqQ7FI3sfgoo752UUorboL3XjxiYxbwIY",
-          authDomain: "vibexxx-pro-access.firebaseapp.com",
-          projectId: "vibexxx-pro-access",
-          databaseURL: "https://vibexxx-pro-access-default-rtdb.asia-southeast1.firebasedatabase.app", // Add this line for Realtime DB
-          storageBucket: "vibexxx-pro-access.firebasestorage.app",
-          messagingSenderId: "255217771623",
-          appId: "1:255217771623:web:1f34528ebfcf8f4fd860c2"
+            apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
+            authDomain: "vibexxx-500c6.firebaseapp.com",
+            projectId: "vibexxx-500c6",
+            storageBucket: "vibexxx-500c6.appspot.com",
+            messagingSenderId: "880697212397",
+            appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
         };
 
-        // Initialize Firebase if not already initialized
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        const auth = firebase.auth();
-        const database = firebase.database(); // Get Realtime Database instance
-
+        // Get references to the screens
         const loadingScreen = document.getElementById('loadingScreen');
-        const accessDeniedScreen = document.getElementById('accessDeniedScreen');
         const proVideoGrid = document.getElementById('proVideoGrid');
+        const accessDeniedScreen = document.getElementById('accessDeniedScreen');
 
-        // Function to show only one screen and hide others
+        // Function to show a specific screen and hide others
         function showScreen(screenToShow) {
             loadingScreen.classList.add('hidden');
-            accessDeniedScreen.classList.add('hidden');
             proVideoGrid.classList.add('hidden');
-
+            accessDeniedScreen.classList.add('hidden');
             screenToShow.classList.remove('hidden');
         }
 
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                // User is signed in. Check their access in Realtime Database.
-                const userRef = database.ref('users/' + user.uid);
-                
-                try {
-                    const snapshot = await userRef.once('value'); // Get data once
-                    const userData = snapshot.val();
+        // Show loading screen initially
+        showScreen(loadingScreen);
 
-                    if (userData && userData.unlocked_access === true) {
+        // Listen for authentication state changes
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                console.log("Firebase user logged in:", user.uid);
+                // User is signed in, now check their 'unlocked_access' status from Firestore
+                try {
+                    const userRef = doc(db, "users", user.uid);
+                    const userSnap = await getDoc(userRef);
+
+                    if (userSnap.exists() && userSnap.data().unlocked_access === true) {
                         // User has access! Show the videos.
                         console.log("User has Pro Access!");
                         showScreen(proVideoGrid);
@@ -220,18 +193,6 @@
                 showScreen(accessDeniedScreen);
             }
         });
-
-        // The playVideo function is not strictly needed for iframes that load directly,
-        // but it's kept here for consistency if you decide to add thumbnail previews later.
-        function playVideo(event) {
-            const thumbnail = event.currentTarget;
-            const iframe = thumbnail.nextElementSibling;
-
-            if (thumbnail && iframe) {
-                thumbnail.classList.add('hidden');
-                iframe.classList.remove('hidden');
-            }
-        }
     </script>
     <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/main.js"></script>

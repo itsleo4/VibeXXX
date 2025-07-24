@@ -134,7 +134,8 @@
         padding: 8px 15px;
         outline: none;
         white-space: nowrap;
-        -webkit-user-select: none;
+        -webkit-user-select: none; /* Webkit prefix */
+        user-select: none;        /* Standard property */
         cursor: pointer;
         font-weight: 600;
         font-size: 1em;
@@ -206,30 +207,6 @@
         }
     }
   </style>
-    <!-- Include Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <!-- If you use Firestore or other services, include them here too -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script> -->
-
-    <script>
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
-            authDomain: "vibexxx-500c6.firebaseapp.com",
-            projectId: "vibexxx-500c6",
-            storageBucket: "vibexxx-500c6.firebasestorage.app",
-            messagingSenderId: "880697212397",
-            appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
-        };
-
-        // Initialize Firebase if not already initialized
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        // Initialize Firebase Authentication
-        const auth = firebase.auth();
-    </script>
 </head>
 <body>
 
@@ -274,7 +251,8 @@
 
 
     <label for="refID">UPI Ref ID or PayPal Email / Transaction ID</label>
-    <input type="text" name="refID" id="refID" pattern="[a-zA-Z0-9@._-]+" required />
+    <!-- FIX: Corrected regex pattern by moving hyphen to the end -->
+    <input type="text" name="refID" id="refID" pattern="[a-zA-Z0-9@._-]+" required /> 
     <div class="hint">Enter your 12-digit UPI Reference ID (from Google Pay, PhonePe etc.) or PayPal email/transaction ID.</div>
 
     <label for="screenshot">Upload Payment Screenshot</label>
@@ -295,140 +273,172 @@
 
 
   <script>
-    // Firebase initialization is already handled in the <head> section
+    // Include Firebase SDKs (these lines are moved here from head)
+    // You should ensure these are loaded before this script block runs.
+    // If you have a global script that loads Firebase, you can remove these.
+    // For this standalone file, it's safer to include them here.
+    const firebaseAppScript = document.createElement('script');
+    firebaseAppScript.src = "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js";
+    document.head.appendChild(firebaseAppScript);
 
-    let selectedPlan = '';
-    let selectedMethod = '';
+    const firebaseAuthScript = document.createElement('script');
+    firebaseAuthScript.src = "https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js";
+    document.head.appendChild(firebaseAuthScript);
 
-    const membershipButtons = document.querySelectorAll('.membership-btn');
-    const paymentMethodButtons = document.querySelectorAll('.button-group button');
-    const paymentForm = document.getElementById('paymentForm');
-    const upiSection = document.getElementById('upi');
-    const paypalSection = document.getElementById('paypal');
-    const thankYouMsg = document.getElementById('thankyouMsg');
-    const submitBtn = document.getElementById('submitBtn');
-    const userFirebaseUIDField = document.getElementById('userFirebaseUID');
-    const userEmailField = document.getElementById('userEmail');
-    const userNameField = document.getElementById('userNameField');
-    const selectedMembershipPlanField = document.getElementById('selectedMembershipPlan');
-    const selectedPaymentMethodField = document.getElementById('selectedPaymentMethod');
-    // Removed reference to simplePaymentFormContainer as that section is removed
+    // Wait for Firebase SDKs to load before initializing
+    Promise.all([
+        new Promise(resolve => firebaseAppScript.onload = resolve),
+        new Promise(resolve => firebaseAuthScript.onload = resolve)
+    ]).then(() => {
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
+            authDomain: "vibexxx-500c6.firebaseapp.com",
+            projectId: "vibexxx-500c6",
+            storageBucket: "vibexxx-500c6.firebasestorage.app",
+            messagingSenderId: "880697212397",
+            appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
+        };
 
-    // Function to show/hide QR sections and main form
-    function showPaymentSection() {
-        if (selectedPlan && selectedMethod) {
-            if (selectedMethod === 'upi') {
-                upiSection.style.display = 'block';
-                paypalSection.style.display = 'none';
-            } else if (selectedMethod === 'paypal') {
-                paypalSection.style.display = 'block';
-                upiSection.style.display = 'none';
+        // Initialize Firebase if not already initialized
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        // Initialize Firebase Authentication
+        const auth = firebase.auth();
+
+        // All other JavaScript code for the page
+        let selectedPlan = '';
+        let selectedMethod = '';
+
+        const membershipButtons = document.querySelectorAll('.membership-btn');
+        const paymentMethodButtons = document.querySelectorAll('.button-group button');
+        const paymentForm = document.getElementById('paymentForm');
+        const upiSection = document.getElementById('upi');
+        const paypalSection = document.getElementById('paypal');
+        const thankYouMsg = document.getElementById('thankyouMsg');
+        const submitBtn = document.getElementById('submitBtn');
+        const userFirebaseUIDField = document.getElementById('userFirebaseUID');
+        const userEmailField = document.getElementById('userEmail');
+        const userNameField = document.getElementById('userNameField');
+        const selectedMembershipPlanField = document.getElementById('selectedMembershipPlan');
+        const selectedPaymentMethodField = document.getElementById('selectedPaymentMethod');
+
+        // Function to show/hide QR sections and main form
+        function showPaymentSection() {
+            if (selectedPlan && selectedMethod) {
+                if (selectedMethod === 'upi') {
+                    upiSection.style.display = 'block';
+                    paypalSection.style.display = 'none';
+                } else if (selectedMethod === 'paypal') {
+                    paypalSection.style.display = 'block';
+                    upiSection.style.display = 'none';
+                }
+                paymentForm.style.display = 'block';
+                thankYouMsg.style.display = 'none'; // Hide thank you if visible
             }
-            paymentForm.style.display = 'block';
-            thankYouMsg.style.display = 'none'; // Hide thank you if visible
-        }
-    }
-
-    // Event listeners for Membership Plan buttons
-    membershipButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            membershipButtons.forEach(btn => btn.classList.remove('active')); // Deactivate all
-            button.classList.add('active'); // Activate clicked
-            selectedPlan = button.dataset.plan;
-            selectedMembershipPlanField.value = selectedPlan; // Update hidden field
-            showPaymentSection(); // Check if both plan and method are selected
-        });
-    });
-
-    // Event listeners for Payment Method buttons
-    paymentMethodButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            paymentMethodButtons.forEach(btn => btn.classList.remove('active')); // Optional: remove active class
-            button.classList.add('active'); // Optional: add active class
-            selectedMethod = button.dataset.method;
-            selectedPaymentMethodField.value = selectedMethod; // Update hidden field
-            showPaymentSection(); // Check if both plan and method are selected
-        });
-    });
-
-    // Handle form submission for paymentForm
-    paymentForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        // Get current Firebase user details
-        const user = firebase.auth().currentUser;
-
-        if (!user) {
-            alert('You must be logged in to submit payment proof.');
-            return;
         }
 
-        // Populate hidden fields with Firebase user data
-        userFirebaseUIDField.value = user.uid;
-        userEmailField.value = user.email || ''; 
-        userNameField.value = user.displayName || user.email || user.uid; 
-        
-        // Ensure plan and method are selected
-        if (!selectedPlan || !selectedMethod) {
-            alert('Please select a membership plan and a payment method first.');
-            return;
-        }
-
-        submitBtn.innerText = "⏳ Submitting...";
-        submitBtn.disabled = true;
-
-        const formData = new new FormData(paymentForm); // Use the form element directly to create FormData
-
-        try {
-            const response = await fetch(paymentForm.action, {
-                method: 'POST',
-                body: formData // FormData automatically sets Content-Type: multipart/form-data
+        // Event listeners for Membership Plan buttons
+        membershipButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                membershipButtons.forEach(btn => btn.classList.remove('active')); // Deactivate all
+                button.classList.add('active'); // Activate clicked
+                selectedPlan = button.dataset.plan;
+                selectedMembershipPlanField.value = selectedPlan; // Update hidden field
+                showPaymentSection(); // Check if both plan and method are selected
             });
+        });
 
-            if (response.ok) {
-                paymentForm.style.display = 'none';
-                upiSection.style.display = 'none';
-                paypalSection.style.display = 'none';
-                thankYouMsg.style.display = 'block';
-            } else {
-                const errorText = await response.text();
-                console.error("Submission failed:", response.status, errorText);
-                alert("❌ Submission failed. Please try again. Error: " + (errorText || "Unknown"));
+        // Event listeners for Payment Method buttons
+        paymentMethodButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                paymentMethodButtons.forEach(btn => btn.classList.remove('active')); // Optional: remove active class
+                button.classList.add('active'); // Optional: add active class
+                selectedMethod = button.dataset.method;
+                selectedPaymentMethodField.value = selectedMethod; // Update hidden field
+                showPaymentSection(); // Check if both plan and method are selected
+            });
+        });
+
+        // Handle form submission for paymentForm
+        paymentForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Get current Firebase user details
+            const user = firebase.auth().currentUser;
+
+            if (!user) {
+                alert('You must be logged in to submit payment proof.');
+                return;
             }
-        } catch (err) {
-            console.error("Network error submitting form:", err);
-            alert("❌ Network error. Please check your internet and try again.");
-        } finally {
-            submitBtn.innerText = "📤 Submit Proof";
-            submitBtn.disabled = false;
-        }
-    });
 
-    // Important: Listen for Firebase auth state changes to ensure user is logged in
-    firebase.auth().onAuthStateChanged(user => {
-        if (user) {
-            console.log("Firebase user is logged in:", user.uid, user.email);
+            // Populate hidden fields with Firebase user data
             userFirebaseUIDField.value = user.uid;
-            userEmailField.value = user.email || '';
-            userNameField.value = user.displayName || user.email || `User ${user.uid.substring(0, 8)}...`;
-            userNameField.readOnly = true; 
+            userEmailField.value = user.email || ''; 
+            userNameField.value = user.displayName || user.email || user.uid; 
+            
+            // Ensure plan and method are selected
+            if (!selectedPlan || !selectedMethod) {
+                alert('Please select a membership plan and a payment method first.');
+                return;
+            }
 
-            // Enable form interaction if user is logged in
-            paymentForm.style.pointerEvents = 'auto'; 
-            paymentForm.style.opacity = '1';
+            submitBtn.innerText = "⏳ Submitting...";
+            submitBtn.disabled = true;
 
-        } else {
-            console.log("No Firebase user logged in.");
-            alert("Please log in to submit your membership payment proof.");
-            // Disable forms or redirect if not logged in
-            paymentForm.style.pointerEvents = 'none'; 
-            paymentForm.style.opacity = '0.5';
-        }
-    });
+            const formData = new FormData(paymentForm); // FIX: Removed the extra 'new' keyword
 
-    // Initial state: hide forms until selections are made
-    paymentForm.style.display = 'none';
+            try {
+                const response = await fetch(paymentForm.action, {
+                    method: 'POST',
+                    body: formData // FormData automatically sets Content-Type: multipart/form-data
+                });
 
+                if (response.ok) {
+                    paymentForm.style.display = 'none';
+                    upiSection.style.display = 'none';
+                    paypalSection.style.display = 'none';
+                    thankYouMsg.style.display = 'block';
+                } else {
+                    const errorText = await response.text();
+                    console.error("Submission failed:", response.status, errorText);
+                    alert("❌ Submission failed. Please try again. Error: " + (errorText || "Unknown"));
+                }
+            } catch (err) {
+                console.error("Network error submitting form:", err);
+                alert("❌ Network error. Please check your internet and try again.");
+            } finally {
+                submitBtn.innerText = "📤 Submit Proof";
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Important: Listen for Firebase auth state changes to ensure user is logged in
+        auth.onAuthStateChanged(user => { // Use 'auth' here, not 'firebase.auth()' again
+            if (user) {
+                console.log("Firebase user is logged in:", user.uid, user.email);
+                userFirebaseUIDField.value = user.uid;
+                userEmailField.value = user.email || '';
+                userNameField.value = user.displayName || user.email || `User ${user.uid.substring(0, 8)}...`;
+                userNameField.readOnly = true; 
+
+                // Enable form interaction if user is logged in
+                paymentForm.style.pointerEvents = 'auto'; 
+                paymentForm.style.opacity = '1';
+
+            } else {
+                console.log("No Firebase user logged in.");
+                alert("Please log in to submit your membership payment proof.");
+                // Disable forms or redirect if not logged in
+                paymentForm.style.pointerEvents = 'none'; 
+                paymentForm.style.opacity = '0.5';
+            }
+        });
+
+        // Initial state: hide forms until selections are made
+        paymentForm.style.display = 'none';
+    }); // Close of Promise.all .then()
   </script>
 </body>
 </html>

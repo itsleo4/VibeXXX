@@ -206,6 +206,19 @@
             max-width: 90%;
         }
     }
+
+    /* New styles for pricing display */
+    .price-display {
+        font-size: 1.2em;
+        margin-top: 10px;
+        color: #00ff99;
+        font-weight: bold;
+    }
+    .currency-note {
+        font-size: 0.8em;
+        color: #aaa;
+        margin-top: 5px;
+    }
   </style>
 </head>
 <body>
@@ -217,8 +230,14 @@
 
   <!-- Membership Plan Selection -->
   <div class="membership-options">
-    <button class="membership-btn" data-plan="1_MONTH">1 Month Membership</button>
-    <button class="membership-btn" data-plan="3_MONTH">3 Month Membership</button>
+    <button class="membership-btn" data-plan="1_MONTH" data-price-inr="249" data-price-usd="5.99">
+        1 Month Membership
+        <div class="price-display">₹249 / $5.99</div>
+    </button>
+    <button class="membership-btn" data-plan="3_MONTH" data-price-inr="599" data-price-usd="14.99">
+        3 Month Membership
+        <div class="price-display">₹599 / $14.99</div>
+    </button>
     <!-- Add more plans if needed -->
   </div>
 
@@ -231,12 +250,14 @@
   <div id="upi" class="qr-section">
     <img src="https://raw.githubusercontent.com/itsleo4/VibeXXX/main/images/upi.png" alt="UPI QR">
     <p><strong>Pay to:</strong> bharti00077-2@okaxis</p>
+    <p class="currency-note">For 1 Month: ₹249 | For 3 Months: ₹599</p>
   </div>
 
   <!-- PayPal QR Section -->
   <div id="paypal" class="qr-section">
     <img src="https://raw.githubusercontent.com/itsleo4/VibeXXX/main/images/paypal.png" alt="PayPal QR">
     <p><strong>PayPal:</strong> <a href="https://www.paypal.me/PawanKumar35438" style="color:#00aced;">paypal.me/PawanKumar35438</a></p>
+    <p class="currency-note">For 1 Month: $5.99 USD | For 3 Months: $14.99 USD</p>
   </div>
 
   <!-- Main Payment Submission Form (for screenshot uploads) -->
@@ -248,10 +269,11 @@
     <input type="hidden" name="user_email" id="userEmail" /> 
     <input type="hidden" name="membership_plan" id="selectedMembershipPlan" /> 
     <input type="hidden" name="payment_method" id="selectedPaymentMethod" /> 
+    <input type="hidden" name="selected_price" id="selectedPrice" /> <!-- New: to store selected price -->
+    <input type="hidden" name="selected_currency" id="selectedCurrency" /> <!-- New: to store selected currency -->
 
 
     <label for="refID">UPI Ref ID or PayPal Email / Transaction ID</label>
-    <!-- FIX: Corrected regex pattern by moving hyphen to the end -->
     <input type="text" name="refID" id="refID" pattern="[a-zA-Z0-9@._-]+" required /> 
     <div class="hint">Enter your 12-digit UPI Reference ID (from Google Pay, PhonePe etc.) or PayPal email/transaction ID.</div>
 
@@ -266,17 +288,10 @@
     ✅ Thank you! Your proof is submitted.<br/>You’ll be upgraded to Pro soon.
   </div>
 
-  <hr> <!-- Simplified hr tag -->
-
-  <!-- Removed the "Alternatively, Submit Basic Details" section as it complicates the flow and we want to consolidate -->
-  <!-- <div class="new-payment-form-container"> ... </div> -->
-
+  <hr>
 
   <script>
     // Include Firebase SDKs (these lines are moved here from head)
-    // You should ensure these are loaded before this script block runs.
-    // If you have a global script that loads Firebase, you can remove these.
-    // For this standalone file, it's safer to include them here.
     const firebaseAppScript = document.createElement('script');
     firebaseAppScript.src = "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js";
     document.head.appendChild(firebaseAppScript);
@@ -310,6 +325,8 @@
         // All other JavaScript code for the page
         let selectedPlan = '';
         let selectedMethod = '';
+        let selectedPrice = '';
+        let selectedCurrency = ''; // To store the currency (INR or USD)
 
         const membershipButtons = document.querySelectorAll('.membership-btn');
         const paymentMethodButtons = document.querySelectorAll('.button-group button');
@@ -323,6 +340,9 @@
         const userNameField = document.getElementById('userNameField');
         const selectedMembershipPlanField = document.getElementById('selectedMembershipPlan');
         const selectedPaymentMethodField = document.getElementById('selectedPaymentMethod');
+        const selectedPriceField = document.getElementById('selectedPrice'); // New field
+        const selectedCurrencyField = document.getElementById('selectedCurrency'); // New field
+
 
         // Function to show/hide QR sections and main form
         function showPaymentSection() {
@@ -330,10 +350,25 @@
                 if (selectedMethod === 'upi') {
                     upiSection.style.display = 'block';
                     paypalSection.style.display = 'none';
+                    selectedCurrency = 'INR'; // Set currency for UPI
                 } else if (selectedMethod === 'paypal') {
                     paypalSection.style.display = 'block';
                     upiSection.style.display = 'none';
+                    selectedCurrency = 'USD'; // Set currency for PayPal
                 }
+                selectedCurrencyField.value = selectedCurrency; // Update hidden field
+
+                // Update selectedPrice based on selectedPlan and selectedMethod/Currency
+                const currentPlanButton = document.querySelector(`.membership-btn[data-plan="${selectedPlan}"]`);
+                if (currentPlanButton) {
+                    if (selectedCurrency === 'INR') {
+                        selectedPrice = currentPlanButton.dataset.priceInr;
+                    } else if (selectedCurrency === 'USD') {
+                        selectedPrice = currentPlanButton.dataset.priceUsd;
+                    }
+                    selectedPriceField.value = selectedPrice; // Update hidden price field
+                }
+
                 paymentForm.style.display = 'block';
                 thankYouMsg.style.display = 'none'; // Hide thank you if visible
             }
@@ -387,7 +422,7 @@
             submitBtn.innerText = "⏳ Submitting...";
             submitBtn.disabled = true;
 
-            const formData = new FormData(paymentForm); // FIX: Removed the extra 'new' keyword
+            const formData = new FormData(paymentForm);
 
             try {
                 const response = await fetch(paymentForm.action, {
@@ -415,7 +450,7 @@
         });
 
         // Important: Listen for Firebase auth state changes to ensure user is logged in
-        auth.onAuthStateChanged(user => { // Use 'auth' here, not 'firebase.auth()' again
+        auth.onAuthStateChanged(user => {
             if (user) {
                 console.log("Firebase user is logged in:", user.uid, user.email);
                 userFirebaseUIDField.value = user.uid;

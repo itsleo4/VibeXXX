@@ -2,77 +2,129 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>VibeXXX - Premium NSFW Experience</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VibeXXX - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        /* Basic styling for the body to ensure full height and background */
         body {
             margin: 0;
             font-family: 'Inter', sans-serif;
             background-color: #111; /* Dark background */
             color: #fff; /* White text */
-            min-height: 100vh; /* Ensure body takes full viewport height */
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            padding: 20px;
         }
-        /* Ensure main content takes available space */
-        main {
-            flex-grow: 1;
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #333;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ff3366;
+            text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+            margin: 0;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 20px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        nav a:hover {
+            background-color: #ff3366;
+            color: #fff;
+        }
+        .become-pro-btn {
+            display: block;
+            width: fit-content;
+            margin: 40px auto;
+            padding: 20px 40px;
+            background: linear-gradient(45deg, #ff3366, #e6005c);
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 800;
+            border-radius: 15px;
+            text-decoration: none;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(255, 51, 102, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .become-pro-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(255, 51, 102, 0.7);
+        }
+        h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ff3366;
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 25px;
+        }
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
         }
         .video-card {
-            background: #1a1a1a;
-            border-radius: 10px;
+            background-color: #2a2a2a;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            transition: transform 0.2s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            text-align: left;
         }
         .video-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 51, 102, 0.3);
         }
         .video-card img {
             width: 100%;
-            height: 200px; /* Adjust as needed */
+            height: 180px;
             object-fit: cover;
-            display: block; /* Ensure no extra space below image */
+            border-bottom: 2px solid #ff3366;
         }
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0;
-            overflow: hidden;
-            background-color: #000; /* Ensures black background when thumbnail hides */
+        .video-card-content {
+            padding: 15px;
         }
-        .video-wrapper img,
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        .video-card h3 {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #ff3366;
+            margin-bottom: 5px;
         }
-        .video-wrapper iframe {
-            border: none;
-            display: block; /* Ensure iframe takes full space */
-        }
-        .video-cta-link {
-            display: inline-block;
-            background-color: #e60073;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
-            margin-top: 10px;
-            text-decoration: none;
+        .video-card p {
             font-size: 0.9em;
-            transition: background-color 0.3s ease;
+            color: #ccc;
+            margin-bottom: 10px;
         }
-        .video-cta-link:hover {
-            background-color: #ff0066;
-        }
-
-        /* Modal styles (from auth.js) - ensure these are present */
+        /* Modal styles (from auth.js) */
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -118,104 +170,108 @@
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
+<body>
 
-    <header class="bg-gray-800 p-4 shadow-lg">
-        <nav class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-red-500">VibeXXX</a>
-            <div class="space-x-4">
-                <a href="index.html" class="text-gray-300 hover:text-white">Home</a>
-                <a href="unlocked_videos.html" class="text-gray-300 hover:text-white pro-link">Pro Videos</a>
-                <a href="saved.html" class="text-gray-300 hover:text-white saved-link hidden">Saved</a>
-                <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded login-link">Login</a>
-                <a href="register.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded register-link">Register</a>
-                <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden">Logout</button>
-            </div>
-        </nav>
-    </header>
+    <div class="container">
+        <header>
+            <h1>VibeXXX</h1>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="unlocked_videos.html">Pro Videos</a>
+                <a href="membership.html">Membership</a>
+            </nav>
+        </header>
 
-    <main class="container mx-auto p-4 flex-grow">
-        <section id="welcomeMessage" class="text-center py-16 px-4 bg-gradient-to-r from-purple-800 to-pink-600 rounded-lg shadow-xl mb-8">
-            <h2 class="text-5xl font-extrabold text-white mb-4 leading-tight">Welcome to <span class="text-pink-500">VibeXXX</span></h2>
-            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Your ultimate destination for premium adult content. Explore a world of exclusive videos and connect with a vibrant community.</p>
-            <a href="register.html" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg">Join Free Now!</a>
-        </section>
+        <a href="membership.html" class="become-pro-btn">
+            Become a Pro Member!
+        </a>
 
-        <section class="mb-8">
-            <h2 class="text-3xl font-bold text-center text-pink-500 mb-6">Explore Our Free Collection</h2>
-            <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <p class="text-center text-gray-400">Loading free videos...</p>
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-8 rounded-lg shadow-lg">
-        <p>&copy; 2025 VibeXXX. All rights reserved. | <a href="#" class="hover:underline">Privacy Policy</a></p>
-        <div class="flex justify-center space-x-4 mt-4">
-            <a href="#" class="hover:text-white">Facebook</a>
-            <a href="#" class="hover:text-white">Twitter</a>
-            <a href="https://t.me/LuxFlix" class="hover:text-white" target="_blank">Telegram</a>
+        <h2 class="text-center text-4xl font-extrabold text-pink-500 mb-10">Free Videos</h2>
+        
+        <div class="video-grid" id="freeVideoGrid">
+            <!-- Free video cards will be dynamically inserted here by JavaScript -->
         </div>
-    </footer>
 
-    <div id="modal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close" id="closeModal">&times;</span>
-            <p id="modalMessage"></p>
+        <!-- Universal Modal Structure (from auth.js) -->
+        <div id="modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close" id="closeModal">&times;</span>
+                <p id="modalMessage"></p>
+            </div>
         </div>
     </div>
-
-
-    <script>
-        // Function to play the video directly (no modal) - MOVED TO GLOBAL SCOPE
-        function playVideo(event) {
-            const thumbnail = event.currentTarget; // The img tag that was clicked
-            const videoWrapper = thumbnail.closest('.video-wrapper'); // Get the parent video-wrapper
-            const iframe = videoWrapper.querySelector('iframe'); // Find the iframe within that wrapper
-
-            if (thumbnail && iframe) {
-                thumbnail.classList.add('hidden'); // Hide the thumbnail using Tailwind
-                iframe.classList.remove('hidden'); // Show the iframe using Tailwind
-
-                // Add autoplay to the iframe src
-                const src = iframe.src;
-                if (!src.includes('autoplay=1')) { // Prevent adding autoplay multiple times
-                    iframe.src = src + (src.includes('?') ? '&' : '?') + 'autoplay=1';
-                }
-            }
-        }
-
-        // Script to load free.html content dynamically
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('free.html')
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error(`HTTP error! status: ${res.status}`);
-                    }
-                    return res.text();
-                })
-                .then(html => {
-                    const videoGrid = document.getElementById('videoGrid');
-                    if (videoGrid) {
-                        videoGrid.innerHTML = html;
-                    }
-                })
-                .catch(err => console.error("❌ Error loading free.html:", err));
-        });
-
-        // The logout link needs to call the logoutUser function from auth.js
-        // Since main.js handles the logout, we need to ensure the logout button
-        // is properly hooked up there. For now, assume main.js handles this.
-        // If you need an inline onclick, you would import and expose it:
-        // import { logoutUser } from './js/auth.js';
-        // window.logoutUserAndRedirect = async () => { /* ... call logoutUser and redirect ... */ };
-    </script>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="auth.js"></script> <!-- Link to your auth.js script -->
 
-    <script type="module" src="js/auth.js"></script>
-    <script type="module" src="js/main.js"></script>
+    <script>
+        // --- Free Video Data (from your provided links) ---
+        const freeVideoData = {
+            "free_streamtape_threesome": {
+                title: "Tiny & Tempting: A Thrilling Threesome Unveiled! 🔥",
+                description: "Witness an intimate encounter where size truly doesn't matter, only passion.",
+                thumbnail: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/oip.webp",
+                embedSrc: "https://strtape.tech/e/o9dygm0R42TWgG/"
+            },
+            "free_streamtape_good_at_it": {
+                title: "Masterful Moves: She's a Pro at Pleasure! 💖",
+                description: "Watch her unleash incredible skills that will leave you breathless.",
+                thumbnail: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/oip-1.webp",
+                embedSrc: "https://strtape.tech/e/aGqe6W8LApsx8vB/"
+            },
+            "free_streamtape_webcam_diff": {
+                title: "Webcam Wonders: Raw & Real Intimacy! 🎥",
+                description: "Experience unfiltered passion, live and direct from the webcam.",
+                thumbnail: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/oip.jpg",
+                embedSrc: "https://strtape.tech/e/96O3qMy1zjIadOO/"
+            },
+            "free_streamtape_young_40": {
+                title: "Ageless Allure: She's 40, But Looks 20! �",
+                description: "Prepare to be amazed by her youthful charm and timeless beauty.",
+                thumbnail: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/oip-2.webp",
+                embedSrc: "https://strtape.tech/e/jPPz7k7LxXsze17/"
+            },
+            "free_streamtape_pussy_master": {
+                title: "Pussy Power: She's a Self-Pleasure Master! 💦",
+                description: "Witness her intense solo session as she explores every inch of pleasure.",
+                thumbnail: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/download.webp",
+                embedSrc: "https://strtape.tech/e/1P3399bLXASe4PY/"
+            }
+        };
+
+        // UI Element for Free Videos
+        const freeVideoGrid = document.getElementById('freeVideoGrid');
+
+        // --- Render Free Video Cards Function ---
+        function renderFreeVideoCards() {
+            freeVideoGrid.innerHTML = ''; // Clear existing content
+            for (const videoId in freeVideoData) {
+                const video = freeVideoData[videoId];
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                // Link to video-player.html with encoded parameters
+                card.onclick = () => {
+                    const encodedTitle = encodeURIComponent(video.title);
+                    const encodedDescription = encodeURIComponent(video.description);
+                    const encodedEmbedSrc = encodeURIComponent(video.embedSrc);
+                    window.location.href = `video-player.html?title=${encodedTitle}&description=${encodedDescription}&embedSrc=${encodedEmbedSrc}`;
+                };
+                card.innerHTML = `
+                    <img src="${video.thumbnail}" alt="${video.title} Thumbnail" onerror="this.onerror=null;this.src='https://placehold.co/400x180/333/ffffff?text=Video+Thumbnail+Error';" >
+                    <div class="video-card-content">
+                        <h3>${video.title}</h3>
+                        <p>${video.description}</p>
+                    </div>
+                `;
+                freeVideoGrid.appendChild(card);
+            }
+        }
+
+        // Call render function on page load
+        document.addEventListener('DOMContentLoaded', renderFreeVideoCards);
+    </script>
 </body>
 </html>
+�

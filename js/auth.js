@@ -1,170 +1,120 @@
-// js/auth.js
-// Import Firebase modules directly using their CDN URLs
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import { getAuth, signInWithCustomToken, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-// YOUR FIREBASE CONFIGURATION - EMBEDDED DIRECTLY
+// Firebase configuration (replace with your actual config)
 const firebaseConfig = {
     apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
     authDomain: "vibexxx-500c6.firebaseapp.com",
-    projectId: "vibexxx-500c6", // <--- THIS IS YOUR PROJECT ID
-    storageBucket: "vibexxx-500c6.appspot.com", // Corrected storageBucket
+    projectId: "vibexxx-500c6",
+    storageBucket: "vibexxx-500c6.firebasestorage.app",
     messagingSenderId: "880697212397",
     appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
 };
 
-// The appId variable used for Firestore paths (should be your projectId)
-const appId = firebaseConfig.projectId;
+// Initialize Firebase if not already initialized
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const auth = firebase.auth();
+const db = firebase.firestore(); // Initialize Firestore
 
-// Global modal elements and functions (defined here to be accessible by other modules)
+// Helper function for showing modals (copy-pasted for self-containment)
 const modal = document.getElementById('modal');
 const modalMessage = document.getElementById('modalMessage');
 const closeModalButton = document.getElementById('closeModal');
 
-// Check if modal and closeModalButton exist before adding event listeners
 if (modal && closeModalButton) {
     closeModalButton.addEventListener('click', () => {
         hideModal();
     });
 }
 
-export function showModal(message) {
+function showModal(message) {
     if (modal && modalMessage) {
         modalMessage.textContent = message;
         modal.classList.remove('hidden');
     }
 }
 
-export function hideModal() {
+function hideModal() {
     if (modal) {
         modal.classList.add('hidden');
     }
 }
 
-
-/**
- * Registers a new user with email and password and creates a user document in Firestore.
- * @param {string} username - The desired username.
- * @param {string} email - The user's email.
- * @param {string} password - The user's password.
- * @returns {Promise<boolean>} - True if registration is successful, false otherwise.
- */
-export async function registerUser(username, email, password) { // EXPORTED
+// --- Registration Logic (kept for consistency, but form submission handled in register.html) ---
+// This function is now called by register.html's inline script
+async function registerUser(username, email, password) {
     try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
         const user = userCredential.user;
 
-        // Save user data to Firestore
-        await setDoc(doc(db, "users", user.uid), {
-            username: username,
-            email: email,
-            createdAt: new Date(),
-            userRole: "basic", // Default role
-            unlocked_access: false // Default to no pro access
+        await db.collection('users').doc(user.uid).set({
+            email: user.email,
+            username: username, // Save username
+            registeredAt: firebase.firestore.FieldValue.serverTimestamp(),
+            unlocked_access: false,
+            subscriptionEndDate: null
         });
-
-        console.log("User registered and data saved:", user.uid);
-        showModal("Registration successful! Please log in.");
-        return true;
+        console.log("User document created for:", user.uid);
+        return true; // Indicate success
     } catch (error) {
-        console.error("Error during registration:", error);
-        let errorMessage = "Registration failed: An unknown error occurred.";
-        if (error.code === 'auth/email-already-in-use') {
-            errorMessage = "Registration failed: Email is already in use.";
-        } else if (error.code === 'auth/weak-password') {
-            errorMessage = "Registration failed: Password is too weak (min 6 characters).";
-        } else if (error.code === 'auth/invalid-email') {
-            errorMessage = "Registration failed: Invalid email format.";
-        }
-        showModal(errorMessage);
-        return false;
+        console.error("Registration error:", error);
+        showModal(`Registration failed: ${error.message}`);
+        return false; // Indicate failure
     }
 }
 
-/**
- * Logs in an existing user with email and password.
- * @param {string} email - The user's email.
- * @param {string} password - The user's password.
- * @returns {Promise<boolean>} - True if login is successful, false otherwise.
- */
-export async function loginUser(email, password) { // EXPORTED
+// --- Login Logic (kept for consistency, but form submission handled in login.html) ---
+// This function is now called by login.html's inline script
+async function loginUser(email, password) {
     try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-
-        // Fetch user data from Firestore
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-
-        if (userSnap.exists()) {
-            const userData = userSnap.data();
-            localStorage.setItem("loggedIn", "true");
-            localStorage.setItem("userUID", user.uid);
-            localStorage.setItem("username", userData.username || user.email);
-            localStorage.setItem("userRole", userData.userRole || "basic");
-            // Store unlocked_access status
-            localStorage.setItem("unlockedAccess", userData.unlocked_access ? "true" : "false");
-            console.log("User logged in successfully:", userData.username);
-            showModal("Logged in successfully!");
-        } else {
-            // If user document doesn't exist (shouldn't happen with registerUser),
-            // log them out or set default basic access.
-            console.warn("User document not found for UID:", user.uid);
-            localStorage.setItem("loggedIn", "true");
-            localStorage.setItem("userUID", user.uid);
-            localStorage.setItem("username", user.email);
-            localStorage.setItem("userRole", "basic");
-            localStorage.setItem("unlockedAccess", "false");
-            showModal("Logged in successfully (basic access).");
-        }
-        return true;
-    }
-    // IMPORTANT: Catch specific Firebase Auth errors for better messages
-    catch (error) {
-        console.error("Error during login:", error);
-        let errorMessage = "Login failed: An unknown error occurred.";
-        if (error.code === 'auth/invalid-email') {
-            errorMessage = "Login failed: Invalid email format.";
-        } else if (error.code === 'auth/user-disabled') {
-            errorMessage = "Login failed: Your account has been disabled.";
-        } else if (error.code === 'auth/user-not-found') {
-            errorMessage = "Login failed: No user found with this email.";
-        } else if (error.code === 'auth/wrong-password') {
-            errorMessage = "Login failed: Incorrect password.";
-        } else if (error.code === 'auth/invalid-credential') { // This is the one you're seeing
-            errorMessage = "Login failed: Invalid credentials. Please check your email and password.";
-        }
-        showModal(errorMessage);
-        return false;
-    }
-}
-
-/**
- * Logs out the current user.
- * @returns {Promise<boolean>} - True if logout is successful, false otherwise.
- */
-export async function logoutUser() { // EXPORTED
-    try {
-        await signOut(auth);
-        localStorage.removeItem("loggedIn");
-        localStorage.removeItem("userUID");
-        localStorage.removeItem("username");
-        localStorage.removeItem("userRole");
-        localStorage.removeItem("unlockedAccess");
-        showModal("Logged out successfully!");
-        return true;
+        await auth.signInWithEmailAndPassword(email, password);
+        return true; // Indicate success
     } catch (error) {
-        console.error("Error during logout:", error);
-        showModal(`Logout failed: ${error.message}`);
-        return false;
+        console.error("Login error:", error);
+        showModal(`Login failed: ${error.message}`);
+        return false; // Indicate failure
     }
 }
 
-// Export auth and db instances for direct use in other modules if needed
-export { auth, db };
+// --- Logout Logic (for general use across pages if needed) ---
+// This part might be duplicated in main.js or specific pages, keep it here for core auth.
+// The logout button is now part of the header in relevant pages.
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutButtons = document.querySelectorAll('.logout-link'); // Select all elements with this class
+    logoutButtons.forEach(button => {
+        if (button) { // Added null check for safety
+            button.addEventListener('click', async (e) => {
+                e.preventDefault(); // Prevent default link behavior if it's an anchor
+                try {
+                    await auth.signOut();
+                    console.log("User logged out.");
+                    window.location.href = 'index.html'; // Redirect to home page
+                } catch (error) {
+                    console.error("Logout error:", error);
+                    showModal(`Logout failed: ${error.message}`);
+                }
+            });
+        }
+    });
+});
+
+
+// --- Update UI based on Auth State (e.g., show/hide login/logout buttons) ---
+auth.onAuthStateChanged(user => {
+    // Select all elements with these classes across the entire document
+    const loginLinks = document.querySelectorAll('.login-link');
+    const registerLinks = document.querySelectorAll('.register-link');
+    const logoutButtons = document.querySelectorAll('.logout-link');
+
+    if (user) {
+        // User is logged in
+        loginLinks.forEach(link => link.classList.add('hidden'));
+        registerLinks.forEach(link => link.classList.add('hidden'));
+        logoutButtons.forEach(button => button.classList.remove('hidden'));
+    } else {
+        // User is logged out
+        loginLinks.forEach(link => link.classList.remove('hidden'));
+        registerLinks.forEach(link => link.classList.remove('hidden'));
+        logoutButtons.forEach(button => button.classList.add('hidden'));
+    }
+});

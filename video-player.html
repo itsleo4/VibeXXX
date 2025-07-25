@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VibeXXX - Video Player</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #111; /* Dark background */
+            color: #fff; /* White text */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px; /* Wider for video player */
+            width: 100%;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            padding: 30px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ff3366;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255, 51, 102, 0.7);
+        }
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .message-box {
+            background-color: #330000;
+            border: 2px solid #f44336;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 50px;
+            box-shadow: 0 0 20px rgba(244, 67, 54, 0.5);
+            max-width: 500px;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .message-box h2 {
+            color: #f44336;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        .message-box p {
+            font-size: 1.2em;
+            color: #ddd;
+            margin-bottom: 30px;
+        }
+        .back-button {
+            background-color: #444;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .back-button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 id="videoTitle">Loading Video...</h1>
+
+        <div id="videoPlayerSection">
+            <div class="video-wrapper">
+                <iframe id="videoIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <p id="videoDescription" class="text-gray-300 text-lg"></p>
+        </div>
+
+        <div id="errorMessage" class="message-box hidden">
+            <h2>Error!</h2>
+            <p id="errorText">Could not load video. Invalid video data or link.</p>
+        </div>
+
+        <a href="index.html" class="back-button">← Back to Home</a>
+    </div>
+
+    <script>
+        // Function to get query parameters from URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const videoTitleElement = document.getElementById('videoTitle');
+            const videoIframe = document.getElementById('videoIframe');
+            const videoDescriptionElement = document.getElementById('videoDescription');
+            const videoPlayerSection = document.getElementById('videoPlayerSection');
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+
+            const title = getQueryParam('title');
+            const description = getQueryParam('description');
+            const embedSrc = getQueryParam('embedSrc');
+
+            if (embedSrc) {
+                videoTitleElement.textContent = title ? decodeURIComponent(title) : 'Video';
+                videoDescriptionElement.textContent = description ? decodeURIComponent(description) : '';
+                videoIframe.src = decodeURIComponent(embedSrc);
+                videoPlayerSection.classList.remove('hidden');
+                errorMessage.classList.add('hidden');
+            } else {
+                videoTitleElement.textContent = 'Video Not Found';
+                errorText.textContent = 'No video source provided. Please go back and select a video.';
+                videoPlayerSection.classList.add('hidden');
+                errorMessage.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

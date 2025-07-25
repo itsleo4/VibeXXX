@@ -112,7 +112,7 @@
         .status-approved { color: #4CAF50; } /* Green */
         .status-rejected { color: #f44336; } /* Red */
 
-        /* Modal styles from auth.js */
+        /* Modal styles (from auth.js) */
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -217,8 +217,8 @@
 
         // UI Elements
         const adminLogin = document.getElementById('adminLogin');
-        const adminEmailInput = document.getElementById('adminEmail'); // New
-        const adminPasswordInput = document.getElementById('adminPassword'); // New
+        const adminEmailInput = document.getElementById('adminEmail'); 
+        const adminPasswordInput = document.getElementById('adminPassword'); 
         const loginButton = document.getElementById('loginButton');
         const loginMessage = document.getElementById('loginMessage');
         const adminContent = document.getElementById('adminContent');
@@ -268,10 +268,11 @@
         loginButton.addEventListener('click', async () => {
             const email = adminEmailInput.value;
             const password = adminPasswordInput.value;
-            const enteredSecret = password; // For the webhook secret, still use the password
-
-            if (enteredSecret !== ADMIN_SECRET) { // Check the hardcoded secret for webhook access
-                loginMessage.textContent = 'Invalid Admin Secret';
+            // The ADMIN_SECRET is for the webhook, not for client-side Firebase Auth.
+            // We only check it if we were to send it to the webhook for login, but here we're using Firebase Auth.
+            // However, keeping this check for consistency if you want to enforce it client-side.
+            if (password !== ADMIN_SECRET) { 
+                loginMessage.textContent = 'Invalid Admin Secret (password)';
                 return;
             }
 
@@ -280,7 +281,7 @@
                 await auth.signInWithEmailAndPassword(email, password);
                 console.log("Admin panel: Signed in with email/password.");
                 loginMessage.textContent = ''; // Clear any previous error
-                checkAdminLogin(); // Re-check login state, which will now show content
+                // The onAuthStateChanged listener will automatically call checkAdminLogin()
             } catch (error) {
                 console.error("Admin panel: Firebase Auth Error during login:", error);
                 loginMessage.textContent = `Firebase Auth Error: ${error.message}`;
@@ -288,14 +289,14 @@
         });
 
         logoutButton.addEventListener('click', async () => {
-            localStorage.removeItem('adminSecret'); // This is no longer strictly needed for auth, but good to clear
+            // localStorage.removeItem('adminSecret'); // This is no longer strictly needed for auth, but good to clear
             try {
                 await auth.signOut(); // Sign out the current user
                 console.log("Admin panel: Signed out from Firebase.");
             } catch (error) {
                 console.error("Admin panel: Error signing out:", error);
             }
-            checkAdminLogin();
+            // The onAuthStateChanged listener will automatically call checkAdminLogin()
             contributionsList.innerHTML = '<p class="text-gray-400">Loading pending contributions...</p>'; // Clear list
             adminEmailInput.value = ''; // Clear email field
             adminPasswordInput.value = ''; // Clear password field
@@ -406,12 +407,12 @@
             }
         }
 
-        // Initial check on page load
         // Listen for Firebase auth state changes to trigger content display
         auth.onAuthStateChanged(user => {
             checkAdminLogin(); // This will now check if a user is already authenticated
         });
-        document.addEventListener('DOMContentLoaded', checkAdminLogin); // Also check on DOM load
+        // No need for DOMContentLoaded check here, onAuthStateChanged handles initial state
+        // document.addEventListener('DOMContentLoaded', checkAdminLogin); 
     </script>
 </body>
 </html>

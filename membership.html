@@ -1,561 +1,573 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Support VibeXXX & Get Access!</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      background: #0f0f0f;
-      font-family: 'Inter', sans-serif;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      box-sizing: border-box;
-    }
-    h1 {
-      margin-top: 20px;
-      margin-bottom: 15px;
-      font-size: 2.8em;
-      color: #ff3366;
-      text-shadow: 0 0 15px rgba(255, 51, 102, 0.7);
-      font-weight: 800;
-    }
-    p {
-      font-size: 1.2em;
-      margin-bottom: 25px;
-      color: #ccc;
-    }
-    .membership-options, .button-group {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-      margin-bottom: 30px;
-      width: 100%;
-      max-width: 600px;
-    }
-    button {
-      padding: 15px 30px;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.1em;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 600;
-      flex-grow: 1;
-      min-width: 180px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-    .membership-btn {
-        background: #333;
-        color: white;
-        border: 2px solid #555;
-    }
-    .membership-btn:hover {
-        background: #444;
-        border-color: #ff3366;
-        transform: translateY(-3px);
-        box-shadow: 0 6px 15px rgba(255, 51, 102, 0.3);
-    }
-    .membership-btn.active {
-        background: linear-gradient(to right, #ff1493, #ff416c);
-        border-color: #ff3366;
-        box-shadow: 0 0 15px rgba(255, 51, 102, 0.7);
-        transform: translateY(-2px);
-    }
-    .upi-btn { background: #4caf50; color: white; }
-    .paypal-btn { background: #0070ba; color: white; }
-    .upi-btn:hover { background: #5cb85c; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3); }
-    .paypal-btn:hover { background: #008cdd; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0, 112, 186, 0.3); }
-
-    .qr-section, .submit-form {
-      display: none;
-      width: 90%;
-      max-width: 450px;
-      margin: 20px auto;
-      background: #1c1c1c;
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-      margin-top: 40px; 
-    }
-    .qr-section img {
-      max-width: 70%;
-      height: auto;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      border: 5px solid #ff3366;
-      padding: 5px;
-      background: white;
-    }
-    .qr-section p {
-        font-size: 1.1em;
-        color: #ddd;
-        margin-top: 10px;
-    }
-    .qr-section a {
-        color: #00ff99;
-        text-decoration: none;
-        font-weight: 600;
-    }
-    .qr-section a:hover {
-        text-decoration: underline;
-    }
-    /* --- START OF MINIMAL CSS CHANGES FOR SPACING --- */
-    input:not([type="file"]), select, textarea { 
-      background: #2d2d2d;
-      color: #fff;
-      border: 1px solid #444;
-      margin-bottom: 20px;
-      font-size: 1rem;
-      padding: 12px;
-      border-radius: 8px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    label {
-      display: block;
-      text-align: left;
-      margin-top: 20px;
-      margin-bottom: 5px;
-      font-size: 1rem;
-      color: #ddd;
-    }
-    #paymentForm label:first-of-type {
-        margin-top: 0;
-    }
-    /* Removed file input specific styles */
-    .hint {
-      font-size: 0.9em;
-      color: #aaa;
-      margin-top: -15px;
-      margin-bottom: 25px;
-      text-align: left;
-      padding-left: 5px;
-    }
-    /* --- END OF MINIMAL CSS CHANGES FOR SPACING --- */
-
-    hr {
-        border-color: #ff3366;
-        margin: 50px auto;
-        width: 60%;
-        border-top: 2px solid;
-        opacity: 0.7;
-    }
-
-    /* New styles for pricing display */
-    .price-display {
-        font-size: 1.2em;
-        margin-top: 10px;
-        color: #00ff99;
-        font-weight: bold;
-    }
-    .currency-note {
-        font-size: 0.8em;
-        color: #aaa;
-        margin-top: 5px;
-    }
-
-    /* Telegram CTA on Membership Page */
-    .membership-telegram-cta {
-        background: linear-gradient(to bottom, #2a0000, #4d0000); /* Darker, subtle red gradient */
-        border: 2px solid #ff3366;
-        padding: 1.5rem;
-        margin: 40px auto;
-        border-radius: 15px;
-        text-align: center;
-        max-width: 700px;
-        box-shadow: 0 0 20px rgba(255, 51, 102, 0.4);
-    }
-    .membership-telegram-cta h3 {
-        font-size: 1.8em;
-        color: #fff;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        text-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
-    }
-    .membership-telegram-cta a {
-        display: inline-block;
-        background: #0088cc; /* Telegram blue */
-        color: #fff;
-        padding: 1rem 2rem;
-        border-radius: 30px;
-        font-size: 1.3em;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
-    }
-    .membership-telegram-cta a:hover {
-        background: #0077b3;
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 6px 15px rgba(0, 136, 204, 0.5);
-    }
-
-    /* New "Buy CP Packs" CTA */
-    .cp-pack-cta {
-        background: linear-gradient(to right, #6a0dad, #8a2be2); /* Purple gradient */
-        border: 2px solid #9932cc;
-        padding: 1.5rem;
-        margin: 30px auto;
-        border-radius: 15px;
-        text-align: center;
-        max-width: 700px;
-        box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
-        animation: pulse-purple 2s infinite alternate;
-    }
-    .cp-pack-cta h3 {
-        font-size: 1.8em;
-        color: #fff;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        text-shadow: 0 0 10px rgba(0,0,0,0.3);
-    }
-    .cp-pack-cta a {
-        display: inline-block;
-        background: #0088cc; /* Telegram blue */
-        color: #fff;
-        padding: 1rem 2rem;
-        border-radius: 30px;
-        font-size: 1.3em;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
-    }
-    .cp-pack-cta a:hover {
-        background: #0077b3;
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 6px 15px rgba(0, 136, 204, 0.5);
-    }
-    @keyframes pulse-purple {
-        from { box-shadow: 0 0 20px rgba(138, 43, 226, 0.5); }
-        to { box-shadow: 0 0 30px rgba(138, 43, 226, 0.8); }
-    }
-
-
-    /* Responsive adjustments */
-    @media (max-width: 600px) {
-        h1 {
-            font-size: 2.2em;
-        }
-        p {
-            font-size: 1em;
-        }
-        .membership-options, .button-group {
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>VibeXXX - Membership</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #111; /* Dark background */
+            color: #fff; /* White text */
+            min-height: 100vh;
+            display: flex;
             flex-direction: column;
-            gap: 10px;
-        }
-        button {
-            width: 100%;
-            min-width: unset;
-        }
-        .qr-section, .submit-form {
+            align-items: center;
             padding: 20px;
         }
-        .qr-section img {
-            max-width: 90%;
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            padding: 30px;
+            margin-top: 20px;
         }
-        .membership-telegram-cta h3, .cp-pack-cta h3 {
-            font-size: 1.4em;
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #333;
         }
-        .membership-telegram-cta a, .cp-pack-cta a {
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ff3366;
+            text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+            margin: 0;
+        }
+        nav a, nav button {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 20px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        nav a:hover, nav button:hover {
+            background-color: #ff3366;
+            color: #fff;
+        }
+        nav .auth-links a {
+            background-color: #444;
+        }
+        nav .auth-links a:hover {
+            background-color: #555;
+        }
+        nav .logout-link {
+            background-color: #f44336;
+        }
+        nav .logout-link:hover {
+            background-color: #da190b;
+        }
+
+        h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ff3366;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(255, 51, 102, 0.7);
+        }
+        .membership-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .membership-card {
+            background-color: #2a2a2a;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            max-width: 350px;
+            border: 2px solid transparent;
+        }
+        .membership-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(255, 51, 102, 0.6);
+            border-color: #ff3366;
+        }
+        .membership-card h3 {
+            font-size: 2em;
+            font-weight: 700;
+            color: #ff3366;
+            margin-bottom: 15px;
+        }
+        .membership-card .price {
+            font-size: 3em;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .membership-card ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        .membership-card ul li {
             font-size: 1.1em;
-            padding: 0.8rem 1.5rem;
+            color: #ccc;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
         }
-    }
-  </style>
+        .membership-card ul li svg {
+            margin-right: 10px;
+            color: #4CAF50; /* Green checkmark */
+        }
+        .select-plan-btn {
+            background-color: #ff3366;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
+        }
+        .select-plan-btn:hover {
+            background-color: #e6005c;
+            transform: translateY(-2px);
+        }
+        .payment-form-section {
+            background-color: #2a2a2a;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            display: none; /* Hidden by default */
+        }
+        .payment-form-section h3 {
+            font-size: 2em;
+            font-weight: 700;
+            color: #ff3366;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+            font-size: 1.1em;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background-color: #333;
+            color: #fff;
+            font-size: 1rem;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: #ff3366;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 51, 102, 0.3);
+        }
+        .submit-payment-btn {
+            background-color: #4CAF50; /* Green for submit */
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+            width: 100%;
+        }
+        .submit-payment-btn:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+        .payment-message {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.1em;
+            color: #ff3366;
+        }
+        .qr-code-section {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+        }
+        .qr-code-section img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 5px solid #ff3366;
+        }
+        .qr-code-section p {
+            font-size: 1.1em;
+            color: #ddd;
+            margin-bottom: 10px;
+        }
+        .qr-code-section .copy-address-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+        .qr-code-section .copy-address-btn:hover {
+            background-color: #0056b3;
+        }
+        /* Modal styles (from auth.js) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #2a2a2a;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            color: white;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
 
-  <h1>👑 Empower VibeXXX: Donate Now for Premium Access! 👑</h1>
-  <p>Your generous contribution directly fuels new content and features. Choose your support tier below to unlock exclusive benefits!</p>
+    <div class="container">
+        <header>
+            <h1>VibeXXX</h1>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="unlocked_videos.html">Pro Videos</a>
+                <a href="membership.html">Membership</a>
+                <div class="auth-links inline-block">
+                    <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded login-link">Login</a>
+                    <a href="register.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded register-link">Register</a>
+                    <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden">Logout</button>
+                </div>
+            </nav>
+        </header>
 
-  <div class="membership-options">
-    <button class="membership-btn" data-plan="1_MONTH_ACCESS" data-price-inr="249" data-price-usd="5.99">
-        🔥 1 Month Elite Access 🔥
-        <div class="price-display">₹249 / $5.99</div>
-    </button>
-    <button class="membership-btn" data-plan="3_MONTH_ACCESS" data-price-inr="599" data-price-usd="14.99">
-        ✨ 3 Months Pro Pass ✨
-        <div class="price-display">₹599 / $14.99</div>
-    </button>
+        <h2>Choose Your Membership Plan</h2>
+
+        <div class="membership-options">
+            <!-- 1 Month Access Card -->
+            <div class="membership-card" data-plan="1_MONTH_ACCESS" data-price="10" data-currency="USD">
+                <h3>1 Month Access</h3>
+                <div class="price">$10</div>
+                <ul>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> Unlimited Pro Videos</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> High Quality Streaming</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> New Content Weekly</li>
+                </ul>
+                <button class="select-plan-btn">Select Plan</button>
+            </div>
+
+            <!-- 3 Month Access Card -->
+            <div class="membership-card" data-plan="3_MONTH_ACCESS" data-price="25" data-currency="USD">
+                <h3>3 Month Access</h3>
+                <div class="price">$25</div>
+                <ul>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> All 1 Month Features</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> Exclusive Early Access</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> Priority Support</li>
+                </ul>
+                <button class="select-plan-btn">Select Plan</button>
+            </div>
+        </div>
+
+        <!-- Payment Details Form -->
+        <section id="paymentFormSection" class="payment-form-section">
+            <h3>Complete Your Payment</h3>
+            <p class="text-center text-lg text-gray-300 mb-4">Selected Plan: <span id="selectedPlanDisplay" class="font-bold text-pink-400"></span> for <span id="selectedPriceDisplay" class="font-bold text-pink-400"></span></p>
+
+            <div class="qr-code-section">
+                <img src="https://placehold.co/200x200/000/FFF?text=QR+Code" alt="QR Code" id="qrCodeImage">
+                <p>Scan to pay or copy the address:</p>
+                <p class="text-sm text-gray-400 break-all" id="paymentAddress">YOUR_CRYPTO_ADDRESS_HERE</p>
+                <button class="copy-address-btn" onclick="copyToClipboard('paymentAddress')">Copy Address</button>
+            </div>
+            <p class="text-center text-red-400 text-sm mt-4">
+                Please make sure to send the exact amount. Your access will be granted after verification.
+            </p>
+
+            <form id="paymentProofForm" class="mt-8">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name" />
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethod">Payment Method</label>
+                    <select id="paymentMethod" name="paymentMethod" required>
+                        <option value="">Select Method</option>
+                        <option value="USDT_TRC20">USDT (TRC20)</option>
+                        <option value="USDT_ERC20">USDT (ERC20)</option>
+                        <option value="BTC">Bitcoin (BTC)</option>
+                        <option value="ETH">Ethereum (ETH)</option>
+                        <option value="BNB">Binance Coin (BNB)</option>
+                        <option value="DOGE">Dogecoin (DOGE)</option>
+                        <option value="LTC">Litecoin (LTC)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="refID">Transaction Reference ID / Hash</label>
+                    <input type="text" id="refID" name="refID" required placeholder="Enter your transaction ID" />
+                </div>
+                <button type="submit" class="submit-payment-btn">Submit Payment Proof</button>
+                <p id="paymentMessage" class="payment-message hidden"></p>
+            </form>
+        </section>
     </div>
 
-  <div class="button-group">
-    <button class="upi-btn" data-method="upi">Pay with UPI</button>
-    <button class="paypal-btn" data-method="paypal">Pay with PayPal</button>
-  </div>
+    <!-- Universal Modal Structure (from auth.js) -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
 
-  <div id="upi" class="qr-section">
-    <img src="https://raw.githubusercontent.com/itsleo4/VibeXXX/main/images/upi.png" alt="UPI QR">
-    <p><strong>Pay to:</strong> bharti00077-2@okaxis</p>
-    <p class="currency-note">For 1 Month Access: ₹249 | For 3 Months Access: ₹599</p>
-  </div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="auth.js"></script> <!-- Link to your auth.js script -->
 
-  <div id="paypal" class="qr-section">
-    <img src="https://raw.githubusercontent.com/itsleo4/VibeXXX/main/images/paypal.png" alt="PayPal QR">
-    <p><strong>PayPal:</strong> <a href="https://www.paypal.me/PawanKumar35438" style="color:#00aced;" target="_blank">paypal.me/PawanKumar35438</a></p>
-    <p class="currency-note">For 1 Month Access: $5.99 USD | For 3 Months Access: $14.99 USD</p>
-  </div>
-
-  <form id="paymentForm" class="submit-form" action="https://e1bea856-55a4-42d0-adb5-19e2fada9cb7-00-2shzdua4si313.janeway.replit.dev/submit" method="POST">
-    <label for="userNameField">Your Name (as on VibeXXX)</label>
-    <input type="text" name="name" id="userNameField" readonly /> 
-
-    <input type="hidden" name="user_firebase_uid" id="userFirebaseUID" /> 
-    <input type="hidden" name="user_email" id="userEmail" /> 
-    <input type="hidden" name="membership_plan" id="selectedMembershipPlan" /> 
-    <input type="hidden" name="payment_method" id="selectedPaymentMethod" /> 
-    <input type="hidden" name="selected_price" id="selectedPrice" /> 
-    <input type="hidden" name="selected_currency" id="selectedCurrency" /> 
-
-
-    <label for="refID">UPI Ref ID or PayPal Email / Transaction ID</label>
-    <input type="text" name="refID" id="refID" pattern="[a-zA-Z0-9@._-]+" required /> 
-    <div class="hint">Enter your 12-digit UPI Reference ID (from Google Pay, PhonePe etc.) or PayPal email/transaction ID.</div>
-
-    <!-- Removed screenshot upload field -->
-    <!-- <label for="screenshot">Upload Payment Screenshot</label>
-    <input type="file" name="screenshot" id="screenshot" accept="image/*" required /> -->
-
-    <button type="submit" class="submit-btn" id="submitBtn">📤 Submit Proof</button>
-  </form>
-
-  <div class="thankyou" id="thankYouMsg">
-    ✅ Thank you! Your proof is submitted.<br/>
-    Please send your payment screenshot to our Telegram admin <a href="https://t.me/LuxFlix" target="_blank">@LuxFlix</a> for quick verification.
-  </div>
-
-  <hr>
-
-  <section class="cp-pack-cta">
-      <h3>💎 Craving Exclusive Content? Dive Deeper! 💎</h3>
-      <p>Want more than just access? DM admin to acquire exclusive, high-value CP packs and custom video links directly!</p>
-      <a href="https://t.me/LuxFlix" target="_blank">
-          📥 Get Exclusive CP Packs Now! 📥
-      </a>
-      <p class="text-sm text-gray-400 mt-3">
-          (Click to open Telegram and message @LuxFlix for details on CP packs & custom requests.)
-      </p>
-  </section>
-
-  <section class="membership-telegram-cta">
-      <h3>Need Help? Have Questions?</h3>
-      <p>For any inquiries, support, or special requests, feel free to reach out to the admin.</p>
-      <a href="https://t.me/LuxFlix" target="_blank">
-          💬 Chat with Admin on Telegram! 💬
-      </a>
-      <p class="text-sm text-gray-400 mt-3">
-          (Click to open Telegram and send a message to @LuxFlix.)
-      </p>
-  </section>
-
-
-  <script>
-    // Include Firebase SDKs
-    const firebaseAppScript = document.createElement('script');
-    firebaseAppScript.src = "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js";
-    document.head.appendChild(firebaseAppScript);
-
-    const firebaseAuthScript = document.createElement('script');
-    firebaseAuthScript.src = "https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js";
-    document.head.appendChild(firebaseAuthScript);
-
-    // Wait for Firebase SDKs to load before initializing
-    Promise.all([
-        new Promise(resolve => firebaseAppScript.onload = resolve),
-        new Promise(resolve => firebaseAuthScript.onload = resolve)
-    ]).then(() => {
-        // Your web app's Firebase configuration
+    <script>
+        // Firebase configuration (same as your other client-side files)
         const firebaseConfig = {
             apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
             authDomain: "vibexxx-500c6.firebaseapp.com",
             projectId: "vibexxx-500c6",
-            storageBucket: "vibexxx-500c6.firebasestorage.app", // This can stay, but won't be used for uploads
+            storageBucket: "vibexxx-500c6.firebasestorage.app",
             messagingSenderId: "880697212397",
             appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
         };
 
-        // Initialize Firebase if not already initialized
+        // Initialize Firebase
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
-        // Initialize Firebase Authentication
         const auth = firebase.auth();
+        const db = firebase.firestore();
 
-        // All other JavaScript code for the page
-        let selectedPlan = '';
-        let selectedMethod = '';
-        let selectedPrice = '';
-        let selectedCurrency = '';
+        // Replit Webhook URL for payment proof submission
+        const REPLIT_WEBHOOK_URL = "https://e1bea856-55a4-42d0-adb5-19e2fada9cb7-00-2shzdua4si313.janeway.replit.dev/submit";
 
-        const membershipButtons = document.querySelectorAll('.membership-btn');
-        const paymentMethodButtons = document.querySelectorAll('.button-group button');
-        const paymentForm = document.getElementById('paymentForm');
-        const upiSection = document.getElementById('upi');
-        const paypalSection = document.getElementById('paypal');
-        const thankYouMsg = document.getElementById('thankYouMsg'); // Corrected ID
-        const submitBtn = document.getElementById('submitBtn');
-        const userFirebaseUIDField = document.getElementById('userFirebaseUID');
-        const userEmailField = document.getElementById('userEmail');
-        const userNameField = document.getElementById('userNameField');
-        const selectedMembershipPlanField = document.getElementById('selectedMembershipPlan');
-        const selectedPaymentMethodField = document.getElementById('selectedPaymentMethod');
-        const selectedPriceField = document.getElementById('selectedPrice');
-        const selectedCurrencyField = document.getElementById('selectedCurrency');
+        // Payment Addresses and QR Codes (REPLACE WITH YOUR ACTUALS)
+        const paymentDetails = {
+            "USDT_TRC20": {
+                address: "TRC20_ADDRESS_HERE",
+                qr: "https://placehold.co/200x200/000/FFF?text=USDT+TRC20+QR"
+            },
+            "USDT_ERC20": {
+                address: "ERC20_ADDRESS_HERE",
+                qr: "https://placehold.co/200x200/000/FFF?text=USDT+ERC20+QR"
+            },
+            "BTC": {
+                address: "BTC_ADDRESS_HERE",
+                qr: "https://placehold.co/200x200/000/FFF?text=BTC+QR"
+            },
+            "ETH": {
+                address: "ETH_ADDRESS_HERE",
+                qr: "https://placehold.co/200x200/000/FFF?text=ETH+QR"
+            },
+            "BNB": {
+                address: "BNB_ADDRESS_HERE",
+                qr: "https://placehold.co/200x200/000/FFF?text=BNB+QR"
+            },
+            "DOGE": {
+                address: "DOGE_ADDRESS_HERE",
+                qr: "https://placehold.co/200x200/000/FFF?text=DOGE+QR"
+            },
+            "LTC": {
+                address: "LTC_ADDRESS_HERE",
+                qr: "https://placehold.co/200x200/000/FFF?text=LTC+QR"
+            }
+        };
 
+        let selectedPlan = null;
+        let selectedPrice = null;
+        let selectedCurrency = null;
 
-        // Function to show/hide QR sections and main form
-        function showPaymentSection() {
-            // Ensure all dynamic sections are hidden first
-            upiSection.style.display = 'none';
-            paypalSection.style.display = 'none';
-            paymentForm.style.display = 'none';
-            thankYouMsg.style.display = 'none';
+        // UI Elements
+        const membershipCards = document.querySelectorAll('.membership-card');
+        const paymentFormSection = document.getElementById('paymentFormSection');
+        const selectedPlanDisplay = document.getElementById('selectedPlanDisplay');
+        const selectedPriceDisplay = document.getElementById('selectedPriceDisplay');
+        const qrCodeImage = document.getElementById('qrCodeImage');
+        const paymentAddress = document.getElementById('paymentAddress');
+        const paymentMethodSelect = document.getElementById('paymentMethod');
+        const paymentProofForm = document.getElementById('paymentProofForm');
+        const paymentMessage = document.getElementById('paymentMessage');
 
-            if (selectedPlan && selectedMethod) {
-                if (selectedMethod === 'upi') {
-                    upiSection.style.display = 'block';
-                    selectedCurrency = 'INR';
-                } else if (selectedMethod === 'paypal') {
-                    paypalSection.style.display = 'block';
-                    selectedCurrency = 'USD';
-                }
-                selectedCurrencyField.value = selectedCurrency;
+        // Modal elements (from auth.js)
+        const modal = document.getElementById('modal');
+        const modalMessage = document.getElementById('modalMessage');
+        const closeModalButton = document.getElementById('closeModal');
 
-                const currentPlanButton = document.querySelector(`.membership-btn[data-plan="${selectedPlan}"]`);
-                if (currentPlanButton) {
-                    if (selectedCurrency === 'INR') {
-                        selectedPrice = currentPlanButton.dataset.priceInr;
-                    } else if (selectedCurrency === 'USD') {
-                        selectedPrice = currentPlanButton.dataset.priceUsd;
-                    }
-                    selectedPriceField.value = selectedPrice;
-                }
+        if (modal && closeModalButton) {
+            closeModalButton.addEventListener('click', () => {
+                hideModal();
+            });
+        }
 
-                paymentForm.style.display = 'block';
+        function showModal(message) {
+            if (modal && modalMessage) {
+                modalMessage.textContent = message;
+                modal.classList.remove('hidden');
             }
         }
 
-        // Event listeners for Membership Plan buttons
-        membershipButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                membershipButtons.forEach(btn => btn.classList.remove('active')); // Deactivate all
-                button.classList.add('active'); // Activate clicked
-                selectedPlan = button.dataset.plan;
-                selectedMembershipPlanField.value = selectedPlan;
-                showPaymentSection();
+        function hideModal() {
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // Event listeners for selecting membership plan
+        membershipCards.forEach(card => {
+            card.querySelector('.select-plan-btn').addEventListener('click', () => {
+                selectedPlan = card.dataset.plan;
+                selectedPrice = card.dataset.price;
+                selectedCurrency = card.dataset.currency;
+
+                selectedPlanDisplay.textContent = selectedPlan.replace(/_/g, ' ');
+                selectedPriceDisplay.textContent = `${selectedPrice} ${selectedCurrency}`;
+
+                paymentFormSection.style.display = 'block';
+                paymentFormSection.scrollIntoView({ behavior: 'smooth' });
             });
         });
 
-        // Event listeners for Payment Method buttons
-        paymentMethodButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                paymentMethodButtons.forEach(btn => btn.classList.remove('active')); // Optional: remove active class
-                button.classList.add('active'); // Optional: add active class
-                selectedMethod = button.dataset.method;
-                selectedPaymentMethodField.value = selectedMethod;
-                showPaymentSection();
-            });
+        // Event listener for payment method selection to update QR/Address
+        paymentMethodSelect.addEventListener('change', () => {
+            const method = paymentMethodSelect.value;
+            if (paymentDetails[method]) {
+                paymentAddress.textContent = paymentDetails[method].address;
+                qrCodeImage.src = paymentDetails[method].qr;
+            } else {
+                paymentAddress.textContent = 'Select a payment method to see details.';
+                qrCodeImage.src = 'https://placehold.co/200x200/000/FFF?text=QR+Code'; // Generic placeholder
+            }
         });
 
-        // Handle form submission for paymentForm
-        paymentForm.addEventListener('submit', async function(e) {
+        // Function to copy address to clipboard
+        function copyToClipboard(elementId) {
+            const textToCopy = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showModal('Address copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                showModal('Failed to copy address.');
+            });
+        }
+
+        // Event listener for payment proof form submission
+        paymentProofForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const user = firebase.auth().currentUser;
-
+            const user = auth.currentUser;
             if (!user) {
-                alert('You must be logged in to submit payment proof.');
+                showModal("You must be logged in to submit payment proof.");
                 return;
             }
 
-            userFirebaseUIDField.value = user.uid;
-            userEmailField.value = user.email || ''; 
-            userNameField.value = user.displayName || user.email || user.uid; 
-            
-            if (!selectedPlan || !selectedMethod) {
-                alert('Please select a contribution plan and a payment method first.');
-                return;
-            }
-
-            submitBtn.innerText = "⏳ Submitting...";
-            submitBtn.disabled = true;
-
-            // Collect data into an object
-            const formData = {
-                name: userNameField.value,
-                user_firebase_uid: userFirebaseUIDField.value,
-                user_email: userEmailField.value,
-                membership_plan: selectedMembershipPlanField.value,
-                payment_method: selectedPaymentMethodField.value,
-                refID: document.getElementById('refID').value,
-                selected_price: selectedPriceField.value,
-                selected_currency: selectedCurrencyField.value
+            const formData = new FormData(paymentProofForm);
+            const data = {
+                name: formData.get('name'),
+                user_firebase_uid: user.uid,
+                user_email: user.email,
+                membership_plan: selectedPlan,
+                payment_method: formData.get('paymentMethod'),
+                refID: formData.get('refID'),
+                selected_price: selectedPrice,
+                selected_currency: selectedCurrency
             };
 
+            paymentMessage.classList.remove('hidden');
+            paymentMessage.textContent = "Submitting your proof...";
+            paymentMessage.style.color = '#ffeb3b'; // Yellow for pending
+
             try {
-                const response = await fetch("https://e1bea856-55a4-42d0-adb5-19e2fada9cb7-00-2shzdua4si313.janeway.replit.dev/submit", {
+                const response = await fetch(REPLIT_WEBHOOK_URL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json' // Set Content-Type to JSON
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(formData) // Send data as JSON string
+                    body: JSON.stringify(data)
                 });
 
+                const result = await response.json();
+
                 if (response.ok) {
-                    paymentForm.style.display = 'none';
-                    upiSection.style.display = 'none';
-                    paypalSection.style.display = 'none';
-                    thankYouMsg.style.display = 'block';
+                    paymentMessage.textContent = result.message + " We will verify it shortly!";
+                    paymentMessage.style.color = '#4CAF50'; // Green for success
+                    paymentProofForm.reset();
+                    showModal("Payment proof submitted successfully! We will verify it shortly.");
                 } else {
-                    const errorText = await response.text();
-                    console.error("Submission failed:", response.status, errorText);
-                    alert("❌ Submission failed. Please try again. Error: " + (errorText || "Unknown"));
+                    paymentMessage.textContent = "Error: " + (result.error || "Something went wrong.");
+                    paymentMessage.style.color = '#f44336'; // Red for error
+                    showModal("Payment proof submission failed: " + (result.error || "Unknown error."));
                 }
-            } catch (err) {
-                console.error("Network error submitting form:", err);
-                alert("❌ Network error. Please check your internet and try again.");
-            } finally {
-                submitBtn.innerText = "📤 Submit Proof";
-                submitBtn.disabled = false;
+            } catch (error) {
+                console.error("Network error:", error);
+                paymentMessage.textContent = "Network error. Please try again.";
+                paymentMessage.style.color = '#f44336'; // Red for error
+                showModal("Network error. Please check your internet connection.");
             }
         });
-
-        // Important: Listen for Firebase auth state changes to ensure user is logged in
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                console.log("Firebase user is logged in:", user.uid, user.email);
-                userFirebaseUIDField.value = user.uid;
-                userEmailField.value = user.email || '';
-                userNameField.value = user.displayName || user.email || `User ${user.uid.substring(0, 8)}...`;
-                userNameField.readOnly = true; 
-
-                paymentForm.style.pointerEvents = 'auto'; 
-                paymentForm.style.opacity = '1';
-
-            } else {
-                console.log("No Firebase user logged in.");
-                alert("Please log in to submit your contribution proof.");
-                paymentForm.style.pointerEvents = 'none'; 
-                paymentForm.style.opacity = '0.5';
-            }
-        });
-
-        // Initial state: hide forms until selections are made
-        paymentForm.style.display = 'none';
-        upiSection.style.display = 'none';
-        paypalSection.style.display = 'none';
-        thankYouMsg.style.display = 'none';
-    }); // Close of Promise.all .then()
-  </script>
+    </script>
 </body>
 </html>

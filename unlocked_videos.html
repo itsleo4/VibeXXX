@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VibeXXX - Pro Videos</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <style>
@@ -16,258 +15,534 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-        }
-        main {
-            flex-grow: 1;
-            padding: 1rem;
-        }
-        .loading-screen, .access-denied-screen {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            min-height: calc(100vh - 80px); /* Adjust for header height */
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ff3366;
             text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(255, 51, 102, 0.7);
         }
-        .loading-screen h2, .access-denied-screen h2 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #ef4444; /* Red 500 */
-            margin-bottom: 1rem;
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
         }
-        .access-denied-screen p {
-            font-size: 1.1rem;
-            color: #a0aec0; /* Gray 400 */
-            margin-bottom: 1.5rem;
+        .video-card {
+            background-color: #2a2a2a;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            text-align: left;
         }
-        .cta-button {
-            background-color: #ff3366; /* Your primary CTA color */
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 51, 102, 0.3);
+        }
+        .video-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 2px solid #ff3366;
+        }
+        .video-card-content {
+            padding: 15px;
+        }
+        .video-card h3 {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #ff3366;
+            margin-bottom: 5px;
+        }
+        .video-card p {
+            font-size: 0.9em;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+        .access-denied {
+            background-color: #330000;
+            border: 2px solid #f44336;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 50px;
+            box-shadow: 0 0 20px rgba(244, 67, 54, 0.5);
+            max-width: 500px;
+            width: 90%;
+        }
+        .access-denied h2 {
+            color: #f44336;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        .access-denied p {
+            font-size: 1.2em;
+            color: #ddd;
+            margin-bottom: 30px;
+        }
+        .access-denied a {
+            display: inline-block;
+            background-color: #ff3366;
             color: white;
-            padding: 12px 24px;
-            border-radius: 9999px; /* Fully rounded */
+            padding: 12px 30px;
+            border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            transition: background-color 0.3s ease;
         }
-        .cta-button:hover {
+        .access-denied a:hover {
             background-color: #e6005c;
-            transform: translateY(-2px);
         }
-
-        /* Spinner animation */
-        .spinner {
-            border: 8px solid rgba(255, 255, 255, 0.3);
-            border-top: 8px solid #ff3366; /* Red 500 */
+        .verifying-access {
+            text-align: center;
+            margin-top: 100px;
+            font-size: 1.8em;
+            color: #ff3366;
+            font-weight: 600;
+        }
+        .verifying-access .spinner {
+            border: 8px solid rgba(255, 51, 102, 0.2);
+            border-top: 8px solid #ff3366;
             border-radius: 50%;
             width: 60px;
             height: 60px;
             animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+            margin: 20px auto;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        /* Video card styling for pro videos */
-        .video-card {
-            background: #1a1a1a;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            transition: transform 0.2s ease;
+        .logout-button {
+            background-color: #666;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
         }
-        .video-card:hover {
-            transform: translateY(-5px);
-        }
-        .video-card img {
-            width: 100%;
-            height: 180px; /* Consistent height for thumbnails */
-            object-fit: cover;
+        .logout-button:hover {
+            background-color: #555;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
-    <!-- Header/Navigation Bar -->
-    <header class="bg-gray-800 p-4 shadow-lg">
-        <nav class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-red-500">VibeXXX</a>
-            <div class="space-x-4">
-                <a href="index.html" class="text-gray-300 hover:text-white">Home</a>
-                <a href="unlocked_videos.html" class="text-gray-300 hover:text-white pro-link">Pro Videos</a>
-                <a href="saved.html" class="text-gray-300 hover:text-white saved-link hidden">Saved</a>
-                <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded login-link">Login</a>
-                <a href="register.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded register-link">Register</a>
-                <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden">Logout</button>
-            </div>
-        </nav>
-    </header>
+<body>
 
-    <main class="container mx-auto p-4">
-        <!-- Loading Screen -->
-        <section id="loadingScreen" class="loading-screen">
-            <div class="spinner"></div>
-            <h2>Verifying Access...</h2>
-            <p>Please wait while we confirm your Pro Membership.</p>
-        </section>
+    <div class="container">
+        <h1 id="pageTitle">Exclusive Pro Videos</h1>
 
-        <!-- Access Denied Screen -->
-        <section id="accessDeniedScreen" class="access-denied-screen hidden">
-            <h2 class="text-red-500">Access Denied!</h2>
-            <p id="accessDeniedMessage">It looks like you don't have Pro Access yet.</p>
-            <p>Unlock all exclusive videos by becoming a Pro Member today!</p>
-            <a href="membership.html" class="cta-button">Become a Pro Member</a>
-        </section>
-
-        <!-- Pro Video Grid (Visible only to Pro Members) -->
-        <section id="proVideoGrid" class="py-8 hidden">
-            <h2 class="text-4xl font-bold text-center text-red-400 mb-8">Exclusive Pro Videos</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                <!-- IMPORTANT: REPLACE THESE PLACEHOLDER VIDEO CARDS WITH YOUR ACTUAL PRO VIDEOS -->
-                <!-- Each div.video-card should link to video-player.html with a unique 'video' ID -->
-
-                <div class="video-card">
-                    <a href="video-player.html?video=PROVID001">
-                        <!-- Replace with your actual thumbnail image for Pro Video 1 -->
-                        <img src="https://placehold.co/300x180/222/FFF?text=Pro+Video+1" alt="Pro Video 1 Title">
-                    </a>
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold text-white">Elite Scene: Pro Video 1</h3>
-                        <p class="text-gray-400 text-sm">Experience the ultimate in exclusive content.</p>
-                    </div>
+        <div id="proContent" class="hidden">
+            <div class="video-grid" id="videoGrid">
                 </div>
-
-                <div class="video-card">
-                    <a href="video-player.html?video=PROVID002">
-                        <!-- Replace with your actual thumbnail image for Pro Video 2 -->
-                        <img src="https://placehold.co/300x180/222/FFF?text=Pro+Video+2" alt="Pro Video 2 Title">
-                    </a>
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold text-white">Uncensored Fun: Pro Video 2</h3>
-                        <p class="text-gray-400 text-sm">Unrivaled quality and exclusive angles.</p>
-                    </div>
-                </div>
-
-                <div class="video-card">
-                    <a href="video-player.html?video=PROVID003">
-                        <!-- Replace with your actual thumbnail image for Pro Video 3 -->
-                        <img src="https://placehold.co/300x180/222/FFF?text=Pro+Video+3" alt="Pro Video 3 Title">
-                    </a>
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold text-white">Hidden Gem: Pro Video 3</h3>
-                        <p class="text-gray-400 text-sm">Discover a new favorite with this exclusive content.</p>
-                    </div>
-                </div>
-
-                <!-- Add more video cards here following the same structure -->
-
-            </div>
-        </section>
-    </main>
-
-    <!-- General Footer -->
-    <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-8 rounded-lg shadow-lg">
-        <p>&copy; 2025 VibeXXX. All rights reserved. | <a href="#" class="hover:underline">Privacy Policy</a></p>
-        <div class="flex justify-center space-x-4 mt-4">
-            <a href="#" class="hover:text-white">Facebook</a>
-            <a href="#" class="hover:text-white">Twitter</a>
-            <a href="https://t.me/LuxFlix" class="hover:text-white" target="_blank">Telegram</a>
         </div>
-    </footer>
 
-    <!-- Firebase CDN scripts -->
+        <div id="accessDenied" class="hidden access-denied">
+            <h2>Access Denied!</h2>
+            <p>This content is exclusive to Pro Members. Become a Pro Member to unlock all videos and features!</p>
+            <a href="membership.html">Become a Pro Now!</a>
+        </div>
+
+        <div id="verifyingAccess" class="verifying-access">
+            <div class="spinner"></div>
+            <p>Verifying Access...</p>
+            <p class="text-sm text-gray-400">Please wait while we confirm your Pro Membership.</p>
+        </div>
+
+        <button id="logoutButton" class="logout-button hidden">Logout</button>
+    </div>
+
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // Initialize Firebase (if not already initialized by auth.js)
+        // Firebase Configuration (same as your other client-side files)
         const firebaseConfig = {
             apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
             authDomain: "vibexxx-500c6.firebaseapp.com",
             projectId: "vibexxx-500c6",
-            storageBucket: "vibexxx-500c6.appspot.com", // This line is fine, but storage is not used here
+            storageBucket: "vibexxx-500c6.firebasestorage.app",
             messagingSenderId: "880697212397",
             appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
         };
 
+        // Initialize Firebase
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Get screen elements
-        const loadingScreen = document.getElementById('loadingScreen');
-        const accessDeniedScreen = document.getElementById('accessDeniedScreen');
-        const accessDeniedMessage = document.getElementById('accessDeniedMessage'); // New element
-        const proVideoGrid = document.getElementById('proVideoGrid');
+        // UI Elements
+        const proContent = document.getElementById('proContent');
+        const accessDenied = document.getElementById('accessDenied');
+        const verifyingAccess = document.getElementById('verifyingAccess');
+        const logoutButton = document.getElementById('logoutButton');
+        const pageTitle = document.getElementById('pageTitle');
+        const videoGrid = document.getElementById('videoGrid');
 
-        // Function to show a specific screen and hide others
-        function showScreen(screenToShow) {
-            loadingScreen.classList.add('hidden');
-            accessDeniedScreen.classList.add('hidden');
-            proVideoGrid.classList.add('hidden');
-            screenToShow.classList.remove('hidden');
+        // --- Video Data (All your Pro Videos) ---
+        const videoData = {
+            "video_nier_automata": {
+                title: "🤖 2B's Wild Ride: Nier Automata Housemaid Unleashed! 💥",
+                description: "Witness 2B like never before! Intense fuckmachine action with BBC creampie.",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/54234/housemaid-2b-from-nier-automata",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/MAID.png"
+            },
+            "video_anime_big_ass": {
+                title: "🍑 Anime Babe's Thigh-High Cum Beg! 💦",
+                description: "A busty anime girl begs for a massive cumshot on her thighs. Uncensored action!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/49116/anime-girl-with-big-ass-begs-for",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_32.png"
+            },
+            "video_dva_bbc": {
+                title: "🥛 D.Va's Creamy Night: Milk This 12-Inch BBC! 🍆",
+                description: "Overwatch's D.Va gets wild with a massive BBC. Prepare for intense action!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/34807/dva-wanna-milk-this-12-inch-bbc",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_599.png"
+            },
+            "video_stepmom_milky": {
+                title: "🍼 Stepmom's Milky Tits: Can't Get Enough! 🤤",
+                description: "Obsessed with stepmom's huge, milky tits. A forbidden fantasy come true.",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/82878/i-cant-get-enough-of-my-stepmoms",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_1366068.png"
+            },
+            "video_stepsister_gangbang": {
+                title: "😈 Naughty Stepsister: Dominated by Three Hung Studs! ⛓️",
+                description: "A shy stepsister gets a rough gangbang from three hung studs. Uncensored hentai!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/98463/naughty-stepsister-dominated-and",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_53452.png"
+            },
+            "video_party_bang": {
+                title: "🤫 Secret Party Bang: Don't Tell Your Girlfriend! 🎉",
+                description: "A wild party night leads to an unforgettable, rough bang. Keep it a secret!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/84310/dont-tell-your-girlfriend-about",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_265460.png"
+            },
+            "video_step_siblings_busted": {
+                title: "🚨 Busted! Step Siblings Caught in Uncensored Hentai! 😱",
+                description: "A shocking discovery as step-siblings are caught in the act by their aunt.",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/32090/step-siblings-busted-banging-by",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_45251.png"
+            },
+            "video_lewdfroggo_licking": {
+                title: "👅 Rainy Day Bliss: Lewdfroggo's Hairless Babe Licking! 💦",
+                description: "Hot rainy day fun with a lewdfroggo and a hairless babe. So hot! 😜",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/43087/rainy-day-fun-with-lewdfroggo",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_83406.png"
+            },
+            "video_busty_teen_married": {
+                title: "🤯 Busty Teen's Secret Affair: Banging a Married Man! 🤫",
+                description: "Can you believe this busty teen is having a scandalous affair? See it all!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/32702/hey-can-you-believe-this-busty",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_3118.png"
+            },
+            "video_h_cup_nurse": {
+                title: "🩺 Wild H-Cup Nurse: Sucks & Fucks Hard in POV! 🍑",
+                description: "A massive H-Cup nurse delivers intense POV action. Get ready for a wild ride!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/33446/wild-h-cup-nurse-babe-sucks-and",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/01.jpg"
+            },
+            "video_himawarigayorunisaku": {
+                title: "🌸 Himawarigayorunisaku: Teen Takes Anal & Cock! 💥",
+                description: "Watch a teen suck big cock and take intense anal action. Her tits will shake!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/92366/hentai-himawarigayorunisaku-1",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/324541_sucking_hentai_anal_01.jpg"
+            },
+            "video_projekt_passion": {
+                title: "🌌 Projekt Passion: Dark Alien Babe's Shower Fingering! 👽",
+                description: "Experience intense lesbian fingering with a dark alien babe in a shower game novel.",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/92366/hentai-himawarigayorunisaku-1", // Note: This iframe src is duplicated from above, please verify if it's correct for this video.
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/07.jpg"
+            },
+            "video_tifa_futa": {
+                title: "🔥 Tifa Futa's Wild Ride: Banging Aerith Hard! 🍑",
+                description: "Tifa Futa delivers wild cum action in a big ass play with Aerith. Don't miss this!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/92882/tifa-futa-bangs-aerith-hard-damn",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/07-1.jpg"
+            },
+            "video_accidental_sex": {
+                title: "💦 Kinky Pussy Rubbing: Accidental Sex & Hot Cumshot! 😜",
+                description: "An unexpected encounter leads to kinky pussy rubbing and a hot cumshot finish.",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/54123/accidental-sex-from-kinky-pussy",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/09.jpg"
+            },
+            "video_cosplayer_stepdaughter": {
+                title: "🤯 Banged My Sexy Cosplayer Stepdaughter! 💖",
+                description: "A hot, forbidden encounter with a huge-titted cosplayer stepdaughter. So hot!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/82358/uhh-i-banged-my-sexy-cosplayer",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/04.jpg"
+            },
+            "video_stepsister_ass": {
+                title: "🍑 Stepsister's Perfect Ass: Virgin Anal Attempt! 🍆",
+                description: "A perfect ass takes a huge cock for a daring virgin anal attempt. Intense!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/87467/stepsisters-perfect-ass-takes",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/05.jpg"
+            },
+            "video_stepbrother_masturbation": {
+                title: "🤫 My Stepbrother's Craving: Helping with Masturbation! 😈",
+                description: "A forbidden desire as a stepbrother helps with masturbation. A kinky secret!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/82151/my-stepbrother-admits-craving",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/18.jpg"
+            },
+            "video_elf_blindfolded": {
+                title: "🧝‍♀️ Elf Banging Night Elf: Blindfolded Kitchen Parody! 🍳",
+                description: "A hilarious and kinky parody: elf banging night elf, blindfolded in the kitchen.",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/34552/elf-banging-night-elf-blindfolded",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/04-1.jpg"
+            },
+            "video_tifa_lockhart_3d": {
+                title: "🎮 Tifa Lockhart's Tight Fantasy: 3D Sex Gameplay! 💥",
+                description: "Damn! Tifa Lockhart delivers intense 3D sex gameplay action. A must-see!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/76524/damn-tifa-lockharts-tight",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/14.jpg"
+            },
+            "video_tifa_overwatch": {
+                title: "🔫 Tifa & Friends: Overwatch HMV Action! 🤩",
+                description: "Hey, wanna see Tifa and friends in wild Overwatch HMV action? Explosive!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/70203/hey-wanna-see-tifa-and-friends",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/10.jpg"
+            },
+            "video_milfs_penetrated": {
+                title: "🔥 MILFs Deeply Penetrated: Massive Cocks in Wild Hentai! 🤯",
+                description: "Mature ladies get intensely penetrated by massive cocks in wild hentai scenes.",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/34976/milfs-deeply-penetrated-by-massive",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/02.jpg"
+            },
+            "video_anime_girls_twerking": {
+                title: "👯‍♀️ Anime Girls Twerking for Blowjob Action! 💖",
+                description: "Watch as anime girls twerk their way to intense blowjob action. Hot!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/69949/anime-girls-twerking-for-blowjob",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/18-1.jpg"
+            },
+            "video_petite_asian_creampied": {
+                title: "🌸 Petite Asian's First Creampie: Uncensored Hentai! 💦",
+                description: "A tight pussy gets creampied in her first uncensored hentai adventure. Intense!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/84012/petite-asians-tight-pussy-creampied",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_78834.png"
+            },
+            "video_jill_valentine_doggystyle": {
+                title: "🐕‍🦺 MILF Slut Jill Valentine: Begs for Big Cock in Doggystyle! 🥵",
+                description: "Resident Evil's Jill Valentine gets wild, begging for big cock in doggystyle.",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/82014/milf-slut-jill-valentine-begs",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/09-1.jpg"
+            },
+            "video_claire_jill_blowjob": {
+                title: "👯‍♀️ Claire & Jill: Resident Evil Hentai Blowjob! 🍆",
+                description: "Yo, Claire and Jill deliver an uncensored blowjob in this Resident Evil hentai!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/82944/yo-claire-and-jill-blowjob-in",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/17.jpg"
+            },
+            "video_kanzaki_chan_creampie": {
+                title: "💖 Kanzaki-chan's Unreal Blowjob & Creampie! 🤤",
+                description: "Obsessed with her slender, big-breasted body. Her blowjob before creampie is unreal!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/91745/im-obsessed-with-kanzaki-chans",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/13.jpg"
+            },
+            "video_pound_tight_asshole": {
+                title: "🍑 Why Finger When I Can Pound Your Tight Asshole Hard? 💥",
+                description: "Forget fingering, it's time to pound that tight asshole hard. Intense action!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/74467/why-finger-when-i-can-pound-your",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/08.jpg"
+            },
+            "video_roommate_fucked": {
+                title: "🏡 Home Alone: Roommate Fucked Me During Panty Teasing! 🤫",
+                description: "A kinky surprise at home: roommate fucked me during panty teasing. Wild!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/72766/i-was-home-alone-when-my-roommate",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/19.jpg"
+            },
+            "video_shy_pianist": {
+                title: "🎹 Shy Pianist: Rides Massive Cock in Tight Hole! 🥵",
+                description: "A shy pianist takes on a massive cock, riding deep in her tight hole. Intense!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/69503/shy-pianist-rides-a-massive-cock",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/05-1.jpg"
+            },
+            "video_huge_titted_cutie": {
+                title: "🤯 Wow! Huge-Titted Cutie: Wild 3-Way Blowjob & Creampie! 💦",
+                description: "A stunning cutie delivers a wild 3-way blowjob and creampie. Unbelievable!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/68001/wow-huge-titted-cutie-in-wild",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/09-2.jpg"
+            },
+            "video_homemade_squirting": {
+                title: "💦 Ever Seen Real Homemade Fingering & Squirting Like This? 🤩",
+                description: "Witness authentic homemade fingering and explosive squirting. Uncensored!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/44574/ever-seen-real-homemade-fingering",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/09-3.jpg"
+            },
+            "video_uraraka_midoria": {
+                title: "💥 Hentai Uraraka & Midoria: Steamy Anime Action! 💖",
+                description: "My Hero Academia's Uraraka and Midoria in a steamy, action-packed hentai scene.",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/95189/hentai-uraraka-and-midoria-in",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/02-1.jpg"
+            },
+            "video_madre_e_hijo": {
+                title: "👩‍👦 Madre E Hijo: Steamy Hentai Creampie Action! 💦",
+                description: "A forbidden bond in steamy hentai creampie action. Intense and shocking!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/43270/madre-e-hijo-in-steamy-hentai",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/06.jpg"
+            },
+            "video_wet_doggystyle": {
+                title: "🐶 What's Hotter? Steamy, Wet Doggystyle in Anime! 🥵",
+                description: "Dive into a steamy, wet doggystyle session in anime. Pure raw passion!",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/72376/whats-hotter-than-a-steamy-wet",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/13-1.jpg"
+            },
+            "video_bbw_cuckold": {
+                title: "🍑 3D BBW Hot Mature: Cuckold Sex with BBC Creampie! 🍆",
+                description: "A hot mature BBW engages in cuckold sex with a big black cock for an intense creampie.",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/92169/3d-bbw-hot-mature-engages-in-cuckold",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/19-1.jpg"
+            },
+            "video_sissy_ladyboy": {
+                title: "💅 Sissy Ladyboy: Devours Ass in Wild Trans Threesome! 💖",
+                description: "A sissy ladyboy gets wild, devouring ass while being banged in a trans threesome group.",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/91291/sissy-ladyboy-devours-ass-while",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/17-1.jpg"
+            },
+            "video_friends_girlfriend": {
+                title: "🤫 Stuffing My Friend's Girlfriend's Tight Vagina! 💦",
+                description: "A wild night of fucking leads to stuffing a friend's girlfriend's tight vagina with cum.",
+                iframeSrc: "https://www.animehentaivideos.xxx/v/66886/stuffing-my-friends-girlfriends",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/19-2.jpg"
+            },
+            "video_brickzilla_freya": {
+                title: "🦍 Brickzilla's BBC Dominates Freya Von Doom! 💥",
+                description: "Brickzilla's massive BBC takes on Freya Von Doom's petite frame. Intense domination!",
+                iframeSrc: "https://www.blacksexvideos.xxx/v/27905/brickzillas-bbc-dominates-freya",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/02-2.jpg"
+            },
+            "video_black_beauty_boss": {
+                title: "👑 Black Beauty: Boss's Cock in Her Mouth! 🥵",
+                description: "A stunning black beauty gets her boss's cock in her mouth. Forbidden office fantasy!",
+                iframeSrc: "https://www.blacksexvideos.xxx/v/60000/black-beauty-gets-her-bosss",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/15.jpg"
+            }
+        };
+
+        // --- Access Check Logic ---
+        async function checkUserAccess() {
+            verifyingAccess.classList.remove('hidden');
+            proContent.classList.add('hidden');
+            accessDenied.classList.add('hidden');
+            logoutButton.classList.add('hidden');
+            pageTitle.textContent = "Verifying Access...";
+
+            const user = auth.currentUser;
+
+            if (user) {
+                console.log("User logged in:", user.uid);
+                // Check if logoutButton exists before adding event listener
+                if (logoutButton) { 
+                    logoutButton.classList.remove('hidden'); // Show logout button if logged in
+                }
+
+                try {
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    if (userDoc.exists && userDoc.data().unlocked_access) {
+                        const subscriptionEndDate = userDoc.data().subscriptionEndDate;
+                        // Check if subscriptionEndDate exists and is a future date
+                        if (subscriptionEndDate && subscriptionEndDate.toDate() > new Date()) {
+                            // User has unlocked access and subscription is active
+                            proContent.classList.remove('hidden');
+                            verifyingAccess.classList.add('hidden');
+                            pageTitle.textContent = "Exclusive Pro Videos";
+                            console.log("User has Pro Access.");
+                            renderVideoCards(); // Render videos only if access is granted
+                        } else {
+                            // Access expired or not set correctly
+                            accessDenied.classList.remove('hidden');
+                            verifyingAccess.classList.add('hidden');
+                            pageTitle.textContent = "Access Denied!";
+                            console.log("User's Pro Access is expired or not active.");
+                            // Optionally, revoke access in Firestore if expired
+                            // db.collection('users').doc(user.uid).update({ unlocked_access: false });
+                        }
+                    } else {
+                        // User document doesn't exist or unlocked_access is false
+                        accessDenied.classList.remove('hidden');
+                        verifyingAccess.classList.add('hidden');
+                        pageTitle.textContent = "Access Denied!";
+                        console.log("User does not have Pro Access (document missing or flag false).");
+                    }
+                } catch (error) {
+                    console.error("Error fetching user access status:", error);
+                    accessDenied.classList.remove('hidden'); // Show denied on error
+                    verifyingAccess.classList.add('hidden');
+                    pageTitle.textContent = "Access Denied!";
+                    alert("Error checking access. Please try again later.");
+                }
+            } else {
+                // No user logged in
+                accessDenied.classList.remove('hidden');
+                verifyingAccess.classList.add('hidden');
+                pageTitle.textContent = "Access Denied!";
+                console.log("No user logged in. Redirecting to login/home.");
+                // Optional: Redirect to login page if not logged in
+                // window.location.href = 'login.html'; 
+            }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            showScreen(loadingScreen); // Show loading screen initially
+        // --- Render Video Cards Function ---
+        function renderVideoCards() {
+            videoGrid.innerHTML = ''; // Clear existing content
+            for (const videoId in videoData) {
+                const video = videoData[videoId];
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.onclick = () => {
+                    window.location.href = `video-player.html?id=${videoId}`;
+                };
+                card.innerHTML = `
+                    <img src="${video.thumbnail}" alt="${video.title} Thumbnail" onerror="this.onerror=null;this.src='https://placehold.co/400x180/333/ffffff?text=Video+Thumbnail+Error';" >
+                    <div class="video-card-content">
+                        <h3>${video.title}</h3>
+                        <p>${video.description}</p>
+                    </div>
+                `;
+                videoGrid.appendChild(card);
+            }
+        }
 
-            auth.onAuthStateChanged(async (user) => {
-                if (user) {
-                    console.log("Firebase user is logged in:", user.uid, user.email);
-                    // Fetch user document from Firestore to check 'unlocked_access' and 'subscriptionEndDate'
-                    const userDocRef = db.collection('users').doc(user.uid);
-                    try {
-                        const userDoc = await userDocRef.get();
-                        if (userDoc.exists) {
-                            const userData = userDoc.data();
-                            const unlockedAccess = userData.unlocked_access === true;
-                            const subscriptionEndDate = userData.subscriptionEndDate ? userData.subscriptionEndDate.toDate() : null; // Convert Firestore Timestamp to Date object
-
-                            const now = new Date();
-
-                            if (unlockedAccess && subscriptionEndDate && subscriptionEndDate > now) {
-                                // User has access and subscription is active
-                                console.log("User has active Pro Access!");
-                                showScreen(proVideoGrid);
-                            } else if (unlockedAccess && subscriptionEndDate && subscriptionEndDate <= now) {
-                                // User has access but subscription has expired
-                                console.log("User's Pro Access has expired.");
-                                accessDeniedMessage.textContent = "Your Pro Access has expired. Please renew your membership!";
-                                showScreen(accessDeniedScreen);
-                                // Optionally, update Firestore to set unlocked_access to false here
-                                // userDocRef.update({ unlocked_access: false }); // This would auto-revoke in Firestore
-                            }
-                            else {
-                                // User is logged in but doesn't have unlocked_access true or no end date
-                                console.log("User logged in but no active Pro Access flag.");
-                                accessDeniedMessage.textContent = "It looks like you don't have Pro Access yet.";
-                                showScreen(accessDeniedScreen);
-                            }
-                        } else {
-                            // User document doesn't exist (shouldn't happen if registered)
-                            console.log("User document not found. Access Denied.");
-                            accessDeniedMessage.textContent = "Access Denied. Please register or log in.";
-                            showScreen(accessDeniedScreen);
-                        }
-                    } catch (error) {
-                        console.error("Error fetching user data from Firebase:", error);
-                        accessDeniedMessage.textContent = `Error verifying access: ${error.message}`;
-                        showScreen(accessDeniedScreen); // Assume denied on error
-                    }
-                } else {
-                    // No user is signed in.
-                    console.log("No user signed in. Access Denied.");
-                    accessDeniedMessage.textContent = "You need to be logged in to access Pro content.";
-                    showScreen(accessDeniedScreen);
+        // --- Logout Logic ---
+        // Add null check here as well to be safe
+        if (logoutButton) { 
+            logoutButton.addEventListener('click', async () => {
+                try {
+                    await auth.signOut();
+                    console.log("User logged out.");
+                    // Redirect or update UI after logout
+                    window.location.href = 'index.html'; // Redirect to home page
+                } catch (error) {
+                    console.error("Error logging out:", error);
+                    alert("Error logging out. Please try again.");
                 }
             });
+        }
+
+        // Listen for Firebase Auth state changes
+        auth.onAuthStateChanged(user => {
+            checkUserAccess(); // Re-check access whenever auth state changes
         });
+
+        // Initial check on page load (redundant with onAuthStateChanged but harmless)
+        document.addEventListener('DOMContentLoaded', checkUserAccess);
     </script>
-    <script type="module" src="js/auth.js"></script>
-    <script type="module" src="js/main.js"></script>
 </body>
 </html>

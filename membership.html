@@ -80,10 +80,10 @@
             text-shadow: 0 0 15px rgba(255, 51, 102, 0.7);
         }
         .membership-options {
-            display: flex;
-            flex-wrap: wrap;
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
             justify-content: center;
-            gap: 30px;
+            gap: 30px; /* Space between cards */
             margin-bottom: 40px;
         }
         .membership-card {
@@ -93,9 +93,20 @@
             text-align: center;
             box-shadow: 0 6px 20px rgba(0,0,0,0.4);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 100%;
-            max-width: 350px;
+            flex: 1 1 300px; /* Allow cards to grow/shrink, with a base width of 300px */
+            max-width: 450px; /* Max width for individual cards */
             border: 2px solid transparent;
+            display: flex; /* Inner flex for content alignment */
+            flex-direction: column;
+            justify-content: space-between; /* Push button to bottom */
+        }
+        @media (min-width: 768px) { /* On medium screens and up, make them side-by-side */
+            .membership-options {
+                flex-wrap: nowrap; /* Prevent wrapping if enough space */
+            }
+            .membership-card {
+                flex: 1; /* Distribute space equally */
+            }
         }
         .membership-card:hover {
             transform: translateY(-10px);
@@ -119,6 +130,7 @@
             padding: 0;
             margin-bottom: 30px;
             text-align: left;
+            flex-grow: 1; /* Allow list to take available space */
         }
         .membership-card ul li {
             font-size: 1.1em;
@@ -140,6 +152,7 @@
             font-size: 1.1em;
             transition: background-color 0.3s ease, transform 0.3s ease;
             box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
+            width: 100%; /* Make button full width of card */
         }
         .select-plan-btn:hover {
             background-color: #e6005c;
@@ -206,26 +219,26 @@
             font-size: 1.1em;
             color: #ff3366;
         }
-        .qr-code-section {
+        .payment-info-section {
             text-align: center;
             margin-top: 30px;
             padding: 20px;
             background-color: #333;
             border-radius: 10px;
         }
-        .qr-code-section img {
+        .payment-info-section img {
             max-width: 200px;
             height: auto;
             border-radius: 5px;
             margin-bottom: 15px;
             border: 5px solid #ff3366;
         }
-        .qr-code-section p {
+        .payment-info-section p {
             font-size: 1.1em;
             color: #ddd;
             margin-bottom: 10px;
         }
-        .qr-code-section .copy-address-btn {
+        .payment-info-section .copy-address-btn {
             background-color: #007bff;
             color: white;
             padding: 10px 20px;
@@ -234,7 +247,7 @@
             transition: background-color 0.3s ease;
             margin-top: 10px;
         }
-        .qr-code-section .copy-address-btn:hover {
+        .payment-info-section .copy-address-btn:hover {
             background-color: #0056b3;
         }
         /* Modal styles (from auth.js) */
@@ -304,9 +317,9 @@
 
         <div class="membership-options">
             <!-- 1 Month Access Card -->
-            <div class="membership-card" data-plan="1_MONTH_ACCESS" data-price="10" data-currency="USD">
+            <div class="membership-card" data-plan="1_MONTH_ACCESS" data-price="199" data-currency="INR">
                 <h3>1 Month Access</h3>
-                <div class="price">$10</div>
+                <div class="price">₹199</div>
                 <ul>
                     <li><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> Unlimited Pro Videos</li>
                     <li><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> High Quality Streaming</li>
@@ -316,9 +329,9 @@
             </div>
 
             <!-- 3 Month Access Card -->
-            <div class="membership-card" data-plan="3_MONTH_ACCESS" data-price="25" data-currency="USD">
-                <h3>3 Month Access</h3>
-                <div class="price">$25</div>
+            <div class="membership-card" data-plan="3_MONTH_ACCESS" data-price="499" data-currency="INR">
+                <h3>3 Month Access <br><span class="text-sm text-gray-400">(Best Value!)</span></h3>
+                <div class="price">₹499</div>
                 <ul>
                     <li><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> All 1 Month Features</li>
                     <li><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> Exclusive Early Access</li>
@@ -333,33 +346,33 @@
             <h3>Complete Your Payment</h3>
             <p class="text-center text-lg text-gray-300 mb-4">Selected Plan: <span id="selectedPlanDisplay" class="font-bold text-pink-400"></span> for <span id="selectedPriceDisplay" class="font-bold text-pink-400"></span></p>
 
-            <div class="qr-code-section">
-                <img src="https://placehold.co/200x200/000/FFF?text=QR+Code" alt="QR Code" id="qrCodeImage">
-                <p>Scan to pay or copy the address:</p>
-                <p class="text-sm text-gray-400 break-all" id="paymentAddress">YOUR_CRYPTO_ADDRESS_HERE</p>
-                <button class="copy-address-btn" onclick="copyToClipboard('paymentAddress')">Copy Address</button>
+            <div class="form-group">
+                <label for="paymentMethod">Choose Payment Method</label>
+                <select id="paymentMethod" name="paymentMethod" required>
+                    <option value="">Select Method</option>
+                    <option value="UPI">UPI (Google Pay, PhonePe, Paytm, etc.)</option>
+                    <option value="PAYPAL">PayPal</option>
+                </select>
             </div>
-            <p class="text-center text-red-400 text-sm mt-4">
-                Please make sure to send the exact amount. Your access will be granted after verification.
-            </p>
 
+            <div id="upiDetails" class="payment-info-section hidden">
+                <img src="https://placehold.co/200x200/000/FFF?text=YOUR+UPI+QR" alt="UPI QR Code" id="upiQrCodeImage">
+                <p>Scan this QR or copy UPI ID:</p>
+                <p class="text-sm text-gray-400 break-all" id="upiId">your_upi_id@bank</p>
+                <button class="copy-address-btn" onclick="copyToClipboard('upiId')">Copy UPI ID</button>
+                <p class="text-xs text-red-400 mt-2">Make sure to send the exact amount (₹<span id="upiAmount"></span>) for your selected plan.</p>
+            </div>
+
+            <div id="paypalDetails" class="payment-info-section hidden">
+                <p>Click the button below to pay via PayPal:</p>
+                <a href="https://www.paypal.me/yourpaypalid" target="_blank" class="copy-address-btn bg-blue-600 hover:bg-blue-700">Pay with PayPal</a>
+                <p class="text-xs text-red-400 mt-2">Ensure you send the exact amount for your selected plan.</p>
+            </div>
+            
             <form id="paymentProofForm" class="mt-8">
                 <div class="form-group">
                     <label for="name">Your Name</label>
                     <input type="text" id="name" name="name" required placeholder="Enter your full name" />
-                </div>
-                <div class="form-group">
-                    <label for="paymentMethod">Payment Method</label>
-                    <select id="paymentMethod" name="paymentMethod" required>
-                        <option value="">Select Method</option>
-                        <option value="USDT_TRC20">USDT (TRC20)</option>
-                        <option value="USDT_ERC20">USDT (ERC20)</option>
-                        <option value="BTC">Bitcoin (BTC)</option>
-                        <option value="ETH">Ethereum (ETH)</option>
-                        <option value="BNB">Binance Coin (BNB)</option>
-                        <option value="DOGE">Dogecoin (DOGE)</option>
-                        <option value="LTC">Litecoin (LTC)</option>
-                    </select>
                 </div>
                 <div class="form-group">
                     <label for="refID">Transaction Reference ID / Hash</label>
@@ -405,35 +418,14 @@
         // Replit Webhook URL for payment proof submission
         const REPLIT_WEBHOOK_URL = "https://e1bea856-55a4-42d0-adb5-19e2fada9cb7-00-2shzdua4si313.janeway.replit.dev/submit";
 
-        // Payment Addresses and QR Codes (REPLACE WITH YOUR ACTUALS)
+        // Payment Details for UPI and PayPal (REPLACE WITH YOUR ACTUALS)
         const paymentDetails = {
-            "USDT_TRC20": {
-                address: "TRC20_ADDRESS_HERE",
-                qr: "https://placehold.co/200x200/000/FFF?text=USDT+TRC20+QR"
+            "UPI": {
+                address: "your_upi_id@bank", // Replace with your actual UPI ID
+                qr: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/upi-qr.png" // Replace with your actual UPI QR code image URL
             },
-            "USDT_ERC20": {
-                address: "ERC20_ADDRESS_HERE",
-                qr: "https://placehold.co/200x200/000/FFF?text=USDT+ERC20+QR"
-            },
-            "BTC": {
-                address: "BTC_ADDRESS_HERE",
-                qr: "https://placehold.co/200x200/000/FFF?text=BTC+QR"
-            },
-            "ETH": {
-                address: "ETH_ADDRESS_HERE",
-                qr: "https://placehold.co/200x200/000/FFF?text=ETH+QR"
-            },
-            "BNB": {
-                address: "BNB_ADDRESS_HERE",
-                qr: "https://placehold.co/200x200/000/FFF?text=BNB+QR"
-            },
-            "DOGE": {
-                address: "DOGE_ADDRESS_HERE",
-                qr: "https://placehold.co/200x200/000/FFF?text=DOGE+QR"
-            },
-            "LTC": {
-                address: "LTC_ADDRESS_HERE",
-                qr: "https://placehold.co/200x200/000/FFF?text=LTC+QR"
+            "PAYPAL": {
+                link: "https://www.paypal.me/yourpaypalid" // Replace with your actual PayPal.me link
             }
         };
 
@@ -446,13 +438,17 @@
         const paymentFormSection = document.getElementById('paymentFormSection');
         const selectedPlanDisplay = document.getElementById('selectedPlanDisplay');
         const selectedPriceDisplay = document.getElementById('selectedPriceDisplay');
-        const qrCodeImage = document.getElementById('qrCodeImage');
-        const paymentAddress = document.getElementById('paymentAddress');
         const paymentMethodSelect = document.getElementById('paymentMethod');
+        const upiDetailsDiv = document.getElementById('upiDetails');
+        const upiQrCodeImage = document.getElementById('upiQrCodeImage');
+        const upiId = document.getElementById('upiId');
+        const upiAmountSpan = document.getElementById('upiAmount');
+        const paypalDetailsDiv = document.getElementById('paypalDetails');
+        const paypalButtonLink = paypalDetailsDiv.querySelector('a');
         const paymentProofForm = document.getElementById('paymentProofForm');
         const paymentMessage = document.getElementById('paymentMessage');
 
-        // Modal elements (from auth.js)
+        // Modal elements (from auth.js) - ensure these are present or imported
         const modal = document.getElementById('modal');
         const modalMessage = document.getElementById('modalMessage');
         const closeModalButton = document.getElementById('closeModal');
@@ -484,22 +480,33 @@
                 selectedCurrency = card.dataset.currency;
 
                 selectedPlanDisplay.textContent = selectedPlan.replace(/_/g, ' ');
-                selectedPriceDisplay.textContent = `${selectedPrice} ${selectedCurrency}`;
+                selectedPriceDisplay.textContent = `₹${selectedPrice}`; // Display INR symbol
+
+                // Reset payment method selection and hide details
+                paymentMethodSelect.value = "";
+                upiDetailsDiv.classList.add('hidden');
+                paypalDetailsDiv.classList.add('hidden');
+                paymentMessage.classList.add('hidden'); // Hide previous messages
 
                 paymentFormSection.style.display = 'block';
                 paymentFormSection.scrollIntoView({ behavior: 'smooth' });
             });
         });
 
-        // Event listener for payment method selection to update QR/Address
+        // Event listener for payment method selection to update UI
         paymentMethodSelect.addEventListener('change', () => {
             const method = paymentMethodSelect.value;
-            if (paymentDetails[method]) {
-                paymentAddress.textContent = paymentDetails[method].address;
-                qrCodeImage.src = paymentDetails[method].qr;
-            } else {
-                paymentAddress.textContent = 'Select a payment method to see details.';
-                qrCodeImage.src = 'https://placehold.co/200x200/000/FFF?text=QR+Code'; // Generic placeholder
+            upiDetailsDiv.classList.add('hidden');
+            paypalDetailsDiv.classList.add('hidden');
+
+            if (method === "UPI") {
+                upiDetailsDiv.classList.remove('hidden');
+                upiQrCodeImage.src = paymentDetails.UPI.qr;
+                upiId.textContent = paymentDetails.UPI.address;
+                upiAmountSpan.textContent = selectedPrice; // Display selected price for UPI
+            } else if (method === "PAYPAL") {
+                paypalDetailsDiv.classList.remove('hidden');
+                paypalButtonLink.href = paymentDetails.PAYPAL.link;
             }
         });
 
@@ -521,6 +528,11 @@
             const user = auth.currentUser;
             if (!user) {
                 showModal("You must be logged in to submit payment proof.");
+                return;
+            }
+
+            if (!selectedPlan || !selectedPrice || !selectedCurrency) {
+                showModal("Please select a membership plan first.");
                 return;
             }
 

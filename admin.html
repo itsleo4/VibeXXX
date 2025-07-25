@@ -164,7 +164,7 @@
         <h1>Admin Panel</h1>
 
         <div id="adminLogin" class="login-section">
-            <input type="email" id="adminEmail" placeholder="Admin Email" />
+            <input type="email" id="adminEmail" placeholder="Admin Email" value="nsfw@gmail.com" readonly />
             <input type="password" id="adminPassword" placeholder="Admin Password" />
             <button id="loginButton">Login</button>
             <p id="loginMessage" class="text-red-500"></p>
@@ -266,13 +266,11 @@
 
         // Modified login button click handler
         loginButton.addEventListener('click', async () => {
-            const email = adminEmailInput.value;
+            const email = adminEmailInput.value; // This will be 'nsfw@gmail.com'
             const password = adminPasswordInput.value;
-            // The ADMIN_SECRET is for the webhook, not for client-side Firebase Auth.
-            // We only check it if we were to send it to the webhook for login, but here we're using Firebase Auth.
-            // However, keeping this check for consistency if you want to enforce it client-side.
+            
             if (password !== ADMIN_SECRET) { 
-                loginMessage.textContent = 'Invalid Admin Secret (password)';
+                loginMessage.textContent = 'Invalid Admin Password'; // Changed message
                 return;
             }
 
@@ -289,16 +287,13 @@
         });
 
         logoutButton.addEventListener('click', async () => {
-            // localStorage.removeItem('adminSecret'); // This is no longer strictly needed for auth, but good to clear
             try {
                 await auth.signOut(); // Sign out the current user
                 console.log("Admin panel: Signed out from Firebase.");
             } catch (error) {
                 console.error("Admin panel: Error signing out:", error);
             }
-            // The onAuthStateChanged listener will automatically call checkAdminLogin()
             contributionsList.innerHTML = '<p class="text-gray-400">Loading pending contributions...</p>'; // Clear list
-            adminEmailInput.value = ''; // Clear email field
             adminPasswordInput.value = ''; // Clear password field
         });
 
@@ -411,8 +406,6 @@
         auth.onAuthStateChanged(user => {
             checkAdminLogin(); // This will now check if a user is already authenticated
         });
-        // No need for DOMContentLoaded check here, onAuthStateChanged handles initial state
-        // document.addEventListener('DOMContentLoaded', checkAdminLogin); 
     </script>
 </body>
 </html>

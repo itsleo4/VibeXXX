@@ -43,7 +43,7 @@
             text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
             margin: 0;
         }
-        nav a {
+        nav a, nav button {
             color: #fff;
             text-decoration: none;
             font-weight: 600;
@@ -51,10 +51,24 @@
             padding: 8px 15px;
             border-radius: 5px;
             transition: background-color 0.3s ease, color 0.3s ease;
+            border: none;
+            cursor: pointer;
         }
-        nav a:hover {
+        nav a:hover, nav button:hover {
             background-color: #ff3366;
             color: #fff;
+        }
+        nav .auth-links a {
+            background-color: #444;
+        }
+        nav .auth-links a:hover {
+            background-color: #555;
+        }
+        nav .logout-link {
+            background-color: #f44336; /* Red for logout */
+        }
+        nav .logout-link:hover {
+            background-color: #da190b;
         }
         .become-pro-btn {
             display: block;
@@ -179,6 +193,11 @@
                 <a href="index.html">Home</a>
                 <a href="unlocked_videos.html">Pro Videos</a>
                 <a href="membership.html">Membership</a>
+                <div class="auth-links inline-block">
+                    <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded login-link">Login</a>
+                    <a href="register.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded register-link">Register</a>
+                    <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden">Logout</button>
+                </div>
             </nav>
         </header>
 
@@ -228,7 +247,7 @@
                 embedSrc: "https://strtape.tech/e/96O3qMy1zjIadOO/"
             },
             "free_streamtape_young_40": {
-                title: "Ageless Allure: She's 40, But Looks 20! �",
+                title: "Ageless Allure: She's 40, But Looks 20! 🤫",
                 description: "Prepare to be amazed by her youthful charm and timeless beauty.",
                 thumbnail: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/oip-2.webp",
                 embedSrc: "https://strtape.tech/e/jPPz7k7LxXsze17/"
@@ -274,4 +293,3 @@
     </script>
 </body>
 </html>
-�

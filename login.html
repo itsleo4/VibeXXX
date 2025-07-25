@@ -233,34 +233,9 @@
     <script src="auth.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginForm = document.getElementById('loginForm');
-            if (loginForm) {
-                loginForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    console.log('Login form submitted.');
-
-                    const email = document.getElementById('loginEmail').value.trim();
-                    const password = document.getElementById('loginPassword').value;
-
-                    if (!email || !password) {
-                        showModal("Please enter email and password.");
-                        console.log('Validation failed: Email or password missing.');
-                        return;
-                    }
-
-                    try {
-                        await firebase.auth().signInWithEmailAndPassword(email, password);
-                        showModal("Login successful!");
-                        loginForm.reset();
-                        setTimeout(() => { window.location.href = 'index.html'; }, 1500);
-                    } catch (error) {
-                        console.error("Login error:", error);
-                        showModal(`Login failed: ${error.message}`);
-                    }
-                });
-            }
-        });
+        // No inline script here for login form submission.
+        // auth.js will handle the form submission listener for #loginForm.
+        // It's important that auth.js is loaded after Firebase SDKs.
     </script>
 </body>
 </html>

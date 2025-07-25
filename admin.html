@@ -187,6 +187,7 @@
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
@@ -195,7 +196,7 @@
             apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
             authDomain: "vibexxx-500c6.firebaseapp.com",
             projectId: "vibexxx-500c6",
-            storageBucket: "vibexxx-500c6.firebasestorage.app", // This line is fine, but storage is not used here
+            storageBucket: "vibexxx-500c6.firebasestorage.app", 
             messagingSenderId: "880697212397",
             appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
         };
@@ -205,12 +206,13 @@
             firebase.initializeApp(firebaseConfig);
         }
         const db = firebase.firestore();
+        const auth = firebase.auth(); // Initialize Firebase Auth
 
         // Admin Secret (MUST MATCH THE ONE IN REPLIT SECRETS)
-        const ADMIN_SECRET = "@#vacexw999666"; // <<< ADMIN SECRET PASSWORD SET HERE!
+        const ADMIN_SECRET = "@#vacexw999666"; 
 
         // Replit Webhook URL
-        const REPLIT_WEBHOOK_BASE_URL = "https://e1bea856-55a4-42d0-adb5-19e2fada9cb7-00-2shzdua4si313.janeway.replit.dev"; // <<< YOUR REPLIT BASE URL SET HERE!
+        const REPLIT_WEBHOOK_BASE_URL = "https://e1bea856-55a4-42d0-adb5-19e2fada9cb7-00-2shzdua4si313.janeway.replit.dev"; 
 
         // UI Elements
         const adminLogin = document.getElementById('adminLogin');
@@ -246,15 +248,30 @@
         }
 
         // --- Admin Login/Logout Logic ---
-        function checkAdminLogin() {
+        async function checkAdminLogin() {
             const storedSecret = localStorage.getItem('adminSecret');
             if (storedSecret === ADMIN_SECRET) {
                 adminLogin.classList.add('hidden');
                 adminContent.style.display = 'block';
-                fetchPendingContributions();
+                
+                // Sign in anonymously to satisfy Firestore rules
+                try {
+                    await auth.signInAnonymously();
+                    console.log("Admin panel: Signed in anonymously to Firebase.");
+                    fetchPendingContributions(); // Fetch data only after authentication
+                } catch (error) {
+                    console.error("Admin panel: Error signing in anonymously:", error);
+                    loginMessage.textContent = `Firebase Auth Error: ${error.message}`;
+                    adminLogin.classList.remove('hidden'); // Show login again if auth fails
+                    adminContent.style.display = 'none';
+                }
             } else {
                 adminLogin.classList.remove('hidden');
                 adminContent.style.display = 'none';
+                // Ensure no anonymous user is left authenticated if logged out
+                if (auth.currentUser) {
+                    auth.signOut();
+                }
             }
         }
 
@@ -271,6 +288,9 @@
 
         logoutButton.addEventListener('click', () => {
             localStorage.removeItem('adminSecret');
+            if (auth.currentUser) {
+                auth.signOut(); // Sign out the anonymous user
+            }
             checkAdminLogin();
             contributionsList.innerHTML = '<p class="text-gray-400">Loading pending contributions...</p>'; // Clear list
             adminSecretInput.value = ''; // Clear password field
@@ -280,6 +300,13 @@
         async function fetchPendingContributions() {
             contributionsList.innerHTML = '<p class="text-gray-400">Loading pending contributions...</p>';
             try {
+                // Ensure user is authenticated before fetching
+                if (!auth.currentUser) {
+                    console.error("Not authenticated to fetch contributions.");
+                    contributionsList.innerHTML = '<p class="text-red-500">Error: Not authenticated. Please log in again.</p>';
+                    return;
+                }
+
                 const contributionsRef = db.collection('contributions');
                 const q = contributionsRef.where('status', '==', 'pending');
                 const snapshot = await q.get();

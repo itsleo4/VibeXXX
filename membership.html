@@ -30,6 +30,7 @@
         header {
             width: 100%;
             display: flex;
+            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
             justify-content: space-between;
             align-items: center;
             padding: 15px 0;
@@ -42,21 +43,50 @@
             color: #ff3366;
             text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
             margin: 0;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+        nav {
+            display: flex;
+            flex-wrap: wrap; /* Allow nav items to wrap */
+            gap: 10px; /* Space between nav items */
+            margin-top: 10px; /* Space from logo on small screens */
+            justify-content: center; /* Center nav items on small screens */
+            flex-grow: 1; /* Allow nav to take available space */
+        }
+        @media (min-width: 640px) { /* On small screens and up */
+            nav {
+                flex-wrap: nowrap; /* Prevent wrapping */
+                margin-top: 0; /* Remove top margin */
+                justify-content: flex-end; /* Align to end on larger screens */
+            }
         }
         nav a, nav button {
             color: #fff;
             text-decoration: none;
             font-weight: 600;
-            margin-left: 20px;
             padding: 8px 15px;
             border-radius: 5px;
             transition: background-color 0.3s ease, color 0.3s ease;
             border: none;
             cursor: pointer;
+            white-space: nowrap; /* Prevent text from wrapping inside buttons */
         }
         nav a:hover, nav button:hover {
             background-color: #ff3366;
             color: #fff;
+        }
+        nav .auth-links {
+            display: flex;
+            gap: 10px; /* Space between auth buttons */
+            flex-wrap: wrap; /* Allow auth buttons to wrap */
+            justify-content: center; /* Center auth buttons on small screens */
+            width: 100%; /* Take full width on small screens */
+        }
+        @media (min-width: 640px) { /* On small screens and up */
+            nav .auth-links {
+                width: auto; /* Auto width on larger screens */
+                flex-wrap: nowrap;
+            }
         }
         nav .auth-links a {
             background-color: #444;
@@ -80,11 +110,18 @@
             text-shadow: 0 0 15px rgba(255, 51, 102, 0.7);
         }
         .membership-options {
-            display: flex; /* Use flexbox for layout */
-            flex-wrap: wrap; /* Allow wrapping on smaller screens */
-            justify-content: center;
-            gap: 30px; /* Space between cards */
+            display: flex;
+            flex-direction: column; /* Stack vertically on small screens */
+            align-items: center; /* Center items when stacked */
+            gap: 20px; /* Space between cards */
             margin-bottom: 40px;
+        }
+        @media (min-width: 768px) { /* On medium screens and up */
+            .membership-options {
+                flex-direction: row; /* Display side-by-side */
+                justify-content: center;
+                gap: 30px;
+            }
         }
         .membership-card {
             background-color: #2a2a2a;
@@ -93,20 +130,12 @@
             text-align: center;
             box-shadow: 0 6px 20px rgba(0,0,0,0.4);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            flex: 1 1 300px; /* Allow cards to grow/shrink, with a base width of 300px */
-            max-width: 450px; /* Max width for individual cards */
+            width: 100%; /* Full width on small screens */
+            max-width: 350px; /* Max width for individual cards */
             border: 2px solid transparent;
-            display: flex; /* Inner flex for content alignment */
+            display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Push button to bottom */
-        }
-        @media (min-width: 768px) { /* On medium screens and up, make them side-by-side */
-            .membership-options {
-                flex-wrap: nowrap; /* Prevent wrapping if enough space */
-            }
-            .membership-card {
-                flex: 1; /* Distribute space equally */
-            }
+            justify-content: space-between;
         }
         .membership-card:hover {
             transform: translateY(-10px);
@@ -130,7 +159,7 @@
             padding: 0;
             margin-bottom: 30px;
             text-align: left;
-            flex-grow: 1; /* Allow list to take available space */
+            flex-grow: 1;
         }
         .membership-card ul li {
             font-size: 1.1em;
@@ -152,7 +181,7 @@
             font-size: 1.1em;
             transition: background-color 0.3s ease, transform 0.3s ease;
             box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
-            width: 100%; /* Make button full width of card */
+            width: 100%;
         }
         .select-plan-btn:hover {
             background-color: #e6005c;
@@ -305,7 +334,7 @@
                 <a href="index.html">Home</a>
                 <a href="unlocked_videos.html">Pro Videos</a>
                 <a href="membership.html">Membership</a>
-                <div class="auth-links inline-block">
+                <div class="auth-links">
                     <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded login-link">Login</a>
                     <a href="register.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded register-link">Register</a>
                     <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden">Logout</button>
@@ -356,7 +385,7 @@
             </div>
 
             <div id="upiDetails" class="payment-info-section hidden">
-                <img src="images/upi.png" alt="UPI QR Code" id="upiQrCodeImage">
+                <img src="images/upi.png" alt="UPI QR Code" id="upiQrCodeImage" onerror="this.onerror=null;this.src='https://placehold.co/200x200/000/FFF?text=UPI+QR+Code+Error';">
                 <p>Scan this QR or copy UPI ID:</p>
                 <p class="text-sm text-gray-400 break-all" id="upiId">bharti00077-2@okaxis</p>
                 <button class="copy-address-btn" onclick="copyToClipboard('upiId')">Copy UPI ID</button>
@@ -364,7 +393,7 @@
             </div>
 
             <div id="paypalDetails" class="payment-info-section hidden">
-                <img src="images/paypal.png" alt="PayPal QR Code" id="paypalQrCodeImage" class="mb-4">
+                <img src="images/paypal.png" alt="PayPal QR Code" id="paypalQrCodeImage" class="mb-4" onerror="this.onerror=null;this.src='https://placehold.co/200x200/000/FFF?text=PayPal+QR+Code+Error';">
                 <p>Scan this QR or click the button below to pay via PayPal:</p>
                 <a href="https://www.paypal.me/PawanKumar35438" target="_blank" class="copy-address-btn bg-blue-600 hover:bg-blue-700">Pay with PayPal</a>
                 <p class="text-xs text-red-400 mt-2">Ensure you send the exact amount for your selected plan.</p>

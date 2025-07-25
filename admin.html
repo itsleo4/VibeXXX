@@ -269,10 +269,8 @@
             const email = adminEmailInput.value; // This will be 'nsfw@gmail.com'
             const password = adminPasswordInput.value;
             
-            if (password !== ADMIN_SECRET) { 
-                loginMessage.textContent = 'Invalid Admin Password'; // Changed message
-                return;
-            }
+            // Removed client-side password check against ADMIN_SECRET.
+            // Firebase Auth will handle password validation.
 
             try {
                 // Sign in with email and password
@@ -282,7 +280,7 @@
                 // The onAuthStateChanged listener will automatically call checkAdminLogin()
             } catch (error) {
                 console.error("Admin panel: Firebase Auth Error during login:", error);
-                loginMessage.textContent = `Firebase Auth Error: ${error.message}`;
+                loginMessage.textContent = `Login failed: ${error.message}`; // More generic message
             }
         });
 

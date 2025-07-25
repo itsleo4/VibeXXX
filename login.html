@@ -19,6 +19,7 @@
         header {
             width: 100%;
             display: flex;
+            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
             justify-content: space-between;
             align-items: center;
             padding: 15px 0;
@@ -31,21 +32,50 @@
             color: #ff3366;
             text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
             margin: 0;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+        nav {
+            display: flex;
+            flex-wrap: wrap; /* Allow nav items to wrap */
+            gap: 10px; /* Space between nav items */
+            margin-top: 10px; /* Space from logo on small screens */
+            justify-content: center; /* Center nav items on small screens */
+            flex-grow: 1; /* Allow nav to take available space */
+        }
+        @media (min-width: 640px) { /* On small screens and up */
+            nav {
+                flex-wrap: nowrap; /* Prevent wrapping */
+                margin-top: 0; /* Remove top margin */
+                justify-content: flex-end; /* Align to end on larger screens */
+            }
         }
         nav a, nav button {
             color: #fff;
             text-decoration: none;
             font-weight: 600;
-            margin-left: 20px;
             padding: 8px 15px;
             border-radius: 5px;
             transition: background-color 0.3s ease, color 0.3s ease;
             border: none; /* Ensure buttons don't have default borders */
             cursor: pointer;
+            white-space: nowrap; /* Prevent text from wrapping inside buttons */
         }
         nav a:hover, nav button:hover {
             background-color: #ff3366;
             color: #fff;
+        }
+        nav .auth-links {
+            display: flex;
+            gap: 10px; /* Space between auth buttons */
+            flex-wrap: wrap; /* Allow auth buttons to wrap */
+            justify-content: center; /* Center auth buttons on small screens */
+            width: 100%; /* Take full width on small screens */
+        }
+        @media (min-width: 640px) { /* On small screens and up */
+            nav .auth-links {
+                width: auto; /* Auto width on larger screens */
+                flex-wrap: nowrap;
+            }
         }
         nav .auth-links a {
             background-color: #444;
@@ -191,7 +221,7 @@
                 <a href="index.html" class="text-gray-300 hover:text-white">Home</a>
                 <a href="unlocked_videos.html" class="text-gray-300 hover:text-white">Pro Videos</a>
                 <a href="membership.html" class="text-gray-300 hover:text-white">Membership</a>
-                <div class="auth-links inline-block">
+                <div class="auth-links">
                     <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded login-link">Login</a>
                     <a href="register.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded register-link">Register</a>
                     <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden">Logout</button>
@@ -231,11 +261,5 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="auth.js"></script>
-
-    <script>
-        // No inline script here for login form submission.
-        // auth.js will handle the form submission listener for #loginForm.
-        // It's important that auth.js is loaded after Firebase SDKs.
-    </script>
 </body>
 </html>

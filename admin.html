@@ -164,7 +164,8 @@
         <h1>Admin Panel</h1>
 
         <div id="adminLogin" class="login-section">
-            <input type="password" id="adminSecret" placeholder="Enter Admin Secret" />
+            <input type="email" id="adminEmail" placeholder="Admin Email" />
+            <input type="password" id="adminPassword" placeholder="Admin Password" />
             <button id="loginButton">Login</button>
             <p id="loginMessage" class="text-red-500"></p>
         </div>
@@ -206,7 +207,7 @@
             firebase.initializeApp(firebaseConfig);
         }
         const db = firebase.firestore();
-        const auth = firebase.auth(); // Initialize Firebase Auth
+        const auth = firebase.auth(); 
 
         // Admin Secret (MUST MATCH THE ONE IN REPLIT SECRETS)
         const ADMIN_SECRET = "@#vacexw999666"; 
@@ -216,7 +217,8 @@
 
         // UI Elements
         const adminLogin = document.getElementById('adminLogin');
-        const adminSecretInput = document.getElementById('adminSecret');
+        const adminEmailInput = document.getElementById('adminEmail'); // New
+        const adminPasswordInput = document.getElementById('adminPassword'); // New
         const loginButton = document.getElementById('loginButton');
         const loginMessage = document.getElementById('loginMessage');
         const adminContent = document.getElementById('adminContent');
@@ -249,51 +251,54 @@
 
         // --- Admin Login/Logout Logic ---
         async function checkAdminLogin() {
-            const storedSecret = localStorage.getItem('adminSecret');
-            if (storedSecret === ADMIN_SECRET) {
+            // Check if a user is currently authenticated (this will be our admin user)
+            if (auth.currentUser) {
                 adminLogin.classList.add('hidden');
                 adminContent.style.display = 'block';
-                
-                // Sign in anonymously to satisfy Firestore rules
-                try {
-                    await auth.signInAnonymously();
-                    console.log("Admin panel: Signed in anonymously to Firebase.");
-                    fetchPendingContributions(); // Fetch data only after authentication
-                } catch (error) {
-                    console.error("Admin panel: Error signing in anonymously:", error);
-                    loginMessage.textContent = `Firebase Auth Error: ${error.message}`;
-                    adminLogin.classList.remove('hidden'); // Show login again if auth fails
-                    adminContent.style.display = 'none';
-                }
+                console.log("Admin panel: Authenticated user detected:", auth.currentUser.uid);
+                fetchPendingContributions(); // Fetch data only after authentication
             } else {
                 adminLogin.classList.remove('hidden');
                 adminContent.style.display = 'none';
-                // Ensure no anonymous user is left authenticated if logged out
-                if (auth.currentUser) {
-                    auth.signOut();
-                }
+                console.log("Admin panel: No authenticated user.");
             }
         }
 
-        loginButton.addEventListener('click', () => {
-            const enteredSecret = adminSecretInput.value;
-            if (enteredSecret === ADMIN_SECRET) {
-                localStorage.setItem('adminSecret', ADMIN_SECRET);
-                loginMessage.textContent = '';
-                checkAdminLogin();
-            } else {
+        // Modified login button click handler
+        loginButton.addEventListener('click', async () => {
+            const email = adminEmailInput.value;
+            const password = adminPasswordInput.value;
+            const enteredSecret = password; // For the webhook secret, still use the password
+
+            if (enteredSecret !== ADMIN_SECRET) { // Check the hardcoded secret for webhook access
                 loginMessage.textContent = 'Invalid Admin Secret';
+                return;
+            }
+
+            try {
+                // Sign in with email and password
+                await auth.signInWithEmailAndPassword(email, password);
+                console.log("Admin panel: Signed in with email/password.");
+                loginMessage.textContent = ''; // Clear any previous error
+                checkAdminLogin(); // Re-check login state, which will now show content
+            } catch (error) {
+                console.error("Admin panel: Firebase Auth Error during login:", error);
+                loginMessage.textContent = `Firebase Auth Error: ${error.message}`;
             }
         });
 
-        logoutButton.addEventListener('click', () => {
-            localStorage.removeItem('adminSecret');
-            if (auth.currentUser) {
-                auth.signOut(); // Sign out the anonymous user
+        logoutButton.addEventListener('click', async () => {
+            localStorage.removeItem('adminSecret'); // This is no longer strictly needed for auth, but good to clear
+            try {
+                await auth.signOut(); // Sign out the current user
+                console.log("Admin panel: Signed out from Firebase.");
+            } catch (error) {
+                console.error("Admin panel: Error signing out:", error);
             }
             checkAdminLogin();
             contributionsList.innerHTML = '<p class="text-gray-400">Loading pending contributions...</p>'; // Clear list
-            adminSecretInput.value = ''; // Clear password field
+            adminEmailInput.value = ''; // Clear email field
+            adminPasswordInput.value = ''; // Clear password field
         });
 
         // --- Fetch and Display Contributions ---
@@ -402,10 +407,11 @@
         }
 
         // Initial check on page load
-        document.addEventListener('DOMContentLoaded', checkAdminLogin);
-
-        // Periodically refresh pending contributions (optional, but nice for admin panel)
-        // setInterval(fetchPendingContributions, 30000); // Refresh every 30 seconds
+        // Listen for Firebase auth state changes to trigger content display
+        auth.onAuthStateChanged(user => {
+            checkAdminLogin(); // This will now check if a user is already authenticated
+        });
+        document.addEventListener('DOMContentLoaded', checkAdminLogin); // Also check on DOM load
     </script>
 </body>
 </html>

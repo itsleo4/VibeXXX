@@ -329,7 +329,7 @@
     <button type="submit" class="submit-btn" id="submitBtn">📤 Submit Proof</button>
   </form>
 
-  <div class="thankyou" id="thankyouMsg">
+  <div class="thankyou" id="thankYouMsg">
     ✅ Thank you! Your proof is submitted.<br/>
     Please send your payment screenshot to our Telegram admin <a href="https://t.me/LuxFlix" target="_blank">@LuxFlix</a> for quick verification.
   </div>
@@ -402,7 +402,7 @@
         const paymentForm = document.getElementById('paymentForm');
         const upiSection = document.getElementById('upi');
         const paypalSection = document.getElementById('paypal');
-        const thankYouMsg = document.getElementById('thankyouMsg');
+        const thankYouMsg = document.getElementById('thankYouMsg'); // Corrected ID
         const submitBtn = document.getElementById('submitBtn');
         const userFirebaseUIDField = document.getElementById('userFirebaseUID');
         const userEmailField = document.getElementById('userEmail');
@@ -490,14 +490,25 @@
             submitBtn.innerText = "⏳ Submitting...";
             submitBtn.disabled = true;
 
-            // Create FormData object (even without file, it's good for form data)
-            const formData = new FormData(paymentForm);
+            // Collect data into an object
+            const formData = {
+                name: userNameField.value,
+                user_firebase_uid: userFirebaseUIDField.value,
+                user_email: userEmailField.value,
+                membership_plan: selectedMembershipPlanField.value,
+                payment_method: selectedPaymentMethodField.value,
+                refID: document.getElementById('refID').value,
+                selected_price: selectedPriceField.value,
+                selected_currency: selectedCurrencyField.value
+            };
 
             try {
-                // IMPORTANT: REPLACE THIS URL WITH YOUR REPLIT WEBHOOK URL
-                const response = await fetch("YOUR_REPLIT_WEBHOOK_URL_HERE", {
+                const response = await fetch("https://e1bea856-55a4-42d0-adb5-19e2fada9cb7-00-2shzdua4si313.janeway.replit.dev/submit", {
                     method: 'POST',
-                    body: formData // Send as FormData
+                    headers: {
+                        'Content-Type': 'application/json' // Set Content-Type to JSON
+                    },
+                    body: JSON.stringify(formData) // Send data as JSON string
                 });
 
                 if (response.ok) {

@@ -239,7 +239,7 @@
                                 accessDeniedMessage.textContent = "Your Pro Access has expired. Please renew your membership!";
                                 showScreen(accessDeniedScreen);
                                 // Optionally, update Firestore to set unlocked_access to false here
-                                // userDocRef.update({ unlocked_access: false });
+                                // userDocRef.update({ unlocked_access: false }); // This would auto-revoke in Firestore
                             }
                             else {
                                 // User is logged in but doesn't have unlocked_access true or no end date

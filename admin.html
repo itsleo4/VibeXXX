@@ -195,7 +195,7 @@
             apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
             authDomain: "vibexxx-500c6.firebaseapp.com",
             projectId: "vibexxx-500c6",
-            storageBucket: "vibexxx-500c6.firebasestorage.app",
+            storageBucket: "vibexxx-500c6.firebasestorage.app", // This line is fine, but storage is not used here
             messagingSenderId: "880697212397",
             appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
         };
@@ -207,12 +207,10 @@
         const db = firebase.firestore();
 
         // Admin Secret (MUST MATCH THE ONE IN REPLIT SECRETS)
-        // For security, do NOT hardcode this in a real app.
-        // For this simple example, we'll store it in localStorage after successful login.
-        const ADMIN_SECRET = "YOUR_STRONG_ADMIN_PASSWORD_HERE"; // <<< IMPORTANT: REPLACE THIS!
+        const ADMIN_SECRET = "@#vacexw999666"; // <<< ADMIN SECRET PASSWORD SET HERE!
 
-        // Replit Webhook URL (MUST MATCH YOUR REPLIT APP'S URL)
-        const REPLIT_WEBHOOK_BASE_URL = "https://e1bea856-55a4-42d0-adb5-19e2fada9cb7-00-2shzdua4si313.janeway.replit.dev"; // <<< IMPORTANT: REPLACE THIS!
+        // Replit Webhook URL
+        const REPLIT_WEBHOOK_BASE_URL = "https://e1bea856-55a4-42d0-adb5-19e2fada9cb7-00-2shzdua4si313.janeway.replit.dev"; // <<< YOUR REPLIT BASE URL SET HERE!
 
         // UI Elements
         const adminLogin = document.getElementById('adminLogin');

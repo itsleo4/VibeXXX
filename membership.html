@@ -356,16 +356,17 @@
             </div>
 
             <div id="upiDetails" class="payment-info-section hidden">
-                <img src="https://placehold.co/200x200/000/FFF?text=YOUR+UPI+QR" alt="UPI QR Code" id="upiQrCodeImage">
+                <img src="images/upi.png" alt="UPI QR Code" id="upiQrCodeImage">
                 <p>Scan this QR or copy UPI ID:</p>
-                <p class="text-sm text-gray-400 break-all" id="upiId">your_upi_id@bank</p>
+                <p class="text-sm text-gray-400 break-all" id="upiId">bharti00077-2@okaxis</p>
                 <button class="copy-address-btn" onclick="copyToClipboard('upiId')">Copy UPI ID</button>
                 <p class="text-xs text-red-400 mt-2">Make sure to send the exact amount (₹<span id="upiAmount"></span>) for your selected plan.</p>
             </div>
 
             <div id="paypalDetails" class="payment-info-section hidden">
-                <p>Click the button below to pay via PayPal:</p>
-                <a href="https://www.paypal.me/yourpaypalid" target="_blank" class="copy-address-btn bg-blue-600 hover:bg-blue-700">Pay with PayPal</a>
+                <img src="images/paypal.png" alt="PayPal QR Code" id="paypalQrCodeImage" class="mb-4">
+                <p>Scan this QR or click the button below to pay via PayPal:</p>
+                <a href="https://www.paypal.me/PawanKumar35438" target="_blank" class="copy-address-btn bg-blue-600 hover:bg-blue-700">Pay with PayPal</a>
                 <p class="text-xs text-red-400 mt-2">Ensure you send the exact amount for your selected plan.</p>
             </div>
             
@@ -421,11 +422,12 @@
         // Payment Details for UPI and PayPal (REPLACE WITH YOUR ACTUALS)
         const paymentDetails = {
             "UPI": {
-                address: "your_upi_id@bank", // Replace with your actual UPI ID
-                qr: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/upi-qr.png" // Replace with your actual UPI QR code image URL
+                address: "bharti00077-2@okaxis", // Your actual UPI ID
+                qr: "images/upi.png" // Path to your UPI QR code image
             },
             "PAYPAL": {
-                link: "https://www.paypal.me/yourpaypalid" // Replace with your actual PayPal.me link
+                link: "https://www.paypal.me/PawanKumar35438", // Your actual PayPal.me link
+                qr: "images/paypal.png" // Path to your PayPal QR code image
             }
         };
 
@@ -444,6 +446,7 @@
         const upiId = document.getElementById('upiId');
         const upiAmountSpan = document.getElementById('upiAmount');
         const paypalDetailsDiv = document.getElementById('paypalDetails');
+        const paypalQrCodeImage = document.getElementById('paypalQrCodeImage'); // New element for PayPal QR
         const paypalButtonLink = paypalDetailsDiv.querySelector('a');
         const paymentProofForm = document.getElementById('paymentProofForm');
         const paymentMessage = document.getElementById('paymentMessage');
@@ -506,6 +509,7 @@
                 upiAmountSpan.textContent = selectedPrice; // Display selected price for UPI
             } else if (method === "PAYPAL") {
                 paypalDetailsDiv.classList.remove('hidden');
+                paypalQrCodeImage.src = paymentDetails.PAYPAL.qr; // Set PayPal QR source
                 paypalButtonLink.href = paymentDetails.PAYPAL.link;
             }
         });

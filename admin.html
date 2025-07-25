@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>VibeXXX Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #111; /* Dark background */
+            color: #fff; /* White text */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ff3366;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(255, 51, 102, 0.7);
+        }
+        .login-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .login-section input {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background-color: #2a2a2a;
+            color: white;
+            width: 100%;
+            max-width: 300px;
+        }
+        .login-section button {
+            background-color: #ff3366;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .login-section button:hover {
+            background-color: #e6005c;
+        }
+        .admin-content {
+            display: none; /* Hidden until logged in */
+        }
+        .contribution-card {
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .contribution-card p {
+            margin: 0;
+            font-size: 1rem;
+        }
+        .contribution-card strong {
+            color: #ff3366;
+        }
+        .contribution-card .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: flex-end;
+        }
+        .contribution-card .actions button {
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .approve-btn {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+        .approve-btn:hover {
+            background-color: #45a049;
+        }
+        .reject-btn {
+            background-color: #f44336; /* Red */
+            color: white;
+        }
+        .reject-btn:hover {
+            background-color: #da190b;
+        }
+        .status-pending { color: #ffeb3b; } /* Yellow */
+        .status-approved { color: #4CAF50; } /* Green */
+        .status-rejected { color: #f44336; } /* Red */
+
+        /* Modal styles from auth.js */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #2a2a2a;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            color: white;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Admin Panel</h1>
+
+        <div id="adminLogin" class="login-section">
+            <input type="password" id="adminSecret" placeholder="Enter Admin Secret" />
+            <button id="loginButton">Login</button>
+            <p id="loginMessage" class="text-red-500"></p>
+        </div>
+
+        <div id="adminContent" class="admin-content">
+            <h2 class="text-2xl font-bold text-pink-400 mb-4">Pending Contributions</h2>
+            <div id="contributionsList">
+                <p class="text-gray-400">Loading pending contributions...</p>
+            </div>
+            <button id="logoutButton" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded mt-8">Logout</button>
+        </div>
+    </div>
+
+    <!-- Universal Modal Structure (from auth.js) -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script>
+        // Firebase Configuration (same as your other client-side files)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
+            authDomain: "vibexxx-500c6.firebaseapp.com",
+            projectId: "vibexxx-500c6",
+            storageBucket: "vibexxx-500c6.firebasestorage.app",
+            messagingSenderId: "880697212397",
+            appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
+        };
+
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
+        // Admin Secret (MUST MATCH THE ONE IN REPLIT SECRETS)
+        // For security, do NOT hardcode this in a real app.
+        // For this simple example, we'll store it in localStorage after successful login.
+        const ADMIN_SECRET = "YOUR_STRONG_ADMIN_PASSWORD_HERE"; // <<< IMPORTANT: REPLACE THIS!
+
+        // Replit Webhook URL (MUST MATCH YOUR REPLIT APP'S URL)
+        const REPLIT_WEBHOOK_BASE_URL = "https://e1bea856-55a4-42d0-adb5-19e2fada9cb7-00-2shzdua4si313.janeway.replit.dev"; // <<< IMPORTANT: REPLACE THIS!
+
+        // UI Elements
+        const adminLogin = document.getElementById('adminLogin');
+        const adminSecretInput = document.getElementById('adminSecret');
+        const loginButton = document.getElementById('loginButton');
+        const loginMessage = document.getElementById('loginMessage');
+        const adminContent = document.getElementById('adminContent');
+        const contributionsList = document.getElementById('contributionsList');
+        const logoutButton = document.getElementById('logoutButton');
+
+        // Modal elements (copied from auth.js for self-containment)
+        const modal = document.getElementById('modal');
+        const modalMessage = document.getElementById('modalMessage');
+        const closeModalButton = document.getElementById('closeModal');
+
+        if (modal && closeModalButton) {
+            closeModalButton.addEventListener('click', () => {
+                hideModal();
+            });
+        }
+
+        function showModal(message) {
+            if (modal && modalMessage) {
+                modalMessage.textContent = message;
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function hideModal() {
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // --- Admin Login/Logout Logic ---
+        function checkAdminLogin() {
+            const storedSecret = localStorage.getItem('adminSecret');
+            if (storedSecret === ADMIN_SECRET) {
+                adminLogin.classList.add('hidden');
+                adminContent.style.display = 'block';
+                fetchPendingContributions();
+            } else {
+                adminLogin.classList.remove('hidden');
+                adminContent.style.display = 'none';
+            }
+        }
+
+        loginButton.addEventListener('click', () => {
+            const enteredSecret = adminSecretInput.value;
+            if (enteredSecret === ADMIN_SECRET) {
+                localStorage.setItem('adminSecret', ADMIN_SECRET);
+                loginMessage.textContent = '';
+                checkAdminLogin();
+            } else {
+                loginMessage.textContent = 'Invalid Admin Secret';
+            }
+        });
+
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('adminSecret');
+            checkAdminLogin();
+            contributionsList.innerHTML = '<p class="text-gray-400">Loading pending contributions...</p>'; // Clear list
+            adminSecretInput.value = ''; // Clear password field
+        });
+
+        // --- Fetch and Display Contributions ---
+        async function fetchPendingContributions() {
+            contributionsList.innerHTML = '<p class="text-gray-400">Loading pending contributions...</p>';
+            try {
+                const contributionsRef = db.collection('contributions');
+                const q = contributionsRef.where('status', '==', 'pending');
+                const snapshot = await q.get();
+
+                if (snapshot.empty) {
+                    contributionsList.innerHTML = '<p class="text-gray-400">No pending contributions.</p>';
+                    return;
+                }
+
+                contributionsList.innerHTML = ''; // Clear loading message
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const docId = doc.id;
+                    const submissionTime = data.submissionTime ? new Date(data.submissionTime.seconds * 1000).toLocaleString() : 'N/A';
+
+                    const card = document.createElement('div');
+                    card.className = 'contribution-card';
+                    card.innerHTML = `
+                        <p><strong>Name:</strong> ${data.name}</p>
+                        <p><strong>Email:</strong> ${data.userEmail}</p>
+                        <p><strong>User UID:</strong> ${data.userUid}</p>
+                        <p><strong>Plan:</strong> ${data.membershipPlan.replace(/_/g, ' ')}</p>
+                        <p><strong>Method:</strong> ${data.paymentMethod}</p>
+                        <p><strong>Ref ID:</strong> ${data.refId}</p>
+                        <p><strong>Price:</strong> ${data.selectedCurrency} ${data.selectedPrice}</p>
+                        <p><strong>Submitted:</strong> ${submissionTime}</p>
+                        <p><strong>Status:</strong> <span class="status-pending">${data.status}</span></p>
+                        <div class="actions">
+                            <button class="approve-btn" data-doc-id="${docId}" data-user-uid="${data.userUid}" data-plan="${data.membershipPlan}">Approve</button>
+                            <button class="reject-btn" data-doc-id="${docId}" data-user-uid="${data.userUid}">Reject</button>
+                        </div>
+                    `;
+                    contributionsList.appendChild(card);
+                });
+
+                // Add event listeners to new buttons
+                document.querySelectorAll('.approve-btn').forEach(button => {
+                    button.addEventListener('click', handleApproveReject);
+                });
+                document.querySelectorAll('.reject-btn').forEach(button => {
+                    button.addEventListener('click', handleApproveReject);
+                });
+
+            } catch (error) {
+                console.error("Error fetching contributions:", error);
+                contributionsList.innerHTML = `<p class="text-red-500">Error loading contributions: ${error.message}</p>`;
+                showModal(`Error loading contributions: ${error.message}`);
+            }
+        }
+
+        // --- Handle Approve/Reject Actions ---
+        async function handleApproveReject(event) {
+            const button = event.target;
+            const docId = button.dataset.docId;
+            const userUid = button.dataset.userUid;
+            const membershipPlan = button.dataset.plan; // Only available on approve button
+            const action = button.classList.contains('approve-btn') ? 'approve' : 'reject';
+
+            button.disabled = true;
+            button.textContent = 'Processing...';
+
+            try {
+                const response = await fetch(`${REPLIT_WEBHOOK_BASE_URL}/approve_user`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Secret': ADMIN_SECRET // Send the admin secret
+                    },
+                    body: JSON.stringify({
+                        contributionDocId: docId,
+                        userUid: userUid,
+                        membershipPlan: membershipPlan, // Sent for both approve/reject, but only used for approve
+                        action: action
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showModal(result.message);
+                    fetchPendingContributions(); // Refresh the list
+                } else {
+                    console.error(`Error ${action}ing user:`, result.error);
+                    showModal(`Error ${action}ing user: ${result.error || 'Unknown error'}`);
+                }
+            } catch (error) {
+                console.error(`Network error during ${action} action:`, error);
+                showModal(`Network error: ${error.message}`);
+            } finally {
+                button.disabled = false;
+                button.textContent = action === 'approve' ? 'Approve' : 'Reject';
+            }
+        }
+
+        // Initial check on page load
+        document.addEventListener('DOMContentLoaded', checkAdminLogin);
+
+        // Periodically refresh pending contributions (optional, but nice for admin panel)
+        // setInterval(fetchPendingContributions, 30000); // Refresh every 30 seconds
+    </script>
+</body>
+</html>

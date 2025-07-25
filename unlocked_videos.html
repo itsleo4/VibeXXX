@@ -88,6 +88,7 @@
     </style>
 </head>
 <body class="bg-gray-900 text-white">
+    <!-- Header/Navigation Bar -->
     <header class="bg-gray-800 p-4 shadow-lg">
         <nav class="container mx-auto flex justify-between items-center">
             <a href="index.html" class="text-2xl font-bold text-red-500">VibeXXX</a>
@@ -97,31 +98,38 @@
                 <a href="saved.html" class="text-gray-300 hover:text-white saved-link hidden">Saved</a>
                 <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded login-link">Login</a>
                 <a href="register.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded register-link">Register</a>
-                <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden" onclick="logoutUserAndRedirect()">Logout</button>
+                <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden">Logout</button>
             </div>
         </nav>
     </header>
 
     <main class="container mx-auto p-4">
+        <!-- Loading Screen -->
         <section id="loadingScreen" class="loading-screen">
             <div class="spinner"></div>
             <h2>Verifying Access...</h2>
             <p>Please wait while we confirm your Pro Membership.</p>
         </section>
 
+        <!-- Access Denied Screen -->
         <section id="accessDeniedScreen" class="access-denied-screen hidden">
             <h2 class="text-red-500">Access Denied!</h2>
-            <p>It looks like you don't have Pro Access yet.</p>
+            <p id="accessDeniedMessage">It looks like you don't have Pro Access yet.</p>
             <p>Unlock all exclusive videos by becoming a Pro Member today!</p>
             <a href="membership.html" class="cta-button">Become a Pro Member</a>
         </section>
 
+        <!-- Pro Video Grid (Visible only to Pro Members) -->
         <section id="proVideoGrid" class="py-8 hidden">
             <h2 class="text-4xl font-bold text-center text-red-400 mb-8">Exclusive Pro Videos</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
+                <!-- IMPORTANT: REPLACE THESE PLACEHOLDER VIDEO CARDS WITH YOUR ACTUAL PRO VIDEOS -->
+                <!-- Each div.video-card should link to video-player.html with a unique 'video' ID -->
+
                 <div class="video-card">
                     <a href="video-player.html?video=PROVID001">
+                        <!-- Replace with your actual thumbnail image for Pro Video 1 -->
                         <img src="https://placehold.co/300x180/222/FFF?text=Pro+Video+1" alt="Pro Video 1 Title">
                     </a>
                     <div class="p-4">
@@ -132,6 +140,7 @@
 
                 <div class="video-card">
                     <a href="video-player.html?video=PROVID002">
+                        <!-- Replace with your actual thumbnail image for Pro Video 2 -->
                         <img src="https://placehold.co/300x180/222/FFF?text=Pro+Video+2" alt="Pro Video 2 Title">
                     </a>
                     <div class="p-4">
@@ -142,6 +151,7 @@
 
                 <div class="video-card">
                     <a href="video-player.html?video=PROVID003">
+                        <!-- Replace with your actual thumbnail image for Pro Video 3 -->
                         <img src="https://placehold.co/300x180/222/FFF?text=Pro+Video+3" alt="Pro Video 3 Title">
                     </a>
                     <div class="p-4">
@@ -150,10 +160,13 @@
                     </div>
                 </div>
 
-                </div>
+                <!-- Add more video cards here following the same structure -->
+
+            </div>
         </section>
     </main>
 
+    <!-- General Footer -->
     <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-8 rounded-lg shadow-lg">
         <p>&copy; 2025 VibeXXX. All rights reserved. | <a href="#" class="hover:underline">Privacy Policy</a></p>
         <div class="flex justify-center space-x-4 mt-4">
@@ -163,18 +176,18 @@
         </div>
     </footer>
 
+    <!-- Firebase CDN scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
         // Initialize Firebase (if not already initialized by auth.js)
-        // Make sure your firebaseConfig is correct here or imported from auth.js if you restructure
         const firebaseConfig = {
             apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
             authDomain: "vibexxx-500c6.firebaseapp.com",
             projectId: "vibexxx-500c6",
-            storageBucket: "vibexxx-500c6.appspot.com",
+            storageBucket: "vibexxx-500c6.appspot.com", // This line is fine, but storage is not used here
             messagingSenderId: "880697212397",
             appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
         };
@@ -188,6 +201,7 @@
         // Get screen elements
         const loadingScreen = document.getElementById('loadingScreen');
         const accessDeniedScreen = document.getElementById('accessDeniedScreen');
+        const accessDeniedMessage = document.getElementById('accessDeniedMessage'); // New element
         const proVideoGrid = document.getElementById('proVideoGrid');
 
         // Function to show a specific screen and hide others
@@ -204,26 +218,50 @@
             auth.onAuthStateChanged(async (user) => {
                 if (user) {
                     console.log("Firebase user is logged in:", user.uid, user.email);
-                    // Fetch user document from Firestore to check 'unlocked_access'
+                    // Fetch user document from Firestore to check 'unlocked_access' and 'subscriptionEndDate'
                     const userDocRef = db.collection('users').doc(user.uid);
                     try {
                         const userDoc = await userDocRef.get();
-                        if (userDoc.exists && userDoc.data().unlocked_access === true) {
-                            // User has access! Show the videos.
-                            console.log("User has Pro Access!");
-                            showScreen(proVideoGrid);
+                        if (userDoc.exists) {
+                            const userData = userDoc.data();
+                            const unlockedAccess = userData.unlocked_access === true;
+                            const subscriptionEndDate = userData.subscriptionEndDate ? userData.subscriptionEndDate.toDate() : null; // Convert Firestore Timestamp to Date object
+
+                            const now = new Date();
+
+                            if (unlockedAccess && subscriptionEndDate && subscriptionEndDate > now) {
+                                // User has access and subscription is active
+                                console.log("User has active Pro Access!");
+                                showScreen(proVideoGrid);
+                            } else if (unlockedAccess && subscriptionEndDate && subscriptionEndDate <= now) {
+                                // User has access but subscription has expired
+                                console.log("User's Pro Access has expired.");
+                                accessDeniedMessage.textContent = "Your Pro Access has expired. Please renew your membership!";
+                                showScreen(accessDeniedScreen);
+                                // Optionally, update Firestore to set unlocked_access to false here
+                                // userDocRef.update({ unlocked_access: false });
+                            }
+                            else {
+                                // User is logged in but doesn't have unlocked_access true or no end date
+                                console.log("User logged in but no active Pro Access flag.");
+                                accessDeniedMessage.textContent = "It looks like you don't have Pro Access yet.";
+                                showScreen(accessDeniedScreen);
+                            }
                         } else {
-                            // User is logged in but doesn't have unlocked_access true
-                            console.log("User logged in but no Pro Access flag.");
+                            // User document doesn't exist (shouldn't happen if registered)
+                            console.log("User document not found. Access Denied.");
+                            accessDeniedMessage.textContent = "Access Denied. Please register or log in.";
                             showScreen(accessDeniedScreen);
                         }
                     } catch (error) {
                         console.error("Error fetching user data from Firebase:", error);
+                        accessDeniedMessage.textContent = `Error verifying access: ${error.message}`;
                         showScreen(accessDeniedScreen); // Assume denied on error
                     }
                 } else {
                     // No user is signed in.
                     console.log("No user signed in. Access Denied.");
+                    accessDeniedMessage.textContent = "You need to be logged in to access Pro content.";
                     showScreen(accessDeniedScreen);
                 }
             });

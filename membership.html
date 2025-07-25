@@ -131,16 +131,7 @@
     #paymentForm label:first-of-type {
         margin-top: 0;
     }
-    input[type="file"] {
-      background: #222;
-      color: white;
-      padding: 10px;
-      border: 1px dashed #ff3366;
-      cursor: pointer;
-      margin-bottom: 20px;
-      width: 100%;
-      box-sizing: border-box;
-    }
+    /* Removed file input specific styles */
     .hint {
       font-size: 0.9em;
       color: #aaa;
@@ -315,7 +306,7 @@
     <p class="currency-note">For 1 Month Access: $5.99 USD | For 3 Months Access: $14.99 USD</p>
   </div>
 
-  <form id="paymentForm" class="submit-form" action="https://luxflixbotv3.vercel.app/api/webhook" method="POST" enctype="multipart/form-data">
+  <form id="paymentForm" class="submit-form" action="YOUR_REPLIT_WEBHOOK_URL_HERE" method="POST">
     <label for="userNameField">Your Name (as on VibeXXX)</label>
     <input type="text" name="name" id="userNameField" readonly /> 
 
@@ -331,14 +322,16 @@
     <input type="text" name="refID" id="refID" pattern="[a-zA-Z0-9@._-]+" required /> 
     <div class="hint">Enter your 12-digit UPI Reference ID (from Google Pay, PhonePe etc.) or PayPal email/transaction ID.</div>
 
-    <label for="screenshot">Upload Payment Screenshot</label>
-    <input type="file" name="screenshot" id="screenshot" accept="image/*" required />
+    <!-- Removed screenshot upload field -->
+    <!-- <label for="screenshot">Upload Payment Screenshot</label>
+    <input type="file" name="screenshot" id="screenshot" accept="image/*" required /> -->
 
     <button type="submit" class="submit-btn" id="submitBtn">📤 Submit Proof</button>
   </form>
 
   <div class="thankyou" id="thankyouMsg">
-    ✅ Thank you! Your proof is submitted.<br/>You’ll be upgraded to Pro soon.
+    ✅ Thank you! Your proof is submitted.<br/>
+    Please send your payment screenshot to our Telegram admin <a href="https://t.me/LuxFlix" target="_blank">@LuxFlix</a> for quick verification.
   </div>
 
   <hr>
@@ -386,7 +379,7 @@
             apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
             authDomain: "vibexxx-500c6.firebaseapp.com",
             projectId: "vibexxx-500c6",
-            storageBucket: "vibexxx-500c6.firebasestorage.app",
+            storageBucket: "vibexxx-500c6.firebasestorage.app", // This can stay, but won't be used for uploads
             messagingSenderId: "880697212397",
             appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
         };
@@ -497,12 +490,14 @@
             submitBtn.innerText = "⏳ Submitting...";
             submitBtn.disabled = true;
 
+            // Create FormData object (even without file, it's good for form data)
             const formData = new FormData(paymentForm);
 
             try {
-                const response = await fetch(paymentForm.action, {
+                // IMPORTANT: REPLACE THIS URL WITH YOUR REPLIT WEBHOOK URL
+                const response = await fetch("YOUR_REPLIT_WEBHOOK_URL_HERE", {
                     method: 'POST',
-                    body: formData
+                    body: formData // Send as FormData
                 });
 
                 if (response.ok) {

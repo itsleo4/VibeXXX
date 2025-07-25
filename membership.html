@@ -557,29 +557,49 @@
         // Event listener for payment proof form submission
         paymentProofForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            console.log("Payment proof form submitted.");
 
             const user = auth.currentUser;
             if (!user) {
                 showModal("You must be logged in to submit payment proof.");
+                console.error("User not logged in.");
                 return;
             }
 
             if (!selectedPlan || !selectedPrice || !selectedCurrency) {
                 showModal("Please select a membership plan first.");
+                console.error("No plan selected.");
                 return;
             }
 
-            const formData = new FormData(paymentProofForm);
+            const paymentMethod = paymentMethodSelect.value;
+            if (!paymentMethod) {
+                showModal("Please select a payment method.");
+                console.error("No payment method selected.");
+                return;
+            }
+
+            const name = document.getElementById('name').value.trim();
+            const refID = document.getElementById('refID').value.trim();
+
+            if (!name || !refID) {
+                showModal("Please fill in your Name and Transaction Reference ID.");
+                console.error("Name or Ref ID missing.");
+                return;
+            }
+
             const data = {
-                name: formData.get('name'),
+                name: name,
                 user_firebase_uid: user.uid,
                 user_email: user.email,
                 membership_plan: selectedPlan,
-                payment_method: formData.get('paymentMethod'),
-                refID: formData.get('refID'),
+                payment_method: paymentMethod,
+                refID: refID,
                 selected_price: selectedPrice,
                 selected_currency: selectedCurrency
             };
+
+            console.log("Data being sent to backend:", data); // IMPORTANT: Check this log in your browser console
 
             paymentMessage.classList.remove('hidden');
             paymentMessage.textContent = "Submitting your proof...";
@@ -595,6 +615,7 @@
                 });
 
                 const result = await response.json();
+                console.log("Backend response:", result); // IMPORTANT: Check this log
 
                 if (response.ok) {
                     paymentMessage.textContent = result.message + " We will verify it shortly!";
@@ -607,10 +628,10 @@
                     showModal("Payment proof submission failed: " + (result.error || "Unknown error."));
                 }
             } catch (error) {
-                console.error("Network error:", error);
+                console.error("Network error during payment submission:", error);
                 paymentMessage.textContent = "Network error. Please try again.";
                 paymentMessage.style.color = '#f44336'; // Red for error
-                showModal("Network error. Please check your internet connection.");
+                showModal("Network error. Please check your internet connection or the Replit server status.");
             }
         });
     </script>

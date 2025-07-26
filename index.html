@@ -5,198 +5,272 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VibeXXX - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
     <style>
+        /* Base styles */
         body {
             margin: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: #111; /* Dark background */
-            color: #fff; /* White text */
+            font-family: 'Open Sans', sans-serif; /* General text font */
+            background-color: #121212; /* Deep dark background */
+            color: #e0e0e0; /* Soft white text */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 20px;
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
-        .container {
-            max-width: 1200px;
-            width: 100%;
-            background-color: #1a1a1a;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            padding: 30px;
-            margin-top: 20px;
-        }
-        header {
-            width: 100%;
+
+        /* Header styles */
+        .app-header {
+            background-color: #1a1a1a; /* Slightly lighter dark for header */
+            padding: 1rem 1.5rem;
             display: flex;
-            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #333;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
-        header h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #ff3366;
-            text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
-            margin: 0;
-            flex-shrink: 0; /* Prevent shrinking */
-        }
-        nav {
+
+        /* VibeXXX Logo */
+        .vibe-logo {
             display: flex;
-            flex-wrap: wrap; /* Allow nav items to wrap */
-            gap: 10px; /* Space between nav items */
-            margin-top: 10px; /* Space from logo on small screens */
-            justify-content: center; /* Center nav items on small screens */
-            flex-grow: 1; /* Allow nav to take available space */
-        }
-        @media (min-width: 640px) { /* On small screens and up */
-            nav {
-                flex-wrap: nowrap; /* Prevent wrapping */
-                margin-top: 0; /* Remove top margin */
-                justify-content: flex-end; /* Align to end on larger screens */
-            }
-        }
-        nav a, nav button {
-            color: #fff;
+            align-items: center;
+            gap: 0.5rem;
             text-decoration: none;
-            font-weight: 600;
-            padding: 8px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            flex-shrink: 0;
+        }
+        .vibe-logo .icon {
+            width: 32px;
+            height: 32px;
+            fill: #ff2e63; /* Vibrant pink/red accent */
+            transition: transform 0.2s ease;
+        }
+        .vibe-logo:hover .icon {
+            transform: scale(1.1);
+        }
+        .vibe-logo .text {
+            font-family: 'Montserrat', sans-serif; /* Premium font for logo */
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #f1f1f1;
+            letter-spacing: -1px;
+            text-shadow: 0 0 5px rgba(255,46,99,0.3);
+        }
+        .vibe-logo .text span {
+            color: #ff2e63; /* Accent color for 'XXX' */
+        }
+
+        /* Search Bar */
+        .search-container {
+            flex-grow: 1;
+            max-width: 500px; /* Max width for search bar */
+            display: flex;
+            border-radius: 25px; /* More rounded */
+            overflow: hidden;
+            background-color: #2a2a2a; /* Darker input background */
+            border: 1px solid #3a3a3a;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .search-container:focus-within {
+            border-color: #ff2e63; /* Accent color on focus */
+            box-shadow: 0 0 0 2px rgba(255,46,99,0.4);
+        }
+        .search-container input {
+            flex-grow: 1;
+            padding: 0.75rem 1.25rem;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            color: #f1f1f1;
+            font-size: 0.95rem;
+        }
+        .search-container button {
+            background-color: #3a3a3a;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            color: #f1f1f1;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .search-container button:hover {
+            background-color: #4a4a4a;
+        }
+        .search-container button svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .nav-buttons a, .nav-buttons button {
+            background-color: #333333; /* Dark button background */
+            color: #f1f1f1;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.1s ease;
             border: none;
             cursor: pointer;
-            white-space: nowrap; /* Prevent text from wrapping inside buttons */
+            white-space: nowrap;
+            font-family: 'Montserrat', sans-serif;
         }
-        nav a:hover, nav button:hover {
-            background-color: #ff3366;
-            color: #fff;
+        .nav-buttons a:hover, .nav-buttons button:hover {
+            background-color: #444444;
+            transform: translateY(-1px);
         }
-        nav .auth-links {
-            display: flex;
-            gap: 10px; /* Space between auth buttons */
-            flex-wrap: wrap; /* Allow auth buttons to wrap */
-            justify-content: center; /* Center auth buttons on small screens */
-            width: 100%; /* Take full width on small screens */
+        .nav-buttons .btn-accent {
+            background-color: #ff2e63; /* Accent color */
         }
-        @media (min-width: 640px) { /* On small screens and up */
-            nav .auth-links {
-                width: auto; /* Auto width on larger screens */
-                flex-wrap: nowrap;
-            }
+        .nav-buttons .btn-accent:hover {
+            background-color: #e02a5a;
         }
-        nav .auth-links a {
-            background-color: #444;
+        .nav-buttons .btn-logout {
+            background-color: #dc2626; /* Red-600 */
         }
-        nav .auth-links a:hover {
-            background-color: #555;
+        .nav-buttons .btn-logout:hover {
+            background-color: #b91c1c; /* Red-700 */
         }
-        nav .logout-link {
-            background-color: #f44336; /* Red for logout */
+
+        /* Main content layout */
+        main {
+            flex-grow: 1;
+            padding: 2rem 1.5rem; /* Consistent padding */
+            max-width: 1400px; /* Max width for content */
+            margin: 0 auto; /* Center content */
         }
-        nav .logout-link:hover {
-            background-color: #da190b;
-        }
-        .become-pro-btn {
-            display: block;
-            width: fit-content;
-            margin: 40px auto;
-            padding: 20px 40px;
-            background: linear-gradient(45deg, #ff3366, #e6005c);
-            color: white;
-            font-size: 2.5rem;
-            font-weight: 800;
-            border-radius: 15px;
-            text-decoration: none;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(255, 51, 102, 0.5);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .become-pro-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 12px 25px rgba(255, 51, 102, 0.7);
-        }
-        h2 {
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
             font-size: 2.2rem;
             font-weight: 700;
-            color: #ff3366;
+            color: #f1f1f1;
+            margin-bottom: 2rem;
             text-align: center;
-            margin-top: 40px;
-            margin-bottom: 25px;
+            text-shadow: 0 0 8px rgba(255,46,99,0.2);
         }
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Min width 150px for small screens */
-            gap: 15px; /* Smaller gap for mobile */
-            padding: 20px 0;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive grid */
+            gap: 2rem; /* More generous spacing */
         }
-        @media (min-width: 640px) { /* Small screens (sm) and up */
+        @media (max-width: 640px) { /* Mobile specific adjustments */
+            .app-header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem;
+            }
+            .search-container {
+                width: 100%;
+                max-width: none;
+            }
+            .nav-buttons {
+                width: 100%;
+                justify-content: space-around;
+                margin-top: 1rem;
+            }
+            .nav-buttons a, .nav-buttons button {
+                flex-grow: 1; /* Make buttons fill width */
+                text-align: center;
+            }
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+            }
             .video-grid {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile/small tablets */
-                gap: 20px;
+                grid-template-columns: 1fr; /* Single column on very small screens */
+                gap: 1.5rem;
             }
         }
-        @media (min-width: 768px) { /* Medium screens (md) and up */
-            .video-grid {
-                grid-template-columns: repeat(3, 1fr); /* 3 columns on tablets/small desktops */
-                gap: 25px;
-            }
-        }
-        @media (min-width: 1024px) { /* Large screens (lg) and up */
-            .video-grid {
-                grid-template-columns: repeat(4, 1fr); /* 4 columns on larger desktops */
-            }
-        }
+
         .video-card {
-            background-color: #2a2a2a;
-            border-radius: 12px;
+            background-color: #1a1a1a;
+            border-radius: 12px; /* More rounded corners */
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
-            text-align: left;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         .video-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(255, 51, 102, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(255,46,99,0.4); /* Accent glow on hover */
         }
         .video-card img {
             width: 100%;
-            height: 120px; /* Adjusted height for better mobile fit */
+            height: 200px; /* Larger thumbnails */
             object-fit: cover;
-            border-bottom: 2px solid #ff3366;
-        }
-        @media (min-width: 640px) {
-            .video-card img {
-                height: 180px; /* Restore height for larger screens */
-            }
+            border-bottom: 1px solid #2a2a2a;
         }
         .video-card-content {
-            padding: 10px; /* Reduced padding for mobile */
+            padding: 1.25rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
         .video-card h3 {
-            font-size: 1.2em; /* Adjusted font size for mobile */
-            font-weight: 700;
-            color: #ff3366;
-            margin-bottom: 5px;
-            line-height: 1.3;
-        }
-        .video-card p {
-            font-size: 0.8em; /* Adjusted font size for mobile */
-            color: #ccc;
-            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #f1f1f1;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
             display: -webkit-box;
-            -webkit-line-clamp: 2; /* Limit description to 2 lines */
-            line-clamp: 2; /* Standard property for compatibility */
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .video-card p {
+            font-size: 0.95rem;
+            color: #b0b0b0; /* Slightly darker gray for description */
+            margin-bottom: 0.8rem;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .video-card .meta-info {
+            font-size: 0.8rem;
+            color: #888888;
+            margin-top: auto;
+            text-align: right; /* Align meta info to right */
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #1a1a1a;
+            color: #aaaaaa;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+            border-top: 1px solid #2a2a2a;
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: #f1f1f1;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        footer a:hover {
+            color: #ff2e63;
+        }
+
         /* Modal styles (from auth.js) */
         .modal {
             display: none; /* Hidden by default */
@@ -241,105 +315,111 @@
         .hidden {
             display: none !important;
         }
-        #firebaseStatus {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8em;
-            z-index: 9999;
-        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>VibeXXX</h1>
-            <nav>
-                <a href="index.html">Home</a>
-                <a href="unlocked_videos.html">Pro Videos</a>
-                <a href="membership.html">Membership</a>
-                <div class="auth-links inline-block">
-                    <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded login-link">Login</a>
-                    <a href="register.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded register-link">Register</a>
-                    <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden">Logout</button>
-                </div>
-            </nav>
-        </header>
-
-        <a href="membership.html" class="become-pro-btn">
-            Become a Pro Member!
+    <header class="app-header">
+        <a href="index.html" class="vibe-logo">
+            <!-- Custom VibeXXX Logo SVG -->
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#ff2e63"/>
+                <path d="M15.5 12L9.5 8.5V15.5L15.5 12z" fill="#f1f1f1"/>
+                <path d="M12 11.5L10 10.5V13.5L12 12.5V11.5z" fill="#f1f1f1"/>
+                <path d="M14 10.5L12 9.5V12.5L14 11.5V10.5z" fill="#f1f1f1"/>
+            </svg>
+            <span class="text">Vibe<span class="font-extrabold">XXX</span></span>
         </a>
-
-        <h2 class="text-center text-4xl font-extrabold text-pink-500 mb-10">Free Videos</h2>
         
+        <div class="search-container">
+            <input type="text" placeholder="Search videos..." />
+            <button>
+                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.5 14h-.79l-.28-.27A6.96 6.96 0 0016 9c0-3.87-3.13-7-7-7S2 5.13 2 9s3.13 7 7 7c1.74 0 3.34-.64 4.56-1.68l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9 14c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="unlocked_videos.html" class="btn-accent">Pro Videos</a>
+            <a href="membership.html">Membership</a>
+            <a href="login.html" class="login-link">Login</a>
+            <a href="register.html" class="register-link">Register</a>
+            <button class="btn-logout hidden">Logout</button>
+        </div>
+    </header>
+
+    <main>
+        <h2 class="section-title">Free Videos</h2>
         <div class="video-grid" id="freeVideoGrid">
             <!-- Free video cards will be dynamically inserted here by JavaScript -->
         </div>
+    </main>
 
-        <!-- Universal Modal Structure (from auth.js) -->
-        <div id="modal" class="modal hidden">
-            <div class="modal-content">
-                <span class="close" id="closeModal">&times;</span>
-                <p id="modalMessage"></p>
-            </div>
+    <footer>
+        <p>&copy; 2025 VibeXXX. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="https://t.me/LuxFlix" target="_blank">Telegram</a></p>
+    </footer>
+
+    <!-- Universal Modal Structure (from auth.js) -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <p id="modalMessage"></p>
         </div>
     </div>
 
-    <div id="firebaseStatus">Firebase Status: Initializing...</div>
-
+    <!-- Firebase CDN scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="auth.js"></script> <!-- Link to your auth.js script -->
 
     <script>
-        // No need to initialize Firebase here, auth.js handles it
-        // const firebaseConfig = { ... };
-        // if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-
         // Use the globally available auth and db objects from auth.js
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Update Firebase Status indicator
-        document.getElementById('firebaseStatus').textContent = 'Firebase Status: Initialized (via auth.js)';
-
-        // --- Free Video Data (from your provided links) ---
+        // --- Free Video Data ---
         const freeVideoData = {
             "free_streamtape_threesome": {
-                title: "Tiny & Tempting: A Thrilling Threesome Unveiled! 🔥",
-                description: "Witness an intimate encounter where size truly doesn't matter, only passion.",
+                title: "Tiny & Tempting: A Thrilling Threesome Unveiled! �",
+                description: "Witness an intimate encounter where size truly doesn't matter, only passion. A must-see for all.",
                 thumbnail: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/oip.webp",
-                embedSrc: "https://strtape.tech/e/o9dygm0R42TWgG/"
+                embedSrc: "https://strtape.tech/e/o9dygm0R42TWgG/",
+                views: "1.2M",
+                uploadTime: "2 days ago"
             },
             "free_streamtape_good_at_it": {
                 title: "Masterful Moves: She's a Pro at Pleasure! 💖",
-                description: "Watch her unleash incredible skills that will leave you breathless.",
+                description: "Witness her unleash incredible skills that will leave you breathless and wanting more. Pure talent.",
                 thumbnail: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/oip-1.webp",
-                embedSrc: "https://strtape.tech/e/aGqe6W8LApsx8vB/"
+                embedSrc: "https://strtape.tech/e/aGqe6W8LApsx8vB/",
+                views: "980K",
+                uploadTime: "1 week ago"
             },
             "free_streamtape_webcam_diff": {
                 title: "Webcam Wonders: Raw & Real Intimacy! 🎥",
-                description: "Experience unfiltered passion, live and direct from the webcam.",
+                description: "Experience unfiltered passion, live and direct from the webcam. Uncensored and intense.",
                 thumbnail: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/oip.jpg",
-                embedSrc: "https://strtape.tech/e/96O3qMy1zjIadOO/"
+                embedSrc: "https://strtape.tech/e/96O3qMy1zjIadOO/",
+                views: "750K",
+                uploadTime: "3 days ago"
             },
             "free_streamtape_young_40": {
                 title: "Ageless Allure: She's 40, But Looks 20! 🤫",
-                description: "Prepare to be amazed by her youthful charm and timeless beauty.",
+                description: "Prepare to be amazed by her youthful charm and timeless beauty. Age is just a number.",
                 thumbnail: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/oip-2.webp",
-                embedSrc: "https://strtape.tech/e/jPPz7k7LxXsze17/"
+                embedSrc: "https://strtape.tech/e/jPPz7k7LxXsze17/",
+                views: "1.5M",
+                uploadTime: "5 days ago"
             },
             "free_streamtape_pussy_master": {
                 title: "Pussy Power: She's a Self-Pleasure Master! 💦",
-                description: "Witness her intense solo session as she explores every inch of pleasure.",
+                description: "Witness her intense solo session as she explores every inch of pleasure. A true masterclass.",
                 thumbnail: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/download.webp",
-                embedSrc: "https://strtape.tech/e/1P3399bLXASe4PY/"
+                embedSrc: "https://strtape.tech/e/1P3399bLXASe4PY/",
+                views: "1.1M",
+                uploadTime: "4 days ago"
             }
         };
 
@@ -358,13 +438,18 @@
                     const encodedTitle = encodeURIComponent(video.title);
                     const encodedDescription = encodeURIComponent(video.description);
                     const encodedEmbedSrc = encodeURIComponent(video.embedSrc);
-                    window.location.href = `video-player.html?title=${encodedTitle}&description=${encodedDescription}&embedSrc=${encodedEmbedSrc}`;
+                    // Add views and uploadTime to URL parameters
+                    const encodedViews = encodeURIComponent(video.views);
+                    const encodedUploadTime = encodeURIComponent(video.uploadTime);
+
+                    window.location.href = `video-player.html?title=${encodedTitle}&description=${encodedDescription}&embedSrc=${encodedEmbedSrc}&views=${encodedViews}&uploadTime=${encodedUploadTime}`;
                 };
                 card.innerHTML = `
-                    <img src="${video.thumbnail}" alt="${video.title} Thumbnail" onerror="this.onerror=null;this.src='https://placehold.co/400x180/333/ffffff?text=Video+Thumbnail+Error';" >
+                    <img src="${video.thumbnail}" alt="${video.title} Thumbnail" onerror="this.onerror=null;this.src='https://placehold.co/400x200/333/ffffff?text=Video+Error';" >
                     <div class="video-card-content">
                         <h3>${video.title}</h3>
-                        <p>${video.description}</p>
+                        <p class="channel-name">VibeXXX Originals</p> <!-- Placeholder channel name -->
+                        <div class="meta-info">${video.views} views • ${video.uploadTime}</div>
                     </div>
                 `;
                 freeVideoGrid.appendChild(card);
@@ -376,3 +461,4 @@
     </script>
 </body>
 </html>
+�

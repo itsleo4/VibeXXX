@@ -10,127 +10,225 @@
         body {
             margin: 0;
             font-family: 'Inter', sans-serif;
-            background-color: #111; /* Dark background */
-            color: #fff; /* White text */
+            background-color: #0f0f0f; /* Dark YouTube background */
+            color: #f1f1f1; /* Light gray text */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
-        main {
-            flex-grow: 1;
-            padding: 1rem;
-        }
-        header {
-            width: 100%;
+        /* Header styles */
+        .yt-header {
+            background-color: #202020; /* Darker gray for header */
+            padding: 1rem 1.5rem;
             display: flex;
-            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #333;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            gap: 1rem; /* Space between header elements */
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
-        header h1 {
-            font-size: 2.5rem;
+        .yt-logo {
+            font-size: 1.8rem;
             font-weight: 800;
-            color: #ff3366;
-            text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
-            margin: 0;
-            flex-shrink: 0; /* Prevent shrinking */
-        }
-        nav {
-            display: flex;
-            flex-wrap: wrap; /* Allow nav items to wrap */
-            gap: 10px; /* Space between nav items */
-            margin-top: 10px; /* Space from logo on small screens */
-            justify-content: center; /* Center nav items on small screens */
-            flex-grow: 1; /* Allow nav to take available space */
-        }
-        @media (min-width: 640px) { /* On small screens and up */
-            nav {
-                flex-wrap: nowrap; /* Prevent wrapping */
-                margin-top: 0; /* Remove top margin */
-                justify-content: flex-end; /* Align to end on larger screens */
-            }
-        }
-        nav a, nav button {
-            color: #fff;
+            color: #ff0000; /* YouTube red */
+            text-shadow: 0 0 5px rgba(255,0,0,0.5);
             text-decoration: none;
-            font-weight: 600;
-            padding: 8px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .yt-logo svg {
+            width: 30px;
+            height: 30px;
+            fill: #ff0000;
+        }
+        .yt-search-bar {
+            flex-grow: 1; /* Allows search bar to take available space */
+            max-width: 600px;
+            display: flex;
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: #121212; /* Darker input background */
+            border: 1px solid #303030;
+        }
+        .yt-search-bar input {
+            flex-grow: 1;
+            padding: 0.6rem 1rem;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            color: #f1f1f1;
+            font-size: 0.9rem;
+        }
+        .yt-search-bar button {
+            background-color: #303030;
+            padding: 0.6rem 1rem;
+            border: none;
+            color: #f1f1f1;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .yt-search-bar button:hover {
+            background-color: #404040;
+        }
+        .yt-nav-buttons {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap; /* Allow buttons to wrap */
+            justify-content: center; /* Center buttons on small screens */
+        }
+        .yt-nav-buttons a, .yt-nav-buttons button {
+            background-color: #3a3a3a;
+            color: #f1f1f1;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s;
             border: none;
             cursor: pointer;
-            white-space: nowrap; /* Prevent text from wrapping inside buttons */
+            white-space: nowrap; /* Prevent text wrapping */
         }
-        nav a:hover, nav button:hover {
-            background-color: #ff3366;
-            color: #fff;
+        .yt-nav-buttons a:hover, .yt-nav-buttons button:hover {
+            background-color: #505050;
         }
-        nav .auth-links {
-            display: flex;
-            gap: 10px; /* Space between auth buttons */
-            flex-wrap: wrap; /* Allow auth buttons to wrap */
-            justify-content: center; /* Center auth buttons on small screens */
-            width: 100%; /* Take full width on small screens */
+        .yt-nav-buttons .btn-primary {
+            background-color: #ff0000; /* YouTube red */
         }
-        @media (min-width: 640px) { /* On small screens and up */
-            nav .auth-links {
-                width: auto; /* Auto width on larger screens */
-                flex-wrap: nowrap;
-            }
+        .yt-nav-buttons .btn-primary:hover {
+            background-color: #cc0000;
         }
-        nav .auth-links a {
-            background-color: #444;
+        .yt-nav-buttons .btn-secondary {
+            background-color: #404040;
         }
-        nav .auth-links a:hover {
-            background-color: #555;
+        .yt-nav-buttons .btn-secondary:hover {
+            background-color: #555555;
         }
-        nav .logout-link {
-            background-color: #f44336; /* Red for logout */
+        .yt-nav-buttons .btn-logout {
+            background-color: #dc2626; /* Red-600 */
         }
-        nav .logout-link:hover {
-            background-color: #da190b;
+        .yt-nav-buttons .btn-logout:hover {
+            background-color: #b91c1c; /* Red-700 */
         }
 
-        .loading-screen, .access-denied-screen {
+        /* Main content layout */
+        main {
+            flex-grow: 1;
+            padding: 2rem 1.5rem;
+            max-width: 1400px; /* Max width for content */
+            margin: 0 auto; /* Center content */
+        }
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive grid */
+            gap: 1.5rem; /* Space between video cards */
+        }
+        .video-card {
+            background-color: #1a1a1a; /* Darker card background */
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Ensure cards fill grid space vertically */
+        }
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        }
+        .video-card img {
+            width: 100%;
+            height: 180px; /* Fixed height for thumbnails */
+            object-fit: cover;
+            border-bottom: 1px solid #303030;
+        }
+        .video-card-content {
+            padding: 1rem;
+            flex-grow: 1; /* Allows content to push footer down */
+            display: flex;
+            flex-direction: column;
+        }
+        .video-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f1f1f1;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Limit title to 2 lines */
+            line-clamp: 2; /* Standard property for compatibility */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .video-card p {
+            font-size: 0.85rem;
+            color: #aaaaaa; /* Lighter gray for description */
+            margin-bottom: 0.5rem;
+            flex-grow: 1; /* Allows description to take space */
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* Limit description to 3 lines */
+            line-clamp: 3; /* Standard property for compatibility */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .video-card .meta-info {
+            font-size: 0.75rem;
+            color: #888888;
+            margin-top: auto; /* Pushes meta info to the bottom */
+        }
+
+        /* Access control screens */
+        .access-screen {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: calc(100vh - 80px); /* Adjust for header height */
+            min-height: calc(100vh - 120px); /* Adjust for header/footer */
             text-align: center;
+            padding: 2rem;
         }
-        .loading-screen h2, .access-denied-screen h2 {
+        .access-screen h2 {
             font-size: 2.5rem;
             font-weight: bold;
-            color: #ef4444; /* Red 500 */
+            color: #ff0000; /* YouTube red */
             margin-bottom: 1rem;
         }
-        .access-denied-screen p {
+        .access-screen p {
             font-size: 1.1rem;
-            color: #a0aec0; /* Gray 400 */
+            color: #aaaaaa;
             margin-bottom: 1.5rem;
         }
-        .cta-button {
-            background-color: #ff3366; /* Your primary CTA color */
+        .access-screen .cta-button {
+            background-color: #ff0000;
             color: white;
             padding: 12px 24px;
-            border-radius: 9999px; /* Fully rounded */
+            border-radius: 9999px;
             text-decoration: none;
             font-weight: 600;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            transition: background-color 0.2s;
         }
-        .cta-button:hover {
-            background-color: #e6005c;
-            transform: translateY(-2px);
+        .access-screen .cta-button:hover {
+            background-color: #cc0000;
         }
-
         /* Spinner animation */
         .spinner {
             border: 8px solid rgba(255, 255, 255, 0.3);
-            border-top: 8px solid #ff3366; /* Red 500 */
+            border-top: 8px solid #ff0000; /* YouTube red */
             border-radius: 50%;
             width: 60px;
             height: 60px;
@@ -142,116 +240,102 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Video card styling for pro videos */
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Min width 150px for small screens */
-            gap: 15px; /* Smaller gap for mobile */
-            padding: 20px 0;
+        /* Footer styles */
+        footer {
+            background-color: #202020;
+            color: #aaaaaa;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto; /* Pushes footer to the bottom */
+            border-top: 1px solid #303030;
         }
-        @media (min-width: 640px) { /* Small screens (sm) and up */
-            .video-grid {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile/small tablets */
-                gap: 20px;
-            }
+        footer a {
+            color: #f1f1f1;
+            text-decoration: none;
+            transition: color 0.2s;
         }
-        @media (min-width: 768px) { /* Medium screens (md) and up */
-            .video-grid {
-                grid-template-columns: repeat(3, 1fr); /* 3 columns on tablets/small desktops */
-                gap: 25px;
-            }
+        footer a:hover {
+            color: #ff0000;
         }
-        @media (min-width: 1024px) { /* Large screens (lg) and up */
-            .video-grid {
-                grid-template-columns: repeat(4, 1fr); /* 4 columns on larger desktops */
-            }
+
+        /* Modal styles (from auth.js) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            align-items: center;
+            justify-content: center;
         }
-        .video-card {
+
+        .modal-content {
             background-color: #2a2a2a;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            cursor: pointer;
-            text-align: left;
-        }
-        .video-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(255, 51, 102, 0.3);
-        }
-        .video-card img {
-            width: 100%;
-            height: 120px; /* Adjusted height for better mobile fit */
-            object-fit: cover;
-            border-bottom: 2px solid #ff3366;
-        }
-        @media (min-width: 640px) {
-            .video-card img {
-                height: 180px; /* Restore height for larger screens */
-            }
-        }
-        .video-card-content {
-            padding: 10px; /* Reduced padding for mobile */
-        }
-        .video-card h3 {
-            font-size: 1.2em; /* Adjusted font size for mobile */
-            font-weight: 700;
-            color: #ff3366;
-            margin-bottom: 5px;
-            line-height: 1.3;
-        }
-        .video-card p {
-            font-size: 0.8em; /* Adjusted font size for mobile */
-            color: #ccc;
-            margin-bottom: 5px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2; /* Limit description to 2 lines */
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            line-clamp: 2; /* Standard property for compatibility */
-        }
-        #firebaseStatus {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background-color: rgba(0, 0, 0, 0.7);
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
             color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8em;
-            z-index: 9999;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
-    <!-- Header/Navigation Bar -->
-    <header class="bg-gray-800 p-4 shadow-lg">
-        <nav class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-red-500">VibeXXX</a>
-            <div class="space-x-4">
-                <a href="index.html" class="text-gray-300 hover:text-white">Home</a>
-                <a href="unlocked_videos.html" class="text-gray-300 hover:text-white pro-link">Pro Videos</a>
-                <a href="membership.html" class="text-gray-300 hover:text-white">Membership</a>
-                <div class="auth-links">
-                    <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded login-link">Login</a>
-                    <a href="register.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded register-link">Register</a>
-                    <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden">Logout</button>
-                </div>
-            </div>
-        </nav>
+<body>
+
+    <header class="yt-header">
+        <a href="index.html" class="yt-logo">
+            <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" class="style-scope yt-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope yt-icon"><path d="M10 15V9l5 3-5 3zM22 3H2v18h20V3zm-2 16H4V5h16v14z" class="style-scope yt-icon"></path></g></svg>
+            VibeXXX
+        </a>
+        <div class="yt-search-bar">
+            <input type="text" placeholder="Search" />
+            <button>
+                <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" class="style-scope yt-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope yt-icon"><path d="M20.87 20.17l-5.59-5.59A7.954 7.954 0 0 0 16 9c0-4.42-3.58-8-8-8S0 4.58 0 9s3.58 8 8 8c1.86 0 3.59-.63 4.95-1.69l5.59 5.59L20.87 20.17zM8 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z" class="style-scope yt-icon"></path></g></svg>
+            </button>
+        </div>
+        <div class="yt-nav-buttons">
+            <a href="unlocked_videos.html" class="btn-primary">Pro Videos</a>
+            <a href="membership.html" class="btn-secondary">Membership</a>
+            <a href="login.html" class="btn-secondary login-link">Login</a>
+            <a href="register.html" class="btn-secondary register-link">Register</a>
+            <button class="btn-logout hidden">Logout</button>
+        </div>
     </header>
 
-    <main class="container mx-auto p-4">
+    <main>
         <!-- Loading Screen -->
-        <section id="loadingScreen" class="loading-screen">
+        <section id="loadingScreen" class="access-screen">
             <div class="spinner"></div>
             <h2>Verifying Access...</h2>
             <p>Please wait while we confirm your Pro Membership.</p>
         </section>
 
         <!-- Access Denied Screen -->
-        <section id="accessDeniedScreen" class="access-denied-screen hidden">
+        <section id="accessDeniedScreen" class="access-screen hidden">
             <h2 class="text-red-500">Access Denied!</h2>
             <p id="accessDeniedMessage">It looks like you don't have Pro Access yet.</p>
             <p>Unlock all exclusive videos by becoming a Pro Member today!</p>
@@ -260,24 +344,24 @@
 
         <!-- Pro Video Grid (Visible only to Pro Members) -->
         <section id="proVideoGrid" class="py-8 hidden">
-            <h2 class="text-4xl font-bold text-center text-red-400 mb-8">Exclusive Pro Videos</h2>
+            <h2 class="section-title">Exclusive Pro Videos</h2>
             <div class="video-grid" id="videoGrid">
                 <!-- Video cards will be dynamically inserted here by JavaScript -->
             </div>
         </section>
     </main>
 
-    <!-- General Footer -->
-    <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-8 rounded-lg shadow-lg">
-        <p>&copy; 2025 VibeXXX. All rights reserved. | <a href="#" class="hover:underline">Privacy Policy</a></p>
-        <div class="flex justify-center space-x-4 mt-4">
-            <a href="#" class="hover:text-white">Facebook</a>
-            <a href="#" class="hover:text-white">Twitter</a>
-            <a href="https://t.me/LuxFlix" class="hover:text-white" target="_blank">Telegram</a>
-        </div>
+    <footer>
+        <p>&copy; 2025 VibeXXX. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="https://t.me/LuxFlix" target="_blank">Telegram</a></p>
     </footer>
 
-    <div id="firebaseStatus">Firebase Status: Initializing...</div>
+    <!-- Universal Modal Structure -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
 
     <!-- Firebase CDN scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -289,9 +373,6 @@
         // Use the globally available auth and db objects from auth.js
         const auth = firebase.auth();
         const db = firebase.firestore();
-
-        // Update Firebase Status indicator
-        document.getElementById('firebaseStatus').textContent = 'Firebase Status: Initialized (via auth.js)';
 
         // Get screen elements
         const loadingScreen = document.getElementById('loadingScreen');
@@ -338,6 +419,7 @@
                     <div class="video-card-content">
                         <h3>${video.title}</h3>
                         <p>${video.description}</p>
+                        <div class="meta-info">Pro Exclusive • New!</div>
                     </div>
                 `;
                 videoGridContainer.appendChild(card);
@@ -359,7 +441,6 @@
                         const userData = userDoc.data();
                         console.log("unlocked_videos.html: User Data from Firestore:", userData);
 
-                        // Explicitly check for boolean true and valid future date
                         const unlockedAccess = userData.unlocked_access === true;
                         const subscriptionEndDate = userData.subscriptionEndDate ? userData.subscriptionEndDate.toDate() : null;
                         const now = new Date();

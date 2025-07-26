@@ -252,7 +252,7 @@
             max-width: 600px;
             width: 100%;
             margin: 0 auto;
-            display: none; /* Hidden by default */
+            /* display: none; */ /* This will be controlled by JS */
         }
         .payment-form-section h3 {
             font-family: 'Montserrat', sans-serif;
@@ -449,7 +449,6 @@
                 <h3>1 Month Access</h3>
                 <div class="price">₹199</div>
                 <div class="duration">per month</div>
-                <!-- Features are hidden in this compact view for brevity -->
             </div>
 
             <!-- 3 Month Access Plan Option (Best Value) -->
@@ -458,7 +457,6 @@
                 <div class="price">₹499</div>
                 <div class="duration">for 3 months</div>
                 <div class="best-value">Best Value!</div>
-                <!-- Features are hidden in this compact view for brevity -->
             </div>
         </div>
 
@@ -614,8 +612,8 @@
                 selectedPriceDisplay.textContent = `₹${selectedPrice}`;
 
                 // Hide plan selection and show payment form
-                planSelectionSection.classList.add('hidden');
-                paymentFormSection.classList.remove('hidden');
+                planSelectionSection.classList.add('hidden'); // HIDE THE PLAN SELECTION
+                paymentFormSection.classList.remove('hidden'); // SHOW THE PAYMENT FORM
                 paymentFormSection.scrollIntoView({ behavior: 'smooth' });
                 
                 // Reset payment method selection and hide details

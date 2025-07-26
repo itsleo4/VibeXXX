@@ -11,16 +11,16 @@ const firebaseConfig = {
 // Initialize Firebase if not already initialized
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
-    console.log("Firebase app initialized.");
+    console.log("auth.js: Firebase app initialized.");
 } else {
-    console.log("Firebase app already initialized.");
+    console.log("auth.js: Firebase app already initialized.");
 }
 
 const auth = firebase.auth();
 const db = firebase.firestore(); // Initialize Firestore
-console.log("Firebase Auth and Firestore instances created.");
+console.log("auth.js: Firebase Auth and Firestore instances created.");
 
-// Helper function for showing modals (copy-pasted for self-containment)
+// Helper function for showing modals
 const modal = document.getElementById('modal');
 const modalMessage = document.getElementById('modalMessage');
 const closeModalButton = document.getElementById('closeModal');
@@ -29,74 +29,72 @@ if (modal && closeModalButton) {
     closeModalButton.addEventListener('click', () => {
         hideModal();
     });
-    console.log("Modal elements found and close listener attached.");
+    console.log("auth.js: Modal elements found and close listener attached.");
 } else {
-    console.log("Modal elements not found on this page.");
+    console.log("auth.js: Modal elements not found on this page.");
 }
 
 function showModal(message) {
     if (modal && modalMessage) {
         modalMessage.textContent = message;
         modal.classList.remove('hidden');
-        console.log("Modal shown with message:", message);
+        console.log("auth.js: Modal shown with message:", message);
     }
 }
 
 function hideModal() {
     if (modal) {
         modal.classList.add('hidden');
-        console.log("Modal hidden.");
+        console.log("auth.js: Modal hidden.");
     }
 }
 
 // --- Centralized Form Submission Handlers ---
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOMContentLoaded event fired.");
+    console.log("auth.js: DOMContentLoaded event fired.");
 
     // Login Form Handler
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
-        console.log("Login form found, attaching listener.");
-        // Ensure no 'action' attribute on the form, or set it to '#'
-        loginForm.removeAttribute('action'); 
+        console.log("auth.js: Login form found, attaching listener.");
+        loginForm.removeAttribute('action'); // Ensure no 'action' attribute causes page reload
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault(); // Prevent default form submission (page reload)
-            console.log('Login form submitted. e.preventDefault() called.');
+            console.log('auth.js: Login form submitted. e.preventDefault() called.');
 
             const email = loginForm.loginEmail.value.trim();
             const password = loginForm.loginPassword.value;
 
             if (!email || !password) {
                 showModal("Please enter email and password.");
-                console.log('Validation failed: Email or password missing.');
+                console.log('auth.js: Validation failed: Email or password missing.');
                 return;
             }
 
             try {
-                console.log('Attempting login with:', email);
+                console.log('auth.js: Attempting login with:', email);
                 await auth.signInWithEmailAndPassword(email, password);
                 showModal("Login successful!");
                 loginForm.reset();
-                console.log('Login successful, redirecting to index.html');
+                console.log('auth.js: Login successful, redirecting to index.html');
                 setTimeout(() => { window.location.href = 'index.html'; }, 1500);
             } catch (error) {
-                console.error("Login error:", error);
+                console.error("auth.js: Login error:", error);
                 showModal(`Login failed: ${error.message}`);
             }
         });
     } else {
-        console.log("Login form not found on this page.");
+        console.log("auth.js: Login form not found on this page.");
     }
 
     // Register Form Handler
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
-        console.log("Register form found, attaching listener.");
-        // Ensure no 'action' attribute on the form, or set it to '#'
-        registerForm.removeAttribute('action');
+        console.log("auth.js: Register form found, attaching listener.");
+        registerForm.removeAttribute('action'); // Ensure no 'action' attribute causes page reload
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault(); // Prevent default form submission (page reload)
-            console.log('Register form submitted. e.preventDefault() called.');
+            console.log('auth.js: Register form submitted. e.preventDefault() called.');
 
             const username = registerForm.username.value.trim();
             const email = registerForm.email.value.trim();
@@ -104,12 +102,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!username || !email || !password) {
                 showModal("Please fill in all fields.");
-                console.log('Validation failed: Fields missing.');
+                console.log('auth.js: Validation failed: Fields missing.');
                 return;
             }
 
             try {
-                console.log('Attempting registration with:', email, 'and username:', username);
+                console.log('auth.js: Attempting registration with:', email, 'and username:', username);
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const user = userCredential.user;
 
@@ -120,47 +118,47 @@ document.addEventListener('DOMContentLoaded', () => {
                     unlocked_access: false,
                     subscriptionEndDate: null
                 });
-                console.log("User document created for:", user.uid);
+                console.log("auth.js: User document created for:", user.uid);
                 showModal("Registration successful! You can now log in.");
                 registerForm.reset();
-                console.log('Registration successful, redirecting to login.html');
+                console.log('auth.js: Registration successful, redirecting to login.html');
                 setTimeout(() => { window.location.href = 'login.html'; }, 2000);
             } catch (error) {
-                console.error("Registration error:", error);
+                console.error("auth.js: Registration error:", error);
                 showModal(`Registration failed: ${error.message}`);
             }
         });
     } else {
-        console.log("Register form not found on this page.");
+        console.log("auth.js: Register form not found on this page.");
     }
 
     // Logout Buttons Handler
     const logoutButtons = document.querySelectorAll('.logout-link');
     if (logoutButtons.length > 0) {
-        console.log("Logout buttons found, attaching listeners.");
+        console.log("auth.js: Logout buttons found, attaching listeners.");
         logoutButtons.forEach(button => {
             button.addEventListener('click', async (e) => {
                 e.preventDefault();
-                console.log("Logout button clicked. e.preventDefault() called.");
+                console.log("auth.js: Logout button clicked. e.preventDefault() called.");
                 try {
                     await auth.signOut();
-                    console.log("User logged out.");
+                    console.log("auth.js: User logged out.");
                     window.location.href = 'index.html';
                 } catch (error) {
-                    console.error("Logout error:", error);
+                    console.error("auth.js: Logout error:", error);
                     showModal(`Logout failed: ${error.message}`);
                 }
             });
         });
     } else {
-        console.log("No logout buttons found on this page.");
+        console.log("auth.js: No logout buttons found on this page.");
     }
 });
 
 
 // --- Update UI based on Auth State (show/hide login/logout buttons) ---
 auth.onAuthStateChanged(user => {
-    console.log("Auth state changed. User:", user ? user.uid : "None");
+    console.log("auth.js: onAuthStateChanged callback fired. User:", user ? user.uid : "None");
     const loginLinks = document.querySelectorAll('.login-link');
     const registerLinks = document.querySelectorAll('.register-link');
     const logoutButtons = document.querySelectorAll('.logout-link');

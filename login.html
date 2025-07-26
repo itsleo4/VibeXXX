@@ -211,6 +211,17 @@
         .hidden {
             display: none !important;
         }
+        #firebaseStatus {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            z-index: 9999;
+        }
     </style>
 </head>
 <body>
@@ -256,6 +267,8 @@
             <p id="modalMessage"></p>
         </div>
     </div>
+
+    <div id="firebaseStatus">Firebase Status: Initializing...</div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>

@@ -490,13 +490,17 @@
     <script src="auth.js"></script> <!-- Link to your auth.js script -->
 
     <script>
-        // Use the globally available auth and db objects from auth.js
-        // No need to redeclare auth and db here, they are globally available from auth.js
-        const auth = firebase.auth(); // Correctly reference the global object
-        const db = firebase.firestore(); // Correctly reference the global object
+        // Access the global auth and db objects directly from the window object.
+        // auth.js is responsible for initializing firebase and attaching these to window.
+        const auth = window.auth; 
+        const db = window.db; 
+        
+        // Ensure showModal and hideModal are accessible (they are now global functions from auth.js)
+        const showModal = window.showModal;
+        const hideModal = window.hideModal;
 
         // Admin email (replace with your actual admin email)
-        const ADMIN_EMAIL = "nsfgw@gmail.com"; // Keep this for admin email validation
+        const ADMIN_EMAIL = "nsfgw@gmail.com"; 
 
         // UI elements
         const adminLoginForm = document.getElementById('adminLoginForm');
@@ -524,8 +528,8 @@
 
         // Admin Login Form Submission
         adminLogin.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            console.log("admin.html: Admin login form submitted.");
+            e.preventDefault(); // PREVENT DEFAULT FORM SUBMISSION (PAGE REFRESH)
+            console.log("admin.html: Admin login form submitted. Preventing default behavior.");
 
             const email = adminEmailInput.value.trim();
             const password = adminPasswordInput.value;

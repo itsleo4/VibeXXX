@@ -16,9 +16,10 @@ if (!firebase.apps.length) {
     console.log("auth.js: Firebase app already initialized.");
 }
 
-const auth = firebase.auth();
-const db = firebase.firestore(); // Initialize Firestore
-console.log("auth.js: Firebase Auth and Firestore instances created.");
+// Explicitly attach auth and db to the window object for global access
+window.auth = firebase.auth();
+window.db = firebase.firestore();
+console.log("auth.js: Firebase Auth and Firestore instances attached to window object.");
 
 // Helper function for showing modals
 const modal = document.getElementById('modal');
@@ -34,20 +35,21 @@ if (modal && closeModalButton) {
     console.log("auth.js: Modal elements not found on this page.");
 }
 
-function showModal(message) {
+// Make showModal and hideModal globally accessible
+window.showModal = function(message) {
     if (modal && modalMessage) {
         modalMessage.textContent = message;
         modal.classList.remove('hidden');
         console.log("auth.js: Modal shown with message:", message);
     }
-}
+};
 
-function hideModal() {
+window.hideModal = function() {
     if (modal) {
         modal.classList.add('hidden');
         console.log("auth.js: Modal hidden.");
     }
-}
+};
 
 // --- Centralized Form Submission Handlers ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -66,21 +68,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = loginForm.loginPassword.value;
 
             if (!email || !password) {
-                showModal("Please enter email and password.");
+                window.showModal("Please enter email and password.");
                 console.log('auth.js: Validation failed: Email or password missing.');
                 return;
             }
 
             try {
                 console.log('auth.js: Attempting login with:', email);
-                await auth.signInWithEmailAndPassword(email, password);
-                showModal("Login successful!");
+                await window.auth.signInWithEmailAndPassword(email, password);
+                window.showModal("Login successful!");
                 loginForm.reset();
                 console.log('auth.js: Login successful, redirecting to index.html');
                 setTimeout(() => { window.location.href = 'index.html'; }, 1500);
             } catch (error) {
                 console.error("auth.js: Login error:", error);
-                showModal(`Login failed: ${error.message}`);
+                window.showModal(`Login failed: ${error.message}`);
             }
         });
     } else {
@@ -101,17 +103,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = registerForm.password.value;
 
             if (!username || !email || !password) {
-                showModal("Please fill in all fields.");
+                window.showModal("Please fill in all fields.");
                 console.log('auth.js: Validation failed: Fields missing.');
                 return;
             }
 
             try {
                 console.log('auth.js: Attempting registration with:', email, 'and username:', username);
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const userCredential = await window.auth.createUserWithEmailAndPassword(email, password);
                 const user = userCredential.user;
 
-                await db.collection('users').doc(user.uid).set({
+                await window.db.collection('users').doc(user.uid).set({
                     email: user.email,
                     username: username,
                     registeredAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -119,13 +121,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     subscriptionEndDate: null
                 });
                 console.log("auth.js: User document created for:", user.uid);
-                showModal("Registration successful! You can now log in.");
+                window.showModal("Registration successful! You can now log in.");
                 registerForm.reset();
                 console.log('auth.js: Registration successful, redirecting to login.html');
                 setTimeout(() => { window.location.href = 'login.html'; }, 2000);
             } catch (error) {
                 console.error("auth.js: Registration error:", error);
-                showModal(`Registration failed: ${error.message}`);
+                window.showModal(`Registration failed: ${error.message}`);
             }
         });
     } else {
@@ -133,8 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Logout Buttons Handler
-    // This part is crucial for making the logout button work and appear/disappear correctly
-    const logoutButtons = document.querySelectorAll('.btn-logout'); // Use the class from the new UI
+    const logoutButtons = document.querySelectorAll('.btn-logout');
     if (logoutButtons.length > 0) {
         console.log("auth.js: Logout buttons found, attaching listeners.");
         logoutButtons.forEach(button => {
@@ -142,13 +143,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 console.log("auth.js: Logout button clicked. e.preventDefault() called.");
                 try {
-                    await auth.signOut();
+                    await window.auth.signOut();
                     console.log("auth.js: User logged out.");
                     // Redirect to index.html after logout
                     window.location.href = 'index.html';
                 } catch (error) {
                     console.error("auth.js: Logout error:", error);
-                    showModal(`Logout failed: ${error.message}`);
+                    window.showModal(`Logout failed: ${error.message}`);
                 }
             });
         });
@@ -159,12 +160,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // --- Update UI based on Auth State (show/hide login/logout buttons) ---
-auth.onAuthStateChanged(user => {
+window.auth.onAuthStateChanged(user => {
     console.log("auth.js: onAuthStateChanged callback fired. User:", user ? user.uid : "None");
-    // Select elements using the new premium UI classes
     const loginLinks = document.querySelectorAll('.login-link');
     const registerLinks = document.querySelectorAll('.register-link');
-    const logoutButtons = document.querySelectorAll('.btn-logout'); // Use the class from the new UI
+    const logoutButtons = document.querySelectorAll('.btn-logout');
 
     if (user) {
         loginLinks.forEach(link => link.classList.add('hidden'));

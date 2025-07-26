@@ -5,179 +5,282 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>VibeXXX - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
     <style>
+        /* Base styles */
         body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
             min-height: 100vh;
-            font-family: 'Inter', sans-serif;
-            background-color: #111;
-            color: #fff;
             display: flex;
             flex-direction: column;
-            margin: 0;
+            overflow-x: hidden;
         }
-        header {
-            width: 100%;
+
+        /* Header styles (Copied from index.html for consistency) */
+        .app-header {
+            background-color: #1a1a1a;
+            padding: 1rem 1.5rem;
             display: flex;
-            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #333;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
-        header h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #ff3366;
-            text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
-            margin: 0;
-            flex-shrink: 0; /* Prevent shrinking */
-        }
-        nav {
+
+        /* VibeXXX Logo (Copied from index.html) */
+        .vibe-logo {
             display: flex;
-            flex-wrap: wrap; /* Allow nav items to wrap */
-            gap: 10px; /* Space between nav items */
-            margin-top: 10px; /* Space from logo on small screens */
-            justify-content: center; /* Center nav items on small screens */
-            flex-grow: 1; /* Allow nav to take available space */
-        }
-        @media (min-width: 640px) { /* On small screens and up */
-            nav {
-                flex-wrap: nowrap; /* Prevent wrapping */
-                margin-top: 0; /* Remove top margin */
-                justify-content: flex-end; /* Align to end on larger screens */
-            }
-        }
-        nav a, nav button {
-            color: #fff;
+            align-items: center;
+            gap: 0.5rem;
             text-decoration: none;
-            font-weight: 600;
-            padding: 8px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            border: none; /* Ensure buttons don't have default borders */
-            cursor: pointer;
-            white-space: nowrap; /* Prevent text from wrapping inside buttons */
+            flex-shrink: 0;
         }
-        nav a:hover, nav button:hover {
-            background-color: #ff3366;
-            color: #fff;
+        .vibe-logo .icon {
+            width: 32px;
+            height: 32px;
+            fill: #ff2e63;
+            transition: transform 0.2s ease;
         }
-        nav .auth-links {
+        .vibe-logo:hover .icon {
+            transform: scale(1.1);
+        }
+        .vibe-logo .text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #f1f1f1;
+            letter-spacing: -1px;
+            text-shadow: 0 0 5px rgba(255,46,99,0.3);
+        }
+        .vibe-logo .text span {
+            color: #ff2e63;
+        }
+
+        /* Search Bar (Copied from index.html) */
+        .search-container {
+            flex-grow: 1;
+            max-width: 500px;
             display: flex;
-            gap: 10px; /* Space between auth buttons */
-            flex-wrap: wrap; /* Allow auth buttons to wrap */
-            justify-content: center; /* Center auth buttons on small screens */
-            width: 100%; /* Take full width on small screens */
+            border-radius: 25px;
+            overflow: hidden;
+            background-color: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
-        @media (min-width: 640px) { /* On small screens and up */
-            nav .auth-links {
-                width: auto; /* Auto width on larger screens */
-                flex-wrap: nowrap;
-            }
+        .search-container:focus-within {
+            border-color: #ff2e63;
+            box-shadow: 0 0 0 2px rgba(255,46,99,0.4);
         }
-        nav .auth-links a {
-            background-color: #444;
+        .search-container input {
+            flex-grow: 1;
+            padding: 0.75rem 1.25rem;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            color: #f1f1f1;
+            font-size: 0.95rem;
         }
-        nav .auth-links a:hover {
-            background-color: #555;
+        .search-container button {
+            background-color: #3a3a3a;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            color: #f1f1f1;
+            cursor: pointer;
+            transition: background-color 0.2s;
         }
-        nav .logout-link {
-            background-color: #f44336;
+        .search-container button:hover {
+            background-color: #4a4a4a;
         }
-        nav .logout-link:hover {
-            background-color: #da190b;
+        .search-container button svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
         }
-        .main-content-wrapper {
+
+        /* Navigation Buttons (Copied from index.html) */
+        .nav-buttons {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .nav-buttons a, .nav-buttons button {
+            background-color: #333333;
+            color: #f1f1f1;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .nav-buttons a:hover, .nav-buttons button:hover {
+            background-color: #444444;
+            transform: translateY(-1px);
+        }
+        .nav-buttons .btn-accent {
+            background-color: #ff2e63;
+        }
+        .nav-buttons .btn-accent:hover {
+            background-color: #e02a5a;
+        }
+        .nav-buttons .btn-logout {
+            background-color: #dc2626;
+        }
+        .nav-buttons .btn-logout:hover {
+            background-color: #b91c1c;
+        }
+
+        /* Main content layout */
+        main {
             flex-grow: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 2rem 1.5rem;
         }
+        @media (max-width: 640px) {
+            .app-header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem;
+            }
+            .search-container {
+                width: 100%;
+                max-width: none;
+            }
+            .nav-buttons {
+                width: 100%;
+                justify-content: space-around;
+                margin-top: 1rem;
+            }
+            .nav-buttons a, .nav-buttons button {
+                flex-grow: 1;
+                text-align: center;
+            }
+            main {
+                padding: 1rem;
+            }
+        }
+
+        /* Form Container */
         .form-container {
             background-color: #1a1a1a;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
             width: 100%;
             max-width: 450px;
             text-align: center;
-            border: 1px solid #333;
+            border: 1px solid #2a2a2a;
         }
         .form-container h2 {
-            font-size: 2.5rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
             font-weight: 700;
-            color: #ff3366;
-            margin-bottom: 30px;
-            text-shadow: 0 0 10px rgba(255, 51, 102, 0.4);
+            color: #ff2e63;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 8px rgba(255,46,99,0.2);
         }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
             text-align: left;
         }
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-            color: #ccc;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            color: #b0b0b0;
         }
         .form-group input {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #444;
+            padding: 0.8rem 1rem;
+            border: 1px solid #3a3a3a;
             border-radius: 8px;
             background-color: #2a2a2a;
-            color: #fff;
+            color: #f1f1f1;
             font-size: 1rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
         .form-group input:focus {
-            border-color: #ff3366;
+            border-color: #ff2e63;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 51, 102, 0.3);
+            box-shadow: 0 0 0 2px rgba(255,46,99,0.4);
         }
         .submit-btn {
             width: 100%;
-            padding: 15px;
-            background-color: #ff3366;
+            padding: 1rem;
+            background-color: #ff2e63;
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 10px rgba(255,46,99,0.3);
+            font-family: 'Montserrat', sans-serif;
         }
         .submit-btn:hover {
-            background-color: #e6005c;
-            transform: translateY(-2px);
+            background-color: #e02a5a;
+            transform: translateY(-1px);
         }
         .form-footer {
-            margin-top: 25px;
-            font-size: 0.95rem;
-            color: #aaa;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #aaaaaa;
         }
         .form-footer a {
-            color: #ff3366;
+            color: #ff2e63;
             text-decoration: none;
             font-weight: 600;
+            transition: text-decoration 0.2s ease;
         }
         .form-footer a:hover {
             text-decoration: underline;
         }
+
+        /* Footer styles (Copied from index.html) */
+        footer {
+            background-color: #1a1a1a;
+            color: #aaaaaa;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+            border-top: 1px solid #2a2a2a;
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: #f1f1f1;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        footer a:hover {
+            color: #ff2e63;
+        }
+
+        /* Modal styles (from auth.js) */
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
             left: 0;
             top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.7);
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
             align-items: center;
             justify-content: center;
         }
@@ -211,39 +314,43 @@
         .hidden {
             display: none !important;
         }
-        #firebaseStatus {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8em;
-            z-index: 9999;
-        }
     </style>
 </head>
 <body>
-    <header class="bg-gray-800 p-4 shadow-lg">
-        <nav class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-red-500">VibeXXX</a>
-            <div class="space-x-4">
-                <a href="index.html" class="text-gray-300 hover:text-white">Home</a>
-                <a href="unlocked_videos.html" class="text-gray-300 hover:text-white">Pro Videos</a>
-                <a href="membership.html" class="text-gray-300 hover:text-white">Membership</a>
-                <div class="auth-links">
-                    <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded login-link">Login</a>
-                    <a href="register.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded register-link">Register</a>
-                    <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded logout-link hidden">Logout</button>
-                </div>
-            </div>
-        </nav>
+
+    <header class="app-header">
+        <a href="index.html" class="vibe-logo">
+            <!-- Custom VibeXXX Logo SVG -->
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#ff2e63"/>
+                <path d="M15.5 12L9.5 8.5V15.5L15.5 12z" fill="#f1f1f1"/>
+                <path d="M12 11.5L10 10.5V13.5L12 12.5V11.5z" fill="#f1f1f1"/>
+                <path d="M14 10.5L12 9.5V12.5L14 11.5V10.5z" fill="#f1f1f1"/>
+            </svg>
+            <span class="text">Vibe<span class="font-extrabold">XXX</span></span>
+        </a>
+        
+        <div class="search-container">
+            <input type="text" placeholder="Search videos..." />
+            <button>
+                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.5 14h-.79l-.28-.27A6.96 6.96 0 0016 9c0-3.87-3.13-7-7-7S2 5.13 2 9s3.13 7 7 7c1.74 0 3.34-.64 4.56-1.68l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9 14c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="unlocked_videos.html" class="btn-accent">Pro Videos</a>
+            <a href="membership.html">Membership</a>
+            <a href="login.html" class="login-link">Login</a>
+            <a href="register.html" class="register-link">Register</a>
+            <button class="btn-logout hidden">Logout</button>
+        </div>
     </header>
 
-    <main class="main-content-wrapper">
+    <main>
         <div class="form-container">
-            <h2>Login to VibeXXX</h2>
+            <h2>Welcome Back!</h2>
             <form id="loginForm">
                 <div class="form-group">
                     <label for="loginEmail">Email Address</label>
@@ -256,11 +363,16 @@
                 <button type="submit" class="submit-btn">Login</button>
             </form>
             <div class="form-footer">
-                Don't have an account? <a href="register.html">Register here</a>
+                New to VibeXXX? <a href="register.html">Create an account</a>
             </div>
         </div>
     </main>
 
+    <footer>
+        <p>&copy; 2025 VibeXXX. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="https://t.me/LuxFlix" target="_blank">Telegram</a></p>
+    </footer>
+
+    <!-- Universal Modal Structure (from auth.js) -->
     <div id="modal" class="modal hidden">
         <div class="modal-content">
             <span class="close" id="closeModal">&times;</span>
@@ -268,8 +380,7 @@
         </div>
     </div>
 
-    <div id="firebaseStatus">Firebase Status: Initializing...</div>
-
+    <!-- Firebase CDN scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>

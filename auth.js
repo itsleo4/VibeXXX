@@ -133,7 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Logout Buttons Handler
-    const logoutButtons = document.querySelectorAll('.logout-link');
+    // This part is crucial for making the logout button work and appear/disappear correctly
+    const logoutButtons = document.querySelectorAll('.btn-logout'); // Use the class from the new UI
     if (logoutButtons.length > 0) {
         console.log("auth.js: Logout buttons found, attaching listeners.");
         logoutButtons.forEach(button => {
@@ -143,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     await auth.signOut();
                     console.log("auth.js: User logged out.");
+                    // Redirect to index.html after logout
                     window.location.href = 'index.html';
                 } catch (error) {
                     console.error("auth.js: Logout error:", error);
@@ -159,9 +161,10 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- Update UI based on Auth State (show/hide login/logout buttons) ---
 auth.onAuthStateChanged(user => {
     console.log("auth.js: onAuthStateChanged callback fired. User:", user ? user.uid : "None");
+    // Select elements using the new premium UI classes
     const loginLinks = document.querySelectorAll('.login-link');
     const registerLinks = document.querySelectorAll('.register-link');
-    const logoutButtons = document.querySelectorAll('.logout-link');
+    const logoutButtons = document.querySelectorAll('.btn-logout'); // Use the class from the new UI
 
     if (user) {
         loginLinks.forEach(link => link.classList.add('hidden'));

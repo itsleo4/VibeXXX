@@ -284,6 +284,21 @@
             font-weight: 600;
             color: #ff2e63;
             margin-bottom: 1rem;
+            display: flex; /* Allow flexbox for title and button */
+            justify-content: space-between;
+            align-items: center;
+        }
+        #adminPanelContent .admin-section .refresh-btn {
+            background-color: #555;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+        #adminPanelContent .admin-section .refresh-btn:hover {
+            background-color: #777;
         }
         #adminPanelContent .admin-section p {
             font-size: 0.95rem;
@@ -303,7 +318,7 @@
             background-color: #0056b3;
             transform: translateY(-1px);
         }
-        #adminPanelContent .user-list {
+        #adminPanelContent .user-list, #adminPanelContent .pending-payments-list {
             max-height: 400px;
             overflow-y: auto;
             border: 1px solid #3a3a3a;
@@ -313,11 +328,38 @@
         }
         #adminPanelContent .user-item {
             display: flex;
+            flex-wrap: wrap; /* Allow wrapping for better mobile display */
             justify-content: space-between;
             align-items: center;
             padding: 0.75rem 0;
             border-bottom: 1px solid #2a2a2a;
         }
+        #adminPanelContent .user-item > div {
+            flex: 1 1 50%; /* Two columns on larger screens, stack on smaller */
+            min-width: 150px; /* Prevent squishing */
+            padding-right: 1rem;
+        }
+        #adminPanelContent .user-item > div:last-child {
+            flex: 0 0 auto; /* Buttons don't grow */
+            padding-right: 0;
+            text-align: right;
+        }
+        @media (max-width: 480px) {
+            #adminPanelContent .user-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            #adminPanelContent .user-item > div {
+                width: 100%;
+                padding-right: 0;
+            }
+            #adminPanelContent .user-item > div:last-child {
+                width: 100%;
+                text-align: left;
+                margin-top: 0.5rem;
+            }
+        }
+
         #adminPanelContent .user-item:last-child {
             border-bottom: none;
         }
@@ -455,16 +497,16 @@
 
             <!-- Pending Payments Section -->
             <div class="admin-section">
-                <h3>Pending Payments</h3>
-                <div id="pendingPaymentsList">
-                    <p class="text-gray-500">No pending payments found.</p>
+                <h3>Pending Payments <button id="refreshPaymentsBtn" class="refresh-btn">Refresh</button></h3>
+                <div id="pendingPaymentsList" class="pending-payments-list">
+                    <p class="text-gray-500">Loading pending payments...</p>
                 </div>
             </div>
 
             <!-- Manage Users Section -->
             <div class="admin-section">
-                <h3>Manage Users</h3>
-                <div class="user-list" id="userList">
+                <h3>Manage Users <button id="refreshUsersBtn" class="refresh-btn">Refresh</button></h3>
+                <div id="userList" class="user-list">
                     <p class="text-gray-500">Loading users...</p>
                 </div>
             </div>
@@ -509,6 +551,8 @@
         const adminPasswordInput = document.getElementById('adminPassword');
         const pendingPaymentsList = document.getElementById('pendingPaymentsList');
         const userList = document.getElementById('userList');
+        const refreshPaymentsBtn = document.getElementById('refreshPaymentsBtn'); // New refresh button
+        const refreshUsersBtn = document.getElementById('refreshUsersBtn');     // New refresh button
 
         // Function to show/hide sections
         function showAdminPanel() {
@@ -630,6 +674,7 @@
                     approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
                     approvedBy: auth.currentUser.email
                 });
+                console.log(`admin.html: Payment request ${requestId} status updated to 'approved'.`);
 
                 // 2. Update user's unlocked_access and subscriptionEndDate
                 const userDocRef = db.collection('users').doc(userUid);
@@ -652,9 +697,9 @@
                         subscriptionEndDate: currentEndDate
                     });
                     showModal("Payment approved and user access updated!");
-                    console.log("admin.html: User access updated successfully.");
+                    console.log(`admin.html: User ${userUid} access updated successfully. New end date: ${currentEndDate.toLocaleDateString()}`);
                 } else {
-                    showModal("Error: User not found for access update.");
+                    showModal("Error: User not found for access update. Please ensure the user exists in Firestore.");
                     console.error("admin.html: User document not found for UID:", userUid);
                 }
                 fetchPendingPayments(); // Refresh the list
@@ -674,7 +719,7 @@
                     rejectedBy: auth.currentUser.email
                 });
                 showModal("Payment request rejected.");
-                console.log("admin.html: Payment request rejected.");
+                console.log(`admin.html: Payment request ${requestId} status updated to 'rejected'.`);
                 fetchPendingPayments(); // Refresh the list
             } catch (error) {
                 console.error("admin.html: Error rejecting payment:", error);
@@ -759,10 +804,15 @@
             }
         }
 
+        // Event listeners for refresh buttons
+        refreshPaymentsBtn.addEventListener('click', fetchPendingPayments);
+        refreshUsersBtn.addEventListener('click', fetchUsers);
+        console.log("admin.html: Attached refresh button listeners.");
+
         // Initial check on DOMContentLoaded to ensure Firebase is ready
         document.addEventListener('DOMContentLoaded', () => {
             console.log("admin.html: DOMContentLoaded event fired.");
-            // onAuthStateChanged will handle showing the correct section
+            // onAuthStateChanged will handle showing the correct section and fetching initial data
         });
     </script>
 </body>

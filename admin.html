@@ -288,6 +288,7 @@
             justify-content: space-between;
             align-items: center;
         }
+        /* Refresh button styling */
         #adminPanelContent .admin-section .refresh-btn {
             background-color: #555;
             color: white;
@@ -295,11 +296,20 @@
             border-radius: 15px;
             font-size: 0.8rem;
             font-weight: 500;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.1s ease;
+            border: none; /* Ensure no default button border */
+            cursor: pointer;
         }
         #adminPanelContent .admin-section .refresh-btn:hover {
             background-color: #777;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
+        #adminPanelContent .admin-section .refresh-btn:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
         #adminPanelContent .admin-section p {
             font-size: 0.95rem;
             color: #b0b0b0;
@@ -318,7 +328,7 @@
             background-color: #0056b3;
             transform: translateY(-1px);
         }
-        #adminPanelContent .user-list, #adminPanelContent .pending-payments-list, #adminPanelContent .approved-payments-list {
+        #adminPanelContent .pending-payments-list, #adminPanelContent .approved-payments-list {
             max-height: 400px;
             overflow-y: auto;
             border: 1px solid #3a3a3a;
@@ -326,56 +336,76 @@
             padding: 1rem;
             background-color: #1a1a1a;
         }
-        #adminPanelContent .user-item {
+        #adminPanelContent .payment-item { /* Renamed from user-item for clarity in payment sections */
             display: flex;
-            flex-wrap: wrap; /* Allow wrapping for better mobile display */
+            flex-wrap: wrap; 
             justify-content: space-between;
             align-items: center;
             padding: 0.75rem 0;
             border-bottom: 1px solid #2a2a2a;
         }
-        #adminPanelContent .user-item > div {
-            flex: 1 1 50%; /* Two columns on larger screens, stack on smaller */
-            min-width: 150px; /* Prevent squishing */
+        #adminPanelContent .payment-item:last-child {
+            border-bottom: none;
+        }
+        #adminPanelContent .payment-item > div {
+            flex: 1 1 50%; 
+            min-width: 150px; 
             padding-right: 1rem;
         }
-        #adminPanelContent .user-item > div:last-child {
-            flex: 0 0 auto; /* Buttons don't grow */
+        #adminPanelContent .payment-item > div:last-child {
+            flex: 0 0 auto; 
             padding-right: 0;
             text-align: right;
         }
         @media (max-width: 480px) {
-            #adminPanelContent .user-item {
+            #adminPanelContent .payment-item {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            #adminPanelContent .user-item > div {
+            #adminPanelContent .payment-item > div {
                 width: 100%;
                 padding-right: 0;
             }
-            #adminPanelContent .user-item > div:last-child {
+            #adminPanelContent .payment-item > div:last-child {
                 width: 100%;
                 text-align: left;
                 margin-top: 0.5rem;
             }
         }
 
-        #adminPanelContent .user-item:last-child {
-            border-bottom: none;
-        }
-        #adminPanelContent .user-item span {
+        #adminPanelContent .payment-item span {
             font-size: 0.9rem;
             color: #f1f1f1;
         }
-        #adminPanelContent .user-item button {
-            background-color: #ff2e63;
-            padding: 0.4rem 0.8rem;
-            font-size: 0.8rem;
+        /* Specific button styles for payment items */
+        #adminPanelContent .payment-item .approve-btn {
+            background-color: #4CAF50; /* Green */
+            color: white;
         }
-        #adminPanelContent .user-item button:hover {
-            background-color: #e02a5a;
+        #adminPanelContent .payment-item .approve-btn:hover {
+            background-color: #45a049;
         }
-
+        #adminPanelContent .payment-item .reject-btn {
+            background-color: #dc2626; /* Red */
+            color: white;
+        }
+        #adminPanelContent .payment-item .reject-btn:hover {
+            background-color: #b91c1c;
+        }
+        #adminPanelContent .payment-item .revoke-access-btn { /* For Approved section */
+            background-color: #ff9800; /* Orange */
+            color: white;
+        }
+        #adminPanelContent .payment-item .revoke-access-btn:hover {
+            background-color: #fb8c00;
+        }
+        #adminPanelContent .payment-item .delete-request-btn { /* For Approved section */
+            background-color: #607d8b; /* Blue-grey */
+            color: white;
+        }
+        #adminPanelContent .payment-item .delete-request-btn:hover {
+            background-color: #455a64;
+        }
 
         /* Footer styles (Copied from index.html) */
         footer {
@@ -481,7 +511,7 @@
             <form id="adminLogin">
                 <div class="form-group">
                     <label for="adminEmail">Email Address</label>
-                    <input type="email" id="adminEmail" name="adminEmail" required autocomplete="email" value="nsfw@gmail.com" /> <!-- Corrected email here -->
+                    <input type="email" id="adminEmail" name="adminEmail" required autocomplete="email" value="nsfw@gmail.com" />
                 </div>
                 <div class="form-group">
                     <label for="adminPassword">Password</label>
@@ -503,21 +533,15 @@
                 </div>
             </div>
 
-            <!-- Approved Payments Section (NEW) -->
+            <!-- Approved Payments Section -->
             <div class="admin-section">
                 <h3>Approved Payments <button id="refreshApprovedPaymentsBtn" class="refresh-btn">Refresh</button></h3>
                 <div id="approvedPaymentsList" class="approved-payments-list">
                     <p class="text-gray-500">Loading approved payments...</p>
                 </div>
             </div>
-
-            <!-- Managed Users Section -->
-            <div class="admin-section">
-                <h3>Managed Users <button id="refreshUsersBtn" class="refresh-btn">Refresh</button></h3>
-                <div id="userList" class="user-list">
-                    <p class="text-gray-500">Loading users...</p>
-                </div>
-            </div>
+            
+            <!-- Removed Managed Users section as per user request -->
         </div>
     </main>
 
@@ -558,11 +582,9 @@
         const adminEmailInput = document.getElementById('adminEmail');
         const adminPasswordInput = document.getElementById('adminPassword');
         const pendingPaymentsList = document.getElementById('pendingPaymentsList');
-        const approvedPaymentsList = document.getElementById('approvedPaymentsList'); // New element
-        const userList = document.getElementById('userList');
+        const approvedPaymentsList = document.getElementById('approvedPaymentsList'); 
         const refreshPendingPaymentsBtn = document.getElementById('refreshPendingPaymentsBtn');
-        const refreshApprovedPaymentsBtn = document.getElementById('refreshApprovedPaymentsBtn'); // New button
-        const refreshUsersBtn = document.getElementById('refreshUsersBtn');
+        const refreshApprovedPaymentsBtn = document.getElementById('refreshApprovedPaymentsBtn'); 
 
         // Function to show/hide sections
         function showAdminPanel() {
@@ -571,8 +593,7 @@
             console.log("admin.html: Showing admin panel content.");
             // Start real-time listeners (and initial fetch)
             listenForPendingPayments();
-            listenForApprovedPayments(); // New listener
-            listenForUsers();
+            listenForApprovedPayments(); 
         }
 
         function showAdminLogin() {
@@ -638,7 +659,7 @@
                     const data = doc.data();
                     const requestId = doc.id;
                     const item = document.createElement('div');
-                    item.className = 'user-item'; 
+                    item.className = 'payment-item'; 
                     item.innerHTML = `
                         <div>
                             <p><strong>User:</strong> ${data.user_email || 'N/A'}</p>
@@ -649,7 +670,7 @@
                             <p class="text-xs text-gray-400">Req ID: ${requestId}</p>
                         </div>
                         <div>
-                            <button data-request-id="${requestId}" data-user-uid="${data.user_firebase_uid}" data-duration="${data.duration_months}" class="approve-btn bg-green-600 hover:bg-green-700">Approve</button>
+                            <button data-request-id="${requestId}" data-user-uid="${data.user_firebase_uid}" data-duration="${data.duration_months}" data-user-email="${data.user_email}" class="approve-btn bg-green-600 hover:bg-green-700">Approve</button>
                             <button data-request-id="${requestId}" class="reject-btn bg-red-600 hover:bg-red-700 ml-2">Reject</button>
                         </div>
                     `;
@@ -658,7 +679,7 @@
                 console.log(`admin.html: ${snapshot.size} pending payments loaded via real-time update.`);
                 // Re-attach listeners after UI update - important for dynamically added elements
                 document.querySelectorAll('#pendingPaymentsList .approve-btn').forEach(button => {
-                    button.onclick = () => approvePayment(button.dataset.requestId, button.dataset.userUid, parseInt(button.dataset.duration));
+                    button.onclick = () => approvePayment(button.dataset.requestId, button.dataset.userUid, parseInt(button.dataset.duration), button.dataset.userEmail);
                 });
                 document.querySelectorAll('#pendingPaymentsList .reject-btn').forEach(button => {
                     button.onclick = () => rejectPayment(button.dataset.requestId);
@@ -686,7 +707,7 @@
                     const data = doc.data();
                     const requestId = doc.id;
                     const item = document.createElement('div');
-                    item.className = 'user-item'; 
+                    item.className = 'payment-item'; 
                     item.innerHTML = `
                         <div>
                             <p><strong>User:</strong> ${data.user_email || 'N/A'}</p>
@@ -696,12 +717,26 @@
                             <p class="text-xs text-gray-400">Req ID: ${requestId}</p>
                             <p class="text-xs text-green-400">Approved By: ${data.approvedBy || 'N/A'}</p>
                             <p class="text-xs text-green-400">Approved At: ${data.approvedAt ? data.approvedAt.toDate().toLocaleDateString() : 'N/A'}</p>
+                            <p class="text-xs text-blue-400">Access: ${data.user_unlocked_access ? 'Active' : 'Revoked'}</p>
+                            <p class="text-xs text-blue-400">Sub End: ${data.user_subscription_endDate ? data.user_subscription_endDate.toDate().toLocaleDateString() : 'N/A'}</p>
                         </div>
-                        <!-- No buttons for approved payments -->
+                        <div>
+                            <button data-request-id="${requestId}" data-user-uid="${data.user_firebase_uid}" data-user-email="${data.user_email}" data-current-access="${data.user_unlocked_access}" class="revoke-access-btn bg-orange-500 hover:bg-orange-600">
+                                ${data.user_unlocked_access ? 'Revoke Access' : 'Grant Access'}
+                            </button>
+                            <button data-request-id="${requestId}" class="delete-request-btn bg-gray-600 hover:bg-gray-700 ml-2">Delete Request</button>
+                        </div>
                     `;
                     approvedPaymentsList.appendChild(item);
                 });
                 console.log(`admin.html: ${snapshot.size} approved payments loaded via real-time update.`);
+                // Re-attach listeners for dynamically added elements
+                document.querySelectorAll('#approvedPaymentsList .revoke-access-btn').forEach(button => {
+                    button.onclick = () => toggleUserAccess(button.dataset.userUid, button.dataset.userEmail, button.dataset.currentAccess === 'true', button.dataset.requestId);
+                });
+                document.querySelectorAll('#approvedPaymentsList .delete-request-btn').forEach(button => {
+                    button.onclick = () => deletePaymentRequest(button.dataset.requestId);
+                });
             }, error => {
                 console.error("admin.html: Error listening for approved payments:", error);
                 approvedPaymentsList.innerHTML = `<p class="text-red-500">Error loading approved payments: ${error.message}</p>`;
@@ -709,20 +744,13 @@
         }
 
         // Approve Payment Logic
-        async function approvePayment(requestId, userUid, durationMonths) {
-            console.log(`admin.html: Approving request ${requestId} for user ${userUid} for ${durationMonths} months.`);
+        async function approvePayment(requestId, userUid, durationMonths, userEmail) {
+            console.log(`admin.html: Approving request ${requestId} for user ${userUid} (${userEmail}) for ${durationMonths} months.`);
             try {
-                // 1. Update payment_requests status to 'approved'
-                await db.collection('payment_requests').doc(requestId).update({
-                    status: 'approved',
-                    approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    approvedBy: auth.currentUser.email
-                });
-                console.log(`admin.html: Payment request ${requestId} status updated to 'approved'.`);
-
-                // 2. Update user's unlocked_access and subscriptionEndDate
+                // Get current user data to determine new subscription end date
                 const userDocRef = db.collection('users').doc(userUid);
                 const userDoc = await userDocRef.get();
+                let newSubscriptionEndDate = null;
 
                 if (userDoc.exists) {
                     const userData = userDoc.data();
@@ -735,19 +763,42 @@
 
                     // Add durationMonths to the current end date
                     currentEndDate.setMonth(currentEndDate.getMonth() + durationMonths);
+                    newSubscriptionEndDate = currentEndDate;
 
+                    // Update user's unlocked_access and subscriptionEndDate
                     await userDocRef.update({
                         unlocked_access: true,
-                        // Ensure subscriptionEndDate is stored as a Firebase Timestamp, not a JS Date object
-                        subscriptionEndDate: firebase.firestore.Timestamp.fromDate(currentEndDate) 
+                        subscriptionEndDate: firebase.firestore.Timestamp.fromDate(newSubscriptionEndDate) 
                     });
-                    showModal("Payment approved and user access updated!");
-                    console.log(`admin.html: User ${userUid} access updated successfully. New end date: ${currentEndDate.toLocaleDateString()}`);
+                    console.log(`admin.html: User ${userUid} access updated successfully. New end date: ${newSubscriptionEndDate.toLocaleDateString()}`);
                 } else {
-                    showModal("Error: User not found for access update. Please ensure the user exists in Firestore.");
-                    console.error("admin.html: User document not found for UID:", userUid);
+                    // If user document doesn't exist, create it and grant access
+                    console.warn(`admin.html: User document for ${userUid} not found. Creating new user document.`);
+                    const now = new Date();
+                    now.setMonth(now.getMonth() + durationMonths);
+                    newSubscriptionEndDate = now;
+
+                    await db.collection('users').doc(userUid).set({
+                        email: userEmail, // Use email from payment request
+                        username: userEmail.split('@')[0], // Basic username from email
+                        registeredAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        unlocked_access: true,
+                        subscriptionEndDate: firebase.firestore.Timestamp.fromDate(newSubscriptionEndDate)
+                    });
+                    console.log(`admin.html: New user document created for ${userUid} with access granted.`);
                 }
-                // onSnapshot will automatically refresh the lists
+
+                // Update payment_requests status to 'approved' and store user's access status/end date
+                await db.collection('payment_requests').doc(requestId).update({
+                    status: 'approved',
+                    approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    approvedBy: auth.currentUser.email,
+                    user_unlocked_access: true, // Store the user's access status at time of approval
+                    user_subscription_endDate: firebase.firestore.Timestamp.fromDate(newSubscriptionEndDate) // Store the user's new end date
+                });
+                console.log(`admin.html: Payment request ${requestId} status updated to 'approved'.`);
+                showModal("Payment approved and user access updated!");
+
             } catch (error) {
                 console.error("admin.html: Error approving payment:", error);
                 showModal(`Error approving payment: ${error.message}`);
@@ -765,70 +816,18 @@
                 });
                 showModal("Payment request rejected.");
                 console.log(`admin.html: Payment request ${requestId} status updated to 'rejected'.`);
-                // onSnapshot will automatically refresh the lists
             } catch (error) {
                 console.error("admin.html: Error rejecting payment:", error);
                 showModal(`Error rejecting payment: ${error.message}`);
             }
         }
 
-        // Real-time Listener for All Users
-        function listenForUsers() {
-            console.log("admin.html: Starting real-time listener for all users...");
-            const q = db.collection('users');
-            
-            q.onSnapshot(snapshot => {
-                if (snapshot.empty) {
-                    userList.innerHTML = '<p class="text-gray-500">No users found.</p>';
-                    console.log("admin.html: No users found in real-time update.");
-                    return;
-                }
-
-                userList.innerHTML = ''; // Clear current list
-                snapshot.forEach(doc => {
-                    const userData = doc.data();
-                    const userId = doc.id;
-                    const isPro = userData.unlocked_access || false; // Default to false
-                    const subEndDate = userData.subscriptionEndDate ? userData.subscriptionEndDate.toDate() : null;
-                    const isSubscriptionActive = isPro && subEndDate && subEndDate > new Date();
-
-                    let accessStatusText = isPro ? (isSubscriptionActive ? 'Active' : 'Expired') : 'No Access';
-                    let buttonText = isPro ? 'Revoke Access' : 'Grant Access';
-                    let buttonClass = isPro ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700';
-
-                    const item = document.createElement('div');
-                    item.className = 'user-item';
-                    item.innerHTML = `
-                        <div>
-                            <p><strong>Email:</strong> ${userData.email || 'N/A'}</p>
-                            <p><strong>Username:</strong> ${userData.username || 'N/A'}</p>
-                            <p><strong>Access:</strong> ${accessStatusText}</p>
-                            <p><strong>Sub End:</strong> ${subEndDate ? subEndDate.toLocaleDateString() : 'N/A'}</p>
-                            <p class="text-xs text-gray-400">UID: ${userId}</p>
-                        </div>
-                        <div>
-                            <button data-user-uid="${userId}" data-current-access="${isPro}" class="toggle-access-btn ${buttonClass}">${buttonText}</button>
-                        </div>
-                    `;
-                    userList.appendChild(item);
-                });
-                console.log(`admin.html: ${snapshot.size} users loaded via real-time update.`);
-                // Re-attach listeners after UI update
-                document.querySelectorAll('#userList .toggle-access-btn').forEach(button => {
-                    button.onclick = () => toggleUserAccess(button.dataset.userUid, button.dataset.currentAccess === 'true');
-                });
-            }, error => {
-                console.error("admin.html: Error listening for users:", error);
-                userList.innerHTML = `<p class="text-red-500">Error loading users: ${error.message}</p>`;
-            });
-        }
-
-        // Attach listeners for Grant/Revoke Access buttons (moved into listenForUsers for re-attachment)
-        // Toggle User Access Logic
-        async function toggleUserAccess(userId, currentAccessStatus) {
-            console.log(`admin.html: Toggling access for user ${userId}. Current status: ${currentAccessStatus}`);
+        // Toggle User Access Logic (now called from Approved Payments section)
+        async function toggleUserAccess(userUid, userEmail, currentAccessStatus, requestId = null) {
+            console.log(`admin.html: Toggling access for user ${userUid} (${userEmail}). Current status: ${currentAccessStatus}`);
             try {
-                const userDocRef = db.collection('users').doc(userId);
+                const userDocRef = db.collection('users').doc(userUid);
+                const userDoc = await userDocRef.get();
                 let newAccessStatus = !currentAccessStatus;
                 let newSubscriptionEndDate = null;
 
@@ -843,24 +842,65 @@
                     console.log("admin.html: Revoking access. Setting unlocked_access to false and subscriptionEndDate to null.");
                 }
 
-                await userDocRef.update({
-                    unlocked_access: newAccessStatus,
-                    // Ensure subscriptionEndDate is stored as a Firebase Timestamp, not a JS Date object
-                    subscriptionEndDate: newAccessStatus ? firebase.firestore.Timestamp.fromDate(newSubscriptionEndDate) : null 
-                });
-                showModal(`User access ${newAccessStatus ? 'granted' : 'revoked'}!`);
-                console.log(`admin.html: User ${userId} access toggled to ${newAccessStatus}.`);
-                // onSnapshot will automatically refresh the lists
+                if (userDoc.exists) {
+                    await userDocRef.update({
+                        unlocked_access: newAccessStatus,
+                        subscriptionEndDate: newAccessStatus ? firebase.firestore.Timestamp.fromDate(newSubscriptionEndDate) : null 
+                    });
+                    showModal(`User access ${newAccessStatus ? 'granted' : 'revoked'}!`);
+                    console.log(`admin.html: User ${userUid} access toggled to ${newAccessStatus}.`);
+                } else {
+                    // If user document doesn't exist, create it (e.g., if only payment request existed)
+                    console.warn(`admin.html: User document for ${userUid} not found during toggle. Creating new user document.`);
+                    const now = new Date();
+                    now.setMonth(now.getMonth() + 1); // Default 1 month access
+                    newSubscriptionEndDate = now;
+
+                    await db.collection('users').doc(userUid).set({
+                        email: userEmail,
+                        username: userEmail.split('@')[0],
+                        registeredAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        unlocked_access: newAccessStatus,
+                        subscriptionEndDate: newAccessStatus ? firebase.firestore.Timestamp.fromDate(newSubscriptionEndDate) : null
+                    });
+                    showModal(`User document created and access ${newAccessStatus ? 'granted' : 'revoked'}!`);
+                    console.log(`admin.html: New user document created for ${userUid} with access toggled.`);
+                }
+
+                // Also update the payment request document with the latest user access status
+                if (requestId) {
+                    await db.collection('payment_requests').doc(requestId).update({
+                        user_unlocked_access: newAccessStatus,
+                        user_subscription_endDate: newAccessStatus ? firebase.firestore.Timestamp.fromDate(newSubscriptionEndDate) : null
+                    });
+                    console.log(`admin.html: Payment request ${requestId} updated with latest user access status.`);
+                }
+
             } catch (error) {
                 console.error("admin.html: Error toggling user access:", error);
                 showModal(`Error toggling access: ${error.message}`);
             }
         }
 
+        // Delete Payment Request Logic (NEW)
+        async function deletePaymentRequest(requestId) {
+            console.log(`admin.html: Deleting payment request ${requestId}.`);
+            try {
+                // Optionally add a confirmation dialog here before deleting
+                if (confirm("Are you sure you want to delete this payment request? This action cannot be undone.")) {
+                    await db.collection('payment_requests').doc(requestId).delete();
+                    showModal("Payment request deleted successfully!");
+                    console.log(`admin.html: Payment request ${requestId} deleted.`);
+                }
+            } catch (error) {
+                console.error("admin.html: Error deleting payment request:", error);
+                showModal(`Error deleting request: ${error.message}`);
+            }
+        }
+
         // Event listeners for manual refresh buttons
         refreshPendingPaymentsBtn.addEventListener('click', listenForPendingPayments);
         refreshApprovedPaymentsBtn.addEventListener('click', listenForApprovedPayments);
-        refreshUsersBtn.addEventListener('click', listenForUsers);
         console.log("admin.html: Attached manual refresh button listeners.");
 
         // Initial check on DOMContentLoaded to ensure Firebase is ready

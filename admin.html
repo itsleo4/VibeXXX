@@ -490,32 +490,13 @@
     <script src="auth.js"></script> <!-- Link to your auth.js script -->
 
     <script>
-        // Firebase configuration (must be present here for admin.html to initialize Firebase)
-        const firebaseConfig = {
-            apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
-            authDomain: "vibexxx-500c6.firebaseapp.com",
-            projectId: "vibexxx-500c6",
-            storageBucket: "vibexxx-500c6.firebasestorage.app",
-            messagingSenderId: "880697212397",
-            appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
-        };
-
-        // Initialize Firebase ONLY if it hasn't been initialized by auth.js already
-        // This prevents the "No Firebase App" error
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-            console.log("admin.html: Firebase app initialized directly.");
-        } else {
-            console.log("admin.html: Firebase app already initialized by auth.js.");
-        }
-
-        // Now, safely get auth and db instances
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        console.log("admin.html: Firebase Auth and Firestore instances obtained.");
+        // Use the globally available auth and db objects from auth.js
+        // No need to redeclare auth and db here, they are globally available from auth.js
+        const auth = firebase.auth(); // Correctly reference the global object
+        const db = firebase.firestore(); // Correctly reference the global object
 
         // Admin email (replace with your actual admin email)
-        const ADMIN_EMAIL = "nsfgw@gmail.com";
+        const ADMIN_EMAIL = "nsfgw@gmail.com"; // Keep this for admin email validation
 
         // UI elements
         const adminLoginForm = document.getElementById('adminLoginForm');

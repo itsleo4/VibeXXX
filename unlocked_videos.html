@@ -285,9 +285,11 @@
 
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
+            console.log("Firebase app initialized on unlocked_videos.html.");
         }
         const auth = firebase.auth();
         const db = firebase.firestore();
+        console.log("Firebase Auth and Firestore instances created on unlocked_videos.html.");
 
         // Get screen elements
         const loadingScreen = document.getElementById('loadingScreen');
@@ -296,20 +298,19 @@
         const proVideoGrid = document.getElementById('proVideoGrid');
         const videoGridContainer = document.getElementById('videoGrid'); // The div for video cards
 
-        // --- Pro Video Data (Now with your new video and iframely embed, FIXED STRING) ---
+        // --- Pro Video Data ---
         const proVideoData = {
             "pro_1024tera_squirting": {
                 title: "She's Squirting: Witness the Meltdown of Pure Pleasure!",
                 description: "Experience an intense session of pure squirting bliss.",
                 thumbnail: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/download.webp",
-                // IMPORTANT: Using backticks (`) for multi-line string and to avoid quote issues.
-                // Removed the redundant <script> tag from here.
                 iframelyEmbedHtml: `<div class="iframely-embed"><div class="iframely-responsive" style="height: 170px; padding-bottom: 0;"><a href="https://www.1024tera.com/sharing/link?surl=ltc6OftWoRP40JvL36U_JQ" data-iframely-url="//iframely.net/qmsLhSJA?theme=dark"></a></div></div>`
             }
         };
 
         // Function to show a specific screen and hide others
         function showScreen(screenToShow) {
+            console.log("Attempting to show screen:", screenToShow.id);
             loadingScreen.classList.add('hidden');
             accessDeniedScreen.classList.add('hidden');
             proVideoGrid.classList.add('hidden');
@@ -318,16 +319,15 @@
 
         // --- Render Pro Video Cards Function ---
         function renderProVideoCards() {
+            console.log("Rendering Pro video cards...");
             videoGridContainer.innerHTML = ''; // Clear existing content
             for (const videoId in proVideoData) {
                 const video = proVideoData[videoId];
                 const card = document.createElement('div');
                 card.className = 'video-card';
-                // Link to video-player.html with encoded parameters
                 card.onclick = () => {
                     const encodedTitle = encodeURIComponent(video.title);
                     const encodedDescription = encodeURIComponent(video.description);
-                    // Encode the full iframely HTML snippet to pass it
                     const encodedIframelyHtml = encodeURIComponent(video.iframelyEmbedHtml);
                     window.location.href = `video-player.html?title=${encodedTitle}&description=${encodedDescription}&iframelyHtml=${encodedIframelyHtml}`;
                 };
@@ -340,49 +340,62 @@
                 `;
                 videoGridContainer.appendChild(card);
             }
+            console.log("Pro video cards rendered.");
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            console.log("unlocked_videos.html: DOMContentLoaded event fired.");
             showScreen(loadingScreen); // Show loading screen initially
 
             auth.onAuthStateChanged(async (user) => {
+                console.log("unlocked_videos.html: onAuthStateChanged callback fired.");
                 if (user) {
-                    console.log("Firebase user is logged in:", user.uid, user.email);
+                    console.log("unlocked_videos.html: Firebase user is logged in. UID:", user.uid, "Email:", user.email);
                     const userDocRef = db.collection('users').doc(user.uid);
                     try {
                         const userDoc = await userDocRef.get();
+                        console.log("unlocked_videos.html: User document fetched. Exists:", userDoc.exists);
+
                         if (userDoc.exists) {
                             const userData = userDoc.data();
+                            console.log("unlocked_videos.html: User Data:", userData);
+
                             const unlockedAccess = userData.unlocked_access === true;
                             const subscriptionEndDate = userData.subscriptionEndDate ? userData.subscriptionEndDate.toDate() : null;
-
                             const now = new Date();
 
+                            console.log("unlocked_videos.html: unlockedAccess:", unlockedAccess);
+                            console.log("unlocked_videos.html: subscriptionEndDate (raw):", userData.subscriptionEndDate);
+                            console.log("unlocked_videos.html: subscriptionEndDate (Date obj):", subscriptionEndDate);
+                            console.log("unlocked_videos.html: Current Date:", now);
+                            console.log("unlocked_videos.html: Is subscriptionEndDate > now?", subscriptionEndDate && subscriptionEndDate > now);
+
+
                             if (unlockedAccess && subscriptionEndDate && subscriptionEndDate > now) {
-                                console.log("User has active Pro Access!");
+                                console.log("unlocked_videos.html: User has active Pro Access! Displaying videos.");
                                 renderProVideoCards(); // Render videos only if access is granted
                                 showScreen(proVideoGrid);
                             } else if (unlockedAccess && subscriptionEndDate && subscriptionEndDate <= now) {
-                                console.log("User's Pro Access has expired.");
+                                console.log("unlocked_videos.html: User's Pro Access has expired.");
                                 accessDeniedMessage.textContent = "Your Pro Access has expired. Please renew your membership!";
                                 showScreen(accessDeniedScreen);
                             } else {
-                                console.log("User logged in but no active Pro Access flag.");
-                                accessDeniedMessage.textContent = "It looks like you don't have Pro Access yet.";
+                                console.log("unlocked_videos.html: User logged in but no active Pro Access flag or invalid date.");
+                                accessDeniedMessage.textContent = "It looks like you don't have Pro Access yet. Please ensure your membership is active.";
                                 showScreen(accessDeniedScreen);
                             }
                         } else {
-                            console.log("User document not found. Access Denied.");
-                            accessDeniedMessage.textContent = "Access Denied. Please register or log in.";
+                            console.log("unlocked_videos.html: User document not found in Firestore. Access Denied.");
+                            accessDeniedMessage.textContent = "Access Denied. User data not found. Please register or log in.";
                             showScreen(accessDeniedScreen);
                         }
                     } catch (error) {
-                        console.error("Error fetching user data from Firebase:", error);
-                        accessDeniedMessage.textContent = `Error verifying access: ${error.message}`;
+                        console.error("unlocked_videos.html: Error fetching user data from Firebase:", error);
+                        accessDeniedMessage.textContent = `Error verifying access: ${error.message}. Please try again.`;
                         showScreen(accessDeniedScreen);
                     }
                 } else {
-                    console.log("No user signed in. Access Denied.");
+                    console.log("unlocked_videos.html: No user signed in. Access Denied.");
                     accessDeniedMessage.textContent = "You need to be logged in to access Pro content.";
                     showScreen(accessDeniedScreen);
                 }

@@ -145,9 +145,10 @@
         /* Main content layout */
         main {
             flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 2rem 1.5rem;
-            max-width: 1400px;
-            margin: 0 auto;
         }
         @media (max-width: 640px) {
             .app-header {
@@ -173,173 +174,176 @@
             }
         }
 
-        .section-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #f1f1f1;
-            margin-bottom: 2rem;
+        /* Membership Page Specific Styles */
+        .membership-container {
+            background-color: #1a1a1a;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            width: 100%;
+            max-width: 700px;
             text-align: center;
+            border: 1px solid #2a2a2a;
+        }
+
+        .membership-container h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ff2e63;
+            margin-bottom: 2rem;
             text-shadow: 0 0 8px rgba(255,46,99,0.2);
         }
 
-        /* Membership Plan Selector - NEW STYLE */
-        .plan-selector-container {
-            display: flex;
-            flex-wrap: wrap; /* Allow wrapping on smaller screens */
-            justify-content: center;
-            gap: 1rem; /* Compact gap */
-            margin-bottom: 3rem;
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
         }
 
-        .plan-option {
-            background-color: #1a1a1a;
+        .plan-card {
+            background-color: #2a2a2a;
+            padding: 1.5rem;
+            border-radius: 10px;
             border: 2px solid #3a3a3a;
-            border-radius: 10px; /* Slightly less rounded */
-            padding: 0.8rem 1.2rem; /* Reduced padding for compactness */
-            cursor: pointer;
             transition: all 0.2s ease;
-            text-align: center;
-            flex-grow: 1; /* Allow items to grow */
-            max-width: 200px; /* Max width for individual options */
-            min-width: 150px; /* Min width to prevent squishing */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        .plan-option:hover {
-            border-color: #ff2e63;
-            background-color: #2a2a2a;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(255,46,99,0.3);
-        }
-        .plan-option.selected {
-            border-color: #ff2e63;
-            background-color: #2a2a2a;
-            box-shadow: 0 0 0 3px rgba(255,46,99,0.5);
-            transform: translateY(-1px);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 200px; /* Ensure cards have a consistent height */
         }
 
-        .plan-option h3 {
+        .plan-card:hover {
+            border-color: #ff2e63;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255,46,99,0.2);
+        }
+
+        .plan-card.selected {
+            border-color: #ff2e63;
+            box-shadow: 0 0 0 3px rgba(255,46,99,0.6), 0 6px 15px rgba(255,46,99,0.4);
+            transform: translateY(-3px);
+        }
+
+        .plan-card h3 {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.1rem; /* Smaller title */
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f1f1f1;
+            margin-bottom: 0.75rem;
+        }
+
+        .plan-card .price {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ff2e63;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-card .duration {
+            font-size: 1.1rem;
+            color: #b0b0b0;
+            margin-bottom: 1rem;
+        }
+
+        .plan-card ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.5rem;
+            text-align: left;
+            flex-grow: 1;
+        }
+
+        .plan-card ul li {
+            font-size: 0.95rem;
+            color: #c0c0c0;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .plan-card ul li svg {
+            fill: #4CAF50; /* Green checkmark */
+            width: 18px;
+            height: 18px;
+            margin-right: 0.5rem;
+        }
+
+        .payment-info {
+            background-color: #2a2a2a;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid #3a3a3a;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .payment-info h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
             font-weight: 600;
             color: #f1f1f1;
-            margin-bottom: 0.2rem;
-        }
-        .plan-option .price {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem; /* Smaller price */
-            font-weight: 700;
-            color: #ff2e63;
-            margin-bottom: 0.5rem;
-        }
-        .plan-option .duration {
-            font-size: 0.8rem;
-            color: #b0b0b0;
-        }
-        .plan-option .best-value {
-            font-size: 0.7rem;
-            color: #4CAF50; /* Green for "Best Value" */
-            font-weight: 600;
-            margin-top: 0.5rem;
-        }
-
-        /* Payment Details Form */
-        .payment-form-section {
-            background-color: #1a1a1a;
-            border-radius: 12px;
-            padding: 2.5rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-            max-width: 600px;
-            width: 100%;
-            margin: 0 auto;
-            /* display: none; */ /* This will be controlled by JS */
-        }
-        .payment-form-section h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: #ff2e63;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             text-align: center;
         }
-        .form-group {
-            margin-bottom: 1.5rem;
+
+        .payment-info .form-group {
+            margin-bottom: 1.2rem;
         }
-        .form-group label {
+
+        .payment-info .form-group label {
             display: block;
             margin-bottom: 0.5rem;
+            font-size: 0.95rem;
             color: #b0b0b0;
-            font-size: 1rem;
         }
-        .form-group input, .form-group select, .form-group textarea {
+
+        .payment-info .form-group input[type="text"],
+        .payment-info .form-group input[type="email"],
+        .payment-info .form-group input[type="file"],
+        .payment-info .form-group select {
             width: 100%;
             padding: 0.8rem 1rem;
-            border-radius: 8px;
             border: 1px solid #3a3a3a;
-            background-color: #2a2a2a;
+            border-radius: 8px;
+            background-color: #121212;
             color: #f1f1f1;
             font-size: 1rem;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+
+        .payment-info .form-group input[type="text"]:focus,
+        .payment-info .form-group input[type="email"]:focus,
+        .payment-info .form-group input[type="file"]:focus,
+        .payment-info .form-group select:focus {
             border-color: #ff2e63;
             outline: none;
             box-shadow: 0 0 0 2px rgba(255,46,99,0.4);
         }
-        .submit-payment-btn {
-            background-color: #4CAF50; /* Green for submit */
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+
+        .payment-info .form-group input[type="file"] {
+            padding: 0.5rem 1rem; /* Adjust padding for file input */
+        }
+
+        .payment-info .submit-btn {
             width: 100%;
-            font-family: 'Montserrat', sans-serif;
-        }
-        .submit-payment-btn:hover {
-            background-color: #45a049;
-            transform: translateY(-2px);
-        }
-        .payment-message {
-            margin-top: 1.5rem;
-            text-align: center;
-            font-size: 1rem;
-            color: #ff2e63;
-        }
-        .payment-info-section {
-            text-align: center;
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background-color: #2a2a2a;
-            border-radius: 10px;
-            border: 1px solid #3a3a3a;
-        }
-        .payment-info-section img {
-            max-width: 180px;
-            height: auto;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-            border: 3px solid #ff2e63;
-        }
-        .payment-info-section p {
-            font-size: 1rem;
-            color: #b0b0b0;
-            margin-bottom: 0.75rem;
-        }
-        .payment-info-section .copy-address-btn {
-            background-color: #007bff;
+            padding: 1rem;
+            background-color: #ff2e63;
             color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
             font-weight: 600;
+            cursor: pointer;
             transition: background-color 0.2s ease, transform 0.1s ease;
-            margin-top: 0.5rem;
+            box-shadow: 0 4px 10px rgba(255,46,99,0.3);
             font-family: 'Montserrat', sans-serif;
         }
-        .payment-info-section .copy-address-btn:hover {
-            background-color: #0056b3;
+
+        .payment-info .submit-btn:hover {
+            background-color: #e02a5a;
             transform: translateY(-1px);
         }
 
@@ -406,6 +410,21 @@
         .hidden {
             display: none !important;
         }
+        #loadingSpinner {
+            display: none; /* Hidden by default */
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #ff2e63; /* Pink */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px auto; /* Center and add some margin */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -441,71 +460,128 @@
     </header>
 
     <main>
-        <h2 class="section-title">Choose Your Premium Plan</h2>
+        <div class="membership-container">
+            <h2>Choose Your VibeXXX Plan</h2>
+            <div class="plan-grid">
+                <!-- 1 Month Plan -->
+                <div class="plan-card" data-plan="1-month" data-price-usd="10" data-price-inr="800" data-duration="1">
+                    <h3>1 Month</h3>
+                    <p class="price">$10 / ₹800</p>
+                    <p class="duration">Monthly Access</p>
+                    <ul>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                            Full HD Streaming
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                            Unlimited Access
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                            Exclusive Content
+                        </li>
+                    </ul>
+                </div>
 
-        <div id="planSelectionSection" class="plan-selector-container">
-            <!-- 1 Month Access Plan Option -->
-            <div class="plan-option" data-plan="1_MONTH_ACCESS" data-price="199" data-currency="INR" data-duration-months="1">
-                <h3>1 Month Access</h3>
-                <div class="price">₹199</div>
-                <div class="duration">per month</div>
+                <!-- 3 Months Plan -->
+                <div class="plan-card" data-plan="3-months" data-price-usd="25" data-price-inr="2000" data-duration="3">
+                    <h3>3 Months</h3>
+                    <p class="price">$25 / ₹2000</p>
+                    <p class="duration">Quarterly Access</p>
+                    <ul>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                            Full HD Streaming
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                            Unlimited Access
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                            Exclusive Content
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                            Save 15%
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 12 Months Plan -->
+                <div class="plan-card" data-plan="12-months" data-price-usd="80" data-price-inr="6500" data-duration="12">
+                    <h3>12 Months</h3>
+                    <p class="price">$80 / ₹6500</p>
+                    <p class="duration">Yearly Access</p>
+                    <ul>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                            Full HD Streaming
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                            Unlimited Access
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                            Exclusive Content
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                            Save 30%
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                            Priority Support
+                        </li>
+                    </ul>
+                </div>
             </div>
 
-            <!-- 3 Month Access Plan Option (Best Value) -->
-            <div class="plan-option" data-plan="3_MONTH_ACCESS" data-price="499" data-currency="INR" data-duration-months="3">
-                <h3>3 Month Access</h3>
-                <div class="price">₹499</div>
-                <div class="duration">for 3 months</div>
-                <div class="best-value">Best Value!</div>
+            <div class="payment-info">
+                <h3>Complete Your Payment</h3>
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="selectedPlan">Selected Plan:</label>
+                        <input type="text" id="selectedPlan" name="selectedPlan" readonly class="text-gray-400" />
+                    </div>
+                    <div class="form-group">
+                        <label for="selectedPrice">Amount:</label>
+                        <input type="text" id="selectedPrice" name="selectedPrice" readonly class="text-gray-400" />
+                        <input type="hidden" id="selectedCurrency" name="selectedCurrency" value="" />
+                        <input type="hidden" id="selectedDuration" name="selectedDuration" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentMethod">Payment Method:</label>
+                        <select id="paymentMethod" name="paymentMethod" required>
+                            <option value="">Select Method</option>
+                            <option value="UPI">UPI</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="Crypto">Crypto</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="refID">Transaction Reference ID:</label>
+                        <input type="text" id="refID" name="refID" placeholder="Enter your transaction ID" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Your Name:</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your name" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email:</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required readonly />
+                    </div>
+                    <div class="form-group">
+                        <label for="screenshot">Payment Screenshot:</label>
+                        <input type="file" id="screenshot" name="screenshot" accept="image/*" required />
+                    </div>
+                    <div id="loadingSpinner"></div>
+                    <button type="submit" class="submit-btn">Submit Payment Proof</button>
+                </form>
             </div>
         </div>
-
-        <!-- Payment Details Form -->
-        <section id="paymentFormSection" class="payment-form-section hidden">
-            <h3>Complete Your Payment</h3>
-            <p class="text-center text-lg text-gray-400 mb-4">Selected Plan: <span id="selectedPlanDisplay" class="font-bold text-pink-400"></span> for <span id="selectedPriceDisplay" class="font-bold text-pink-400"></span></p>
-
-            <div class="form-group">
-                <label for="paymentMethod">Choose Payment Method</label>
-                <select id="paymentMethod" name="paymentMethod" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white" required>
-                    <option value="">Select Method</option>
-                    <option value="UPI">UPI (Google Pay, PhonePe, Paytm, etc.)</option>
-                    <option value="PAYPAL">PayPal</option>
-                </select>
-            </div>
-
-            <div id="upiDetails" class="payment-info-section hidden">
-                <img src="images/upi.png" alt="UPI QR Code" id="upiQrCodeImage" onerror="this.onerror=null;this.src='https://placehold.co/180x180/000/FFF?text=UPI+QR+Code+Error';">
-                <p>Scan this QR or copy UPI ID:</p>
-                <p class="text-sm text-gray-400 break-all" id="upiId">bharti00077-2@okaxis</p>
-                <button class="copy-address-btn" onclick="copyToClipboard('upiId')">Copy UPI ID</button>
-                <p class="text-xs text-red-400 mt-2">Make sure to send the exact amount (₹<span id="upiAmount"></span>) for your selected plan.</p>
-            </div>
-
-            <div id="paypalDetails" class="payment-info-section hidden">
-                <img src="images/paypal.png" alt="PayPal QR Code" id="paypalQrCodeImage" class="mb-4" onerror="this.onerror=null;this.src='https://placehold.co/180x180/000/FFF?text=PayPal+QR+Code+Error';">
-                <p>Scan this QR or click the button below to pay via PayPal:</p>
-                <a href="https://www.paypal.me/PawanKumar35438" target="_blank" class="copy-address-btn bg-blue-600 hover:bg-blue-700">Pay with PayPal</a>
-                <p class="text-xs text-red-400 mt-2">Ensure you send the exact amount for your selected plan.</p>
-            </div>
-            
-            <form id="paymentProofForm" class="mt-8">
-                <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" id="name" name="name" required placeholder="Enter your full name" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white" />
-                </div>
-                <div class="form-group">
-                    <label for="refID">Transaction Reference ID / Hash</label>
-                    <input type="text" id="refID" name="refID" required placeholder="Enter your transaction ID" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white" />
-                </div>
-                <button type="submit" class="submit-payment-btn">Submit Payment Proof</button>
-                <p id="paymentMessage" class="payment-message hidden"></p>
-            </form>
-
-            <div class="text-center mt-6">
-                <button id="changePlanButton" class="text-pink-400 hover:underline text-sm font-semibold">Choose a Different Plan</button>
-            </div>
-        </section>
     </main>
 
     <footer>
@@ -527,231 +603,143 @@
     <script src="auth.js"></script> <!-- Link to your auth.js script -->
 
     <script>
-        // No need to redeclare auth and db here, they are globally available from auth.js
-        // const auth = firebase.auth();
-        // const db = firebase.firestore();
+        // Access the global auth and db objects from the window object.
+        const auth = window.auth; 
+        const db = window.db; 
+        const showModal = window.showModal;
+        const hideModal = window.hideModal;
 
-        // Replit Webhook URL for payment proof submission
-        const REPLIT_WEBHOOK_URL = "https://e1bea856-55a4-42d0-adb5-19e2fada9cb7-00-2shzdua4si313.janeway.replit.dev/submit";
+        const planCards = document.querySelectorAll('.plan-card');
+        const selectedPlanInput = document.getElementById('selectedPlan');
+        const selectedPriceInput = document.getElementById('selectedPrice');
+        const selectedCurrencyInput = document.getElementById('selectedCurrency');
+        const selectedDurationInput = document.getElementById('selectedDuration');
+        const paymentForm = document.getElementById('paymentForm');
+        const userEmailInput = document.getElementById('email');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const submitButton = paymentForm.querySelector('.submit-btn');
 
-        // Payment Details for UPI and PayPal (REPLACE WITH YOUR ACTUALS)
-        const paymentDetails = {
-            "UPI": {
-                address: "bharti00077-2@okaxis", // Your actual UPI ID
-                qr: "images/upi.png" // Path to your UPI QR code image
-            },
-            "PAYPAL": {
-                link: "https://www.paypal.me/PawanKumar35438", // Your actual PayPal.me link
-                qr: "images/paypal.png" // Path to your PayPal QR code image
-            }
-        };
+        let selectedPlanData = null; // To store the currently selected plan's data
 
-        let selectedPlan = null;
-        let selectedPrice = null;
-        let selectedCurrency = null;
-        let selectedDurationMonths = 0;
+        // Event listener for plan card selection
+        planCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove 'selected' class from all cards
+                planCards.forEach(c => c.classList.remove('selected'));
+                // Add 'selected' class to the clicked card
+                card.classList.add('selected');
 
-        // UI Elements
-        const planSelectionSection = document.getElementById('planSelectionSection'); // The container for plan options
-        const planOptions = document.querySelectorAll('.plan-option');
-        const paymentFormSection = document.getElementById('paymentFormSection');
-        const selectedPlanDisplay = document.getElementById('selectedPlanDisplay');
-        const selectedPriceDisplay = document.getElementById('selectedPriceDisplay');
-        const paymentMethodSelect = document.getElementById('paymentMethod');
-        const upiDetailsDiv = document.getElementById('upiDetails');
-        const upiQrCodeImage = document.getElementById('upiQrCodeImage');
-        const upiId = document.getElementById('upiId');
-        const upiAmountSpan = document.getElementById('upiAmount');
-        const paypalDetailsDiv = document.getElementById('paypalDetails');
-        const paypalQrCodeImage = document.getElementById('paypalQrCodeImage');
-        const paypalButtonLink = paypalDetailsDiv.querySelector('a');
-        const paymentProofForm = document.getElementById('paymentProofForm');
-        const paymentMessage = document.getElementById('paymentMessage');
-        const changePlanButton = document.getElementById('changePlanButton'); // New button
+                // Update the form fields with selected plan data
+                selectedPlanData = {
+                    plan: card.dataset.plan,
+                    priceUSD: card.dataset.priceUsd,
+                    priceINR: card.dataset.priceInr,
+                    duration: card.dataset.duration
+                };
 
-        // Modal elements (from auth.js) - these are already handled by auth.js global functions
-        // const modal = document.getElementById('modal');
-        // const modalMessage = document.getElementById('modalMessage');
-        // const closeModalButton = document.getElementById('closeModal');
+                // Determine currency based on user's location or preference (for now, default to INR)
+                const currency = 'INR'; // You can add logic here to determine USD or INR
+                selectedCurrencyInput.value = currency;
+                selectedDurationInput.value = selectedPlanData.duration;
 
-        // if (modal && closeModalButton) {
-        //     closeModalButton.addEventListener('click', () => {
-        //         hideModal();
-        //     });
-        // }
-
-        // showModal and hideModal are now *global functions* provided by auth.js
-        // No need to redefine them here.
-
-        // Event listeners for selecting membership plan
-        planOptions.forEach(option => {
-            option.addEventListener('click', (event) => {
-                console.log("Plan option clicked:", option.dataset.plan); // Debug log
-
-                // Remove 'selected' class from all options
-                planOptions.forEach(opt => opt.classList.remove('selected'));
-                // Add 'selected' class to the clicked option
-                option.classList.add('selected');
-
-                selectedPlan = option.dataset.plan;
-                selectedPrice = option.dataset.price;
-                selectedCurrency = option.dataset.currency;
-                selectedDurationMonths = parseInt(option.dataset.durationMonths);
-
-                selectedPlanDisplay.textContent = selectedPlan.replace(/_/g, ' ');
-                selectedPriceDisplay.textContent = `₹${selectedPrice}`;
-
-                // Hide plan selection and show payment form
-                planSelectionSection.classList.add('hidden'); // HIDE THE PLAN SELECTION
-                paymentFormSection.classList.remove('hidden'); // SHOW THE PAYMENT FORM
-                paymentFormSection.scrollIntoView({ behavior: 'smooth' });
-                
-                // Reset payment method selection and hide details
-                paymentMethodSelect.value = "";
-                upiDetailsDiv.classList.add('hidden');
-                paypalDetailsDiv.classList.add('hidden');
-                paymentMessage.classList.add('hidden'); // Hide previous messages
-                
-                console.log("Plan selection hidden, payment form section should now be visible."); // Debug log
+                if (currency === 'INR') {
+                    selectedPlanInput.value = `${selectedPlanData.plan.replace('-', ' ')} Plan`;
+                    selectedPriceInput.value = `₹${selectedPlanData.priceINR}`;
+                } else {
+                    selectedPlanInput.value = `${selectedPlanData.plan.replace('-', ' ')} Plan`;
+                    selectedPriceInput.value = `$${selectedPlanData.priceUSD}`;
+                }
+                console.log("Membership: Plan selected:", selectedPlanData);
             });
         });
 
-        // Event listener for "Choose Different Plan" button
-        changePlanButton.addEventListener('click', () => {
-            console.log("Choose Different Plan button clicked."); // Debug log
-            // Hide payment form and show plan selection
-            paymentFormSection.classList.add('hidden');
-            planSelectionSection.classList.remove('hidden');
-            planSelectionSection.scrollIntoView({ behavior: 'smooth' });
-
-            // Reset selected plan state and UI
-            selectedPlan = null;
-            selectedPrice = null;
-            selectedCurrency = null;
-            selectedDurationMonths = 0;
-            planOptions.forEach(opt => opt.classList.remove('selected'));
-            paymentMethodSelect.value = ""; // Clear selected payment method
-            upiDetailsDiv.classList.add('hidden');
-            paypalDetailsDiv.classList.add('hidden');
-            paymentMessage.classList.add('hidden'); // Hide any messages
-            paymentProofForm.reset(); // Clear payment proof form fields
-        });
-
-
-        // Event listener for payment method selection to update UI
-        paymentMethodSelect.addEventListener('change', () => {
-            const method = paymentMethodSelect.value;
-            console.log("Payment method selected:", method); // Debug log
-            upiDetailsDiv.classList.add('hidden');
-            paypalDetailsDiv.classList.add('hidden');
-
-            if (method === "UPI") {
-                upiDetailsDiv.classList.remove('hidden');
-                upiQrCodeImage.src = paymentDetails.UPI.qr;
-                upiId.textContent = paymentDetails.UPI.address;
-                upiAmountSpan.textContent = selectedPrice;
-                console.log("UPI details shown."); // Debug log
-            } else if (method === "PAYPAL") {
-                paypalDetailsDiv.classList.remove('hidden');
-                paypalQrCodeImage.src = paymentDetails.PAYPAL.qr;
-                paypalButtonLink.href = paymentDetails.PAYPAL.link;
-                console.log("PayPal details shown."); // Debug log
+        // Set user email on load if logged in
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                userEmailInput.value = user.email;
+                console.log("Membership: User logged in, email set:", user.email);
+            } else {
+                userEmailInput.value = '';
+                // Optionally redirect to login if membership requires login
+                // window.location.href = 'login.html';
+                console.log("Membership: User not logged in.");
             }
         });
 
-        // Function to copy address to clipboard
-        function copyToClipboard(elementId) {
-            const textToCopy = document.getElementById(elementId).textContent;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                // Use the global showModal function from auth.js
-                showModal('Address copied to clipboard!');
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
-                // Use the global showModal function from auth.js
-                showModal('Failed to copy address.');
-            });
-        }
-
-        // Event listener for payment proof form submission
-        paymentProofForm.addEventListener('submit', async (e) => {
+        // Payment Form Submission
+        paymentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            console.log("Payment proof form submitted.");
+            console.log("Membership: Payment form submitted. Preventing default behavior.");
 
-            // Use the global auth object from auth.js
-            const user = auth.currentUser;
-            if (!user) {
-                showModal("You must be logged in to submit payment proof.");
-                console.error("User not logged in.");
-                return;
-            }
-
-            if (!selectedPlan || !selectedPrice || !selectedCurrency || selectedDurationMonths === 0) {
+            if (!selectedPlanData) {
                 showModal("Please select a membership plan first.");
-                console.error("No plan selected or duration missing.");
+                console.warn("Membership: No plan selected.");
                 return;
             }
 
-            const paymentMethod = paymentMethodSelect.value;
-            if (!paymentMethod) {
-                showModal("Please select a payment method.");
-                console.error("No payment method selected.");
+            const formData = new FormData(paymentForm);
+            formData.append('membership_plan', selectedPlanData.plan);
+            formData.append('selected_price', selectedPriceInput.value.replace(/[^0-9.]/g, '')); // Clean price value
+            formData.append('selected_currency', selectedCurrencyInput.value);
+            formData.append('duration_months', selectedDurationInput.value);
+            
+            // Get current user's UID to associate payment with Firebase user
+            const currentUser = auth.currentUser;
+            if (currentUser) {
+                formData.append('user_firebase_uid', currentUser.uid);
+                formData.append('user_email', currentUser.email); // Also send email for easier admin view
+                console.log("Membership: Appending user_firebase_uid:", currentUser.uid, "and user_email:", currentUser.email);
+            } else {
+                showModal("You must be logged in to submit a payment request.");
+                console.error("Membership: User not logged in, cannot submit payment.");
                 return;
             }
 
-            const name = document.getElementById('name').value.trim();
-            const refID = document.getElementById('refID').value.trim();
-
-            if (!name || !refID) {
-                showModal("Please fill in your Name and Transaction Reference ID.");
-                console.error("Name or Ref ID missing.");
-                return;
-            }
-
-            const data = {
-                name: name,
-                user_firebase_uid: user.uid,
-                user_email: user.email,
-                membership_plan: selectedPlan,
-                payment_method: paymentMethod,
-                refID: refID,
-                selected_price: selectedPrice,
-                selected_currency: selectedCurrency,
-                duration_months: selectedDurationMonths
-            };
-
-            console.log("Data being sent to backend:", data);
-
-            paymentMessage.classList.remove('hidden');
-            paymentMessage.textContent = "Submitting your proof...";
-            paymentMessage.style.color = '#ffeb3b';
+            // Show loading spinner and disable button
+            loadingSpinner.style.display = 'block';
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+            console.log("Membership: Showing loading spinner and disabling button.");
 
             try {
-                const response = await fetch(REPLIT_WEBHOOK_URL, {
+                // Replace with your Replit deployment URL
+                const response = await fetch('https://vibexxx.itsleo4.repl.co/submit_payment', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
+                    body: formData
                 });
 
                 const result = await response.json();
-                console.log("Backend response:", result);
+                console.log("Membership: Payment submission response:", result);
 
                 if (response.ok) {
-                    paymentMessage.textContent = result.message + " We will verify it shortly!";
-                    paymentMessage.style.color = '#4CAF50';
-                    paymentProofForm.reset();
-                    showModal("Payment proof submitted successfully! We will verify it shortly.");
+                    showModal("Payment proof submitted successfully! Your request is pending approval.");
+                    paymentForm.reset();
+                    planCards.forEach(c => c.classList.remove('selected')); // Deselect plan
+                    selectedPlanData = null; // Clear selected plan
+                    selectedPlanInput.value = '';
+                    selectedPriceInput.value = '';
+                    userEmailInput.value = currentUser.email; // Keep email pre-filled if logged in
+                    console.log("Membership: Payment submission successful.");
                 } else {
-                    paymentMessage.textContent = "Error: " + (result.error || "Something went wrong.");
-                    paymentMessage.style.color = '#f44336';
-                    showModal("Payment proof submission failed: " + (result.error || "Unknown error."));
+                    showModal(`Submission failed: ${result.message || response.statusText}`);
+                    console.error("Membership: Payment submission failed:", result);
                 }
             } catch (error) {
-                console.error("Network error during payment submission:", error);
-                paymentMessage.textContent = "Network error. Please try again.";
-                paymentMessage.style.color = '#f44336';
-                showModal("Network error. Please check your internet connection or the Replit server status.");
+                console.error("Membership: Error during payment submission:", error);
+                showModal(`An error occurred: ${error.message}`);
+            } finally {
+                // Hide loading spinner and re-enable button
+                loadingSpinner.style.display = 'none';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit Payment Proof';
+                console.log("Membership: Hiding loading spinner and re-enabling button.");
+            }
+        });
+
+        // Initial selection of the first plan (optional, but good for UX)
+        document.addEventListener('DOMContentLoaded', () => {
+            if (planCards.length > 0) {
+                planCards[0].click(); // Simulate click on the first plan to pre-select
             }
         });
     </script>

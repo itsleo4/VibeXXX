@@ -206,10 +206,10 @@
             margin-bottom: 5px;
             display: -webkit-box;
             -webkit-line-clamp: 2; /* Limit description to 2 lines */
+            line-clamp: 2; /* Standard property for compatibility */
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
-            line-clamp: 2; /* Standard property for compatibility */
         }
     </style>
 </head>
@@ -285,11 +285,9 @@
 
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
-            console.log("Firebase app initialized on unlocked_videos.html.");
         }
         const auth = firebase.auth();
         const db = firebase.firestore();
-        console.log("Firebase Auth and Firestore instances created on unlocked_videos.html.");
 
         // Get screen elements
         const loadingScreen = document.getElementById('loadingScreen');
@@ -298,19 +296,247 @@
         const proVideoGrid = document.getElementById('proVideoGrid');
         const videoGridContainer = document.getElementById('videoGrid'); // The div for video cards
 
-        // --- Pro Video Data ---
+        // --- Pro Video Data (using Streamtape embedSrc) ---
+        // IMPORTANT: Populate this with your actual Pro Video data
         const proVideoData = {
-            "pro_1024tera_squirting": {
-                title: "She's Squirting: Witness the Meltdown of Pure Pleasure!",
-                description: "Experience an intense session of pure squirting bliss.",
-                thumbnail: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/download.webp",
-                iframelyEmbedHtml: `<div class="iframely-embed"><div class="iframely-responsive" style="height: 170px; padding-bottom: 0;"><a href="https://www.1024tera.com/sharing/link?surl=ltc6OftWoRP40JvL36U_JQ" data-iframely-url="//iframely.net/qmsLhSJA?theme=dark"></a></div></div>`
+            "pro_streamtape_nier_automata": {
+                title: "🤖 2B's Wild Ride: Nier Automata Housemaid Unleashed! 💥",
+                description: "Witness 2B like never before! Intense fuckmachine action with BBC creampie.",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/MAID.png",
+                embedSrc: "https://strtape.tech/e/YOUR_NIER_EMBED_ID/" // REPLACE with actual Streamtape embed src
+            },
+            "pro_streamtape_anime_big_ass": {
+                title: "🍑 Anime Babe's Thigh-High Cum Beg! 💦",
+                description: "A busty anime girl begs for a massive cumshot on her thighs. Uncensored action!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_32.png",
+                embedSrc: "https://strtape.tech/e/YOUR_ANIME_ASS_EMBED_ID/" // REPLACE with actual Streamtape embed src
+            },
+            "pro_streamtape_dva_bbc": {
+                title: "🥛 D.Va's Creamy Night: Milk This 12-Inch BBC! 🍆",
+                description: "Overwatch's D.Va gets wild with a massive BBC. Prepare for intense action!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_599.png",
+                embedSrc: "https://strtape.tech/e/34807/" // Example Streamtape ID
+            },
+            "pro_streamtape_stepmom_milky": {
+                title: "🍼 Stepmom's Milky Tits: Can't Get Enough! 🤤",
+                description: "Obsessed with stepmom's huge, milky tits. A forbidden fantasy come true.",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_1366068.png",
+                embedSrc: "https://strtape.tech/e/82878/" // Example Streamtape ID
+            },
+            "pro_streamtape_stepsister_gangbang": {
+                title: "😈 Naughty Stepsister: Dominated by Three Hung Studs! ⛓️",
+                description: "A shy stepsister gets a rough gangbang from three hung studs. Uncensored hentai!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_53452.png",
+                embedSrc: "https://strtape.tech/e/98463/" // Example Streamtape ID
+            },
+            "pro_streamtape_party_bang": {
+                title: "🤫 Secret Party Bang: Don't Tell Your Girlfriend! 🎉",
+                description: "A wild party night leads to an unforgettable, rough bang. Keep it a secret!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_265460.png",
+                embedSrc: "https://strtape.tech/e/84310/" // Example Streamtape ID
+            },
+            "pro_streamtape_step_siblings_busted": {
+                title: "🚨 Busted! Step Siblings Caught in Uncensored Hentai! 😱",
+                description: "A shocking discovery as step-siblings are caught in the act by their aunt.",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_45251.png",
+                embedSrc: "https://strtape.tech/e/32090/" // Example Streamtape ID
+            },
+            "pro_streamtape_lewdfroggo_licking": {
+                title: "👅 Rainy Day Bliss: Lewdfroggo's Hairless Babe Licking! 💦",
+                description: "Hot rainy day fun with a lewdfroggo and a hairless babe. So hot! 😜",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_83406.png",
+                embedSrc: "https://strtape.tech/e/43087/" // Example Streamtape ID
+            },
+            "pro_streamtape_busty_teen_married": {
+                title: "🤯 Busty Teen's Secret Affair: Banging a Married Man! 🤫",
+                description: "Can you believe this busty teen is having a scandalous affair? See it all!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_3118.png",
+                embedSrc: "https://strtape.tech/e/32702/" // Example Streamtape ID
+            },
+            "pro_streamtape_h_cup_nurse": {
+                title: "🩺 Wild H-Cup Nurse: Sucks & Fucks Hard in POV! 🍑",
+                description: "A massive H-Cup nurse delivers intense POV action. Get ready for a wild ride!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/01.jpg",
+                embedSrc: "https://strtape.tech/e/33446/" // Example Streamtape ID
+            },
+            "pro_streamtape_himawarigayorunisaku": {
+                title: "🌸 Himawarigayorunisaku: Teen Takes Anal & Cock! 💥",
+                description: "Watch a teen suck big cock and take intense anal action. Her tits will shake!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/324541_sucking_hentai_anal_01.jpg",
+                embedSrc: "https://strtape.tech/e/92366/" // Example Streamtape ID
+            },
+            "pro_streamtape_projekt_passion": {
+                title: "🌌 Projekt Passion: Dark Alien Babe's Shower Fingering! 👽",
+                description: "Experience intense lesbian fingering with a dark alien babe in a shower game novel.",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/07.jpg",
+                embedSrc: "https://strtape.tech/e/92366/" // Example Streamtape ID (duplicate, please verify)
+            },
+            "pro_streamtape_tifa_futa": {
+                title: "🔥 Tifa Futa's Wild Ride: Banging Aerith Hard! 🍑",
+                description: "Tifa Futa delivers wild cum action in a big ass play with Aerith. Don't miss this!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/07-1.jpg",
+                embedSrc: "https://strtape.tech/e/92882/" // Example Streamtape ID
+            },
+            "pro_streamtape_accidental_sex": {
+                title: "💦 Kinky Pussy Rubbing: Accidental Sex & Hot Cumshot! 😜",
+                description: "An unexpected encounter leads to kinky pussy rubbing and a hot cumshot finish.",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/09.jpg",
+                embedSrc: "https://strtape.tech/e/54123/" // Example Streamtape ID
+            },
+            "pro_streamtape_cosplayer_stepdaughter": {
+                title: "🤯 Banged My Sexy Cosplayer Stepdaughter! 💖",
+                description: "A hot, forbidden encounter with a huge-titted cosplayer stepdaughter. So hot!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/04.jpg",
+                embedSrc: "https://strtape.tech/e/82358/" // Example Streamtape ID
+            },
+            "pro_streamtape_stepsister_ass": {
+                title: "🍑 Stepsister's Perfect Ass: Virgin Anal Attempt! 🍆",
+                description: "A perfect ass takes a huge cock for a daring virgin anal attempt. Intense!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/05.jpg",
+                embedSrc: "https://strtape.tech/e/87467/" // Example Streamtape ID
+            },
+            "pro_streamtape_stepbrother_masturbation": {
+                title: "🤫 My Stepbrother's Craving: Helping with Masturbation! 😈",
+                description: "A forbidden desire as a stepbrother helps with masturbation. A kinky secret!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/18.jpg",
+                embedSrc: "https://strtape.tech/e/82151/" // Example Streamtape ID
+            },
+            "pro_streamtape_elf_blindfolded": {
+                title: "🧝‍♀️ Elf Banging Night Elf: Blindfolded Kitchen Parody! 🍳",
+                description: "A hilarious and kinky parody: elf banging night elf, blindfolded in the kitchen.",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/04-1.jpg",
+                embedSrc: "https://strtape.tech/e/34552/" // Example Streamtape ID
+            },
+            "pro_streamtape_tifa_lockhart_3d": {
+                title: "🎮 Tifa Lockhart's Tight Fantasy: 3D Sex Gameplay! 💥",
+                description: "Damn! Tifa Lockhart delivers intense 3D sex gameplay action. A must-see!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/14.jpg",
+                embedSrc: "https://strtape.tech/e/76524/" // Example Streamtape ID
+            },
+            "pro_streamtape_tifa_overwatch": {
+                title: "🔫 Tifa & Friends: Overwatch HMV Action! 🤩",
+                description: "Hey, wanna see Tifa and friends in wild Overwatch HMV action? Explosive!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/10.jpg",
+                embedSrc: "https://strtape.tech/e/70203/" // Example Streamtape ID
+            },
+            "pro_streamtape_milfs_penetrated": {
+                title: "🔥 MILFs Deeply Penetrated: Massive Cocks in Wild Hentai! 🤯",
+                description: "Mature ladies get intensely penetrated by massive cocks in wild hentai scenes.",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/02.jpg",
+                embedSrc: "https://strtape.tech/e/34976/" // Example Streamtape ID
+            },
+            "pro_streamtape_anime_girls_twerking": {
+                title: "👯‍♀️ Anime Girls Twerking for Blowjob Action! 💖",
+                description: "Watch as anime girls twerk their way to intense blowjob action. Hot!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/18-1.jpg",
+                embedSrc: "https://strtape.tech/e/69949/" // Example Streamtape ID
+            },
+            "pro_streamtape_petite_asian_creampied": {
+                title: "🌸 Petite Asian's First Creampie: Uncensored Hentai! 💦",
+                description: "A tight pussy gets creampied in her first uncensored hentai adventure. Intense!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/videoframe_78834.png",
+                embedSrc: "https://strtape.tech/e/84012/" // Example Streamtape ID
+            },
+            "pro_streamtape_jill_valentine_doggystyle": {
+                title: "🐕‍🦺 MILF Slut Jill Valentine: Begs for Big Cock in Doggystyle! 🥵",
+                description: "Resident Evil's Jill Valentine gets wild, begging for big cock in doggystyle.",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/09-1.jpg",
+                embedSrc: "https://strtape.tech/e/82014/" // Example Streamtape ID
+            },
+            "pro_streamtape_claire_jill_blowjob": {
+                title: "👯‍♀️ Claire & Jill: Resident Evil Hentai Blowjob! 🍆",
+                description: "Yo, Claire and Jill deliver an uncensored blowjob in this Resident Evil hentai!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/17.jpg",
+                embedSrc: "https://strtape.tech/e/82944/" // Example Streamtape ID
+            },
+            "pro_streamtape_kanzaki_chan_creampie": {
+                title: "💖 Kanzaki-chan's Unreal Blowjob & Creampie! 🤤",
+                description: "Obsessed with her slender, big-breasted body. Her blowjob before creampie is unreal!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/13.jpg",
+                embedSrc: "https://strtape.tech/e/91745/" // Example Streamtape ID
+            },
+            "pro_streamtape_pound_tight_asshole": {
+                title: "🍑 Why Finger When I Can Pound Your Tight Asshole Hard? 💥",
+                description: "Forget fingering, it's time to pound that tight asshole hard. Intense action!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/08.jpg",
+                embedSrc: "https://strtape.tech/e/74467/" // Example Streamtape ID
+            },
+            "pro_streamtape_roommate_fucked": {
+                title: "🏡 Home Alone: Roommate Fucked Me During Panty Teasing! 🤫",
+                description: "A kinky surprise at home: roommate fucked me during panty teasing. Wild!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/19.jpg",
+                embedSrc: "https://strtape.tech/e/72766/" // Example Streamtape ID
+            },
+            "pro_streamtape_shy_pianist": {
+                title: "🎹 Shy Pianist: Rides Massive Cock in Tight Hole! 🥵",
+                description: "A shy pianist takes on a massive cock, riding deep in her tight hole. Intense!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/05-1.jpg",
+                embedSrc: "https://strtape.tech/e/69503/" // Example Streamtape ID
+            },
+            "pro_streamtape_huge_titted_cutie": {
+                title: "🤯 Wow! Huge-Titted Cutie: Wild 3-Way Blowjob & Creampie! 💦",
+                description: "A stunning cutie delivers a wild 3-way blowjob and creampie. Unbelievable!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/09-2.jpg",
+                embedSrc: "https://strtape.tech/e/68001/" // Example Streamtape ID
+            },
+            "pro_streamtape_homemade_squirting": {
+                title: "💦 Ever Seen Real Homemade Fingering & Squirting Like This? 🤩",
+                description: "Witness authentic homemade fingering and explosive squirting. Uncensored!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/09-3.jpg",
+                embedSrc: "https://strtape.tech/e/44574/" // Example Streamtape ID
+            },
+            "pro_streamtape_uraraka_midoria": {
+                title: "💥 Hentai Uraraka & Midoria: Steamy Anime Action! 💖",
+                description: "My Hero Academia's Uraraka and Midoria in a steamy, action-packed hentai scene.",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/02-1.jpg",
+                embedSrc: "https://strtape.tech/e/95189/" // Example Streamtape ID
+            },
+            "pro_streamtape_madre_e_hijo": {
+                title: "👩‍👦 Madre E Hijo: Steamy Hentai Creampie Action! 💦",
+                description: "A forbidden bond in steamy hentai creampie action. Intense and shocking!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/06.jpg",
+                embedSrc: "https://strtape.tech/e/43270/" // Example Streamtape ID
+            },
+            "pro_streamtape_wet_doggystyle": {
+                title: "🐶 What's Hotter? Steamy, Wet Doggystyle in Anime! 🥵",
+                description: "Dive into a steamy, wet doggystyle session in anime. Pure raw passion!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/13-1.jpg",
+                embedSrc: "https://strtape.tech/e/72376/" // Example Streamtape ID
+            },
+            "pro_streamtape_bbw_cuckold": {
+                title: "🍑 3D BBW Hot Mature: Cuckold Sex with BBC Creampie! 🍆",
+                description: "A hot mature BBW engages in cuckold sex with a big black cock for an intense creampie.",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/05/19-1.jpg",
+                embedSrc: "https://strtape.tech/e/92169/" // Example Streamtape ID
+            },
+            "pro_streamtape_sissy_ladyboy": {
+                title: "💅 Sissy Ladyboy: Devours Ass in Wild Trans Threesome! 💖",
+                description: "A sissy ladyboy gets wild, devouring ass while being banged in a trans threesome group.",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/17-1.jpg",
+                embedSrc: "https://strtape.tech/e/91291/" // Example Streamtape ID
+            },
+            "pro_streamtape_friends_girlfriend": {
+                title: "🤫 Stuffing My Friend's Girlfriend's Tight Vagina! 💦",
+                description: "A wild night of fucking leads to stuffing a friend's girlfriend's tight vagina with cum.",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/19-2.jpg",
+                embedSrc: "https://strtape.tech/e/66886/" // Example Streamtape ID
+            },
+            "pro_streamtape_brickzilla_freya": {
+                title: "🦍 Brickzilla's BBC Dominates Freya Von Doom! 💥",
+                description: "Brickzilla's massive BBC takes on Freya Von Doom's petite frame. Intense domination!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/02-2.jpg",
+                embedSrc: "https://strtape.tech/e/27905/" // Example Streamtape ID
+            },
+            "pro_streamtape_black_beauty_boss": {
+                title: "👑 Black Beauty: Boss's Cock in Her Mouth! 🥵",
+                description: "A stunning black beauty gets her boss's cock in her mouth. Forbidden office fantasy!",
+                thumbnail: "http://luxflix.free.nf/wp-content/uploads/2025/07/15.jpg",
+                embedSrc: "https://strtape.tech/e/60000/" // Example Streamtape ID
             }
         };
 
         // Function to show a specific screen and hide others
         function showScreen(screenToShow) {
-            console.log("Attempting to show screen:", screenToShow.id);
             loadingScreen.classList.add('hidden');
             accessDeniedScreen.classList.add('hidden');
             proVideoGrid.classList.add('hidden');
@@ -319,17 +545,17 @@
 
         // --- Render Pro Video Cards Function ---
         function renderProVideoCards() {
-            console.log("Rendering Pro video cards...");
             videoGridContainer.innerHTML = ''; // Clear existing content
             for (const videoId in proVideoData) {
                 const video = proVideoData[videoId];
                 const card = document.createElement('div');
                 card.className = 'video-card';
+                // Link to video-player.html with encoded parameters
                 card.onclick = () => {
                     const encodedTitle = encodeURIComponent(video.title);
                     const encodedDescription = encodeURIComponent(video.description);
-                    const encodedIframelyHtml = encodeURIComponent(video.iframelyEmbedHtml);
-                    window.location.href = `video-player.html?title=${encodedTitle}&description=${encodedDescription}&iframelyHtml=${encodedIframelyHtml}`;
+                    const encodedEmbedSrc = encodeURIComponent(video.embedSrc);
+                    window.location.href = `video-player.html?title=${encodedTitle}&description=${encodedDescription}&embedSrc=${encodedEmbedSrc}`;
                 };
                 card.innerHTML = `
                     <img src="${video.thumbnail}" alt="${video.title} Thumbnail" onerror="this.onerror=null;this.src='https://placehold.co/400x180/333/ffffff?text=Video+Thumbnail+Error';" >
@@ -340,62 +566,49 @@
                 `;
                 videoGridContainer.appendChild(card);
             }
-            console.log("Pro video cards rendered.");
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            console.log("unlocked_videos.html: DOMContentLoaded event fired.");
             showScreen(loadingScreen); // Show loading screen initially
 
             auth.onAuthStateChanged(async (user) => {
-                console.log("unlocked_videos.html: onAuthStateChanged callback fired.");
                 if (user) {
-                    console.log("unlocked_videos.html: Firebase user is logged in. UID:", user.uid, "Email:", user.email);
+                    console.log("Firebase user is logged in:", user.uid, user.email);
                     const userDocRef = db.collection('users').doc(user.uid);
                     try {
                         const userDoc = await userDocRef.get();
-                        console.log("unlocked_videos.html: User document fetched. Exists:", userDoc.exists);
-
                         if (userDoc.exists) {
                             const userData = userDoc.data();
-                            console.log("unlocked_videos.html: User Data:", userData);
-
                             const unlockedAccess = userData.unlocked_access === true;
                             const subscriptionEndDate = userData.subscriptionEndDate ? userData.subscriptionEndDate.toDate() : null;
+
                             const now = new Date();
 
-                            console.log("unlocked_videos.html: unlockedAccess:", unlockedAccess);
-                            console.log("unlocked_videos.html: subscriptionEndDate (raw):", userData.subscriptionEndDate);
-                            console.log("unlocked_videos.html: subscriptionEndDate (Date obj):", subscriptionEndDate);
-                            console.log("unlocked_videos.html: Current Date:", now);
-                            console.log("unlocked_videos.html: Is subscriptionEndDate > now?", subscriptionEndDate && subscriptionEndDate > now);
-
-
                             if (unlockedAccess && subscriptionEndDate && subscriptionEndDate > now) {
-                                console.log("unlocked_videos.html: User has active Pro Access! Displaying videos.");
+                                console.log("User has active Pro Access!");
                                 renderProVideoCards(); // Render videos only if access is granted
                                 showScreen(proVideoGrid);
                             } else if (unlockedAccess && subscriptionEndDate && subscriptionEndDate <= now) {
-                                console.log("unlocked_videos.html: User's Pro Access has expired.");
+                                console.log("User's Pro Access has expired.");
                                 accessDeniedMessage.textContent = "Your Pro Access has expired. Please renew your membership!";
                                 showScreen(accessDeniedScreen);
                             } else {
-                                console.log("unlocked_videos.html: User logged in but no active Pro Access flag or invalid date.");
-                                accessDeniedMessage.textContent = "It looks like you don't have Pro Access yet. Please ensure your membership is active.";
+                                console.log("User logged in but no active Pro Access flag.");
+                                accessDeniedMessage.textContent = "It looks like you don't have Pro Access yet.";
                                 showScreen(accessDeniedScreen);
                             }
                         } else {
-                            console.log("unlocked_videos.html: User document not found in Firestore. Access Denied.");
-                            accessDeniedMessage.textContent = "Access Denied. User data not found. Please register or log in.";
+                            console.log("User document not found. Access Denied.");
+                            accessDeniedMessage.textContent = "Access Denied. Please register or log in.";
                             showScreen(accessDeniedScreen);
                         }
                     } catch (error) {
-                        console.error("unlocked_videos.html: Error fetching user data from Firebase:", error);
-                        accessDeniedMessage.textContent = `Error verifying access: ${error.message}. Please try again.`;
+                        console.error("Error fetching user data from Firebase:", error);
+                        accessDeniedMessage.textContent = `Error verifying access: ${error.message}`;
                         showScreen(accessDeniedScreen);
                     }
                 } else {
-                    console.log("unlocked_videos.html: No user signed in. Access Denied.");
+                    console.log("No user signed in. Access Denied.");
                     accessDeniedMessage.textContent = "You need to be logged in to access Pro content.";
                     showScreen(accessDeniedScreen);
                 }

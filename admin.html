@@ -443,7 +443,7 @@
                 </div>
                 <div class="form-group">
                     <label for="adminPassword">Password</label>
-                    <input type="password" id="adminPassword" name="adminPassword" required autocomplete="current-password" value="nsfgw@gmail.com" />
+                    <input type="password" id="adminPassword" name="adminPassword" required autocomplete="current-password" /> <!-- Removed hardcoded value -->
                 </div>
                 <button type="submit" class="submit-btn">Login</button>
             </form>
@@ -492,6 +492,7 @@
     <script>
         // Access the global auth and db objects directly from the window object.
         // auth.js is responsible for initializing firebase and attaching these to window.
+        // Ensure auth.js is loaded BEFORE this script block.
         const auth = window.auth; 
         const db = window.db; 
         

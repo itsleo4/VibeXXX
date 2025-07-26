@@ -403,8 +403,45 @@
             cursor: pointer;
         }
 
-        .hidden {
-            display: none !important;
+        /* Loading Spinner for payment submission */
+        #paymentLoadingSpinner {
+            display: none; /* Hidden by default */
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #ff2e63; /* Pink */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto; /* Center and add some margin */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* File input styling */
+        input[type="file"] {
+            width: 100%;
+            padding: 0.5rem;
+            background-color: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 8px;
+            color: #f1f1f1;
+            cursor: pointer;
+        }
+        input[type="file"]::file-selector-button {
+            background-color: #3a3a3a;
+            color: #f1f1f1;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin-right: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background-color: #4a4a4a;
         }
     </style>
 </head>
@@ -498,6 +535,11 @@
                     <label for="refID">Transaction Reference ID / Hash</label>
                     <input type="text" id="refID" name="refID" required placeholder="Enter your transaction ID" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white" />
                 </div>
+                <div class="form-group">
+                    <label for="screenshot">Payment Screenshot:</label>
+                    <input type="file" id="screenshot" name="screenshot" accept="image/*" required />
+                </div>
+                <div id="paymentLoadingSpinner"></div>
                 <button type="submit" class="submit-payment-btn">Submit Payment Proof</button>
                 <p id="paymentMessage" class="payment-message hidden"></p>
             </form>
@@ -532,7 +574,9 @@
         const db = firebase.firestore();
 
         // Replit Webhook URL for payment proof submission
-        const REPLIT_WEBHOOK_URL = "https://e1bea856-55a4-42d0-adb5-19e2fada9cb7-00-2shzdua4si313.janeway.replit.dev/submit";
+        // IMPORTANT: Replace with your actual Replit deployment URL (e.g., https://your-replit-name.your-username.repl.co)
+        // Ensure this matches the /submit_payment endpoint in your main.py
+        const REPLIT_WEBHOOK_URL = "https://vibexxx.itsleo4.repl.co/submit_payment"; 
 
         // Payment Details for UPI and PayPal (REPLACE WITH YOUR ACTUALS)
         const paymentDetails = {
@@ -552,7 +596,7 @@
         let selectedDurationMonths = 0;
 
         // UI Elements
-        const planSelectionSection = document.getElementById('planSelectionSection'); // The container for plan options
+        const planSelectionSection = document.getElementById('planSelectionSection'); 
         const planOptions = document.querySelectorAll('.plan-option');
         const paymentFormSection = document.getElementById('paymentFormSection');
         const selectedPlanDisplay = document.getElementById('selectedPlanDisplay');
@@ -567,7 +611,9 @@
         const paypalButtonLink = paypalDetailsDiv.querySelector('a');
         const paymentProofForm = document.getElementById('paymentProofForm');
         const paymentMessage = document.getElementById('paymentMessage');
-        const changePlanButton = document.getElementById('changePlanButton'); // New button
+        const changePlanButton = document.getElementById('changePlanButton'); 
+        const paymentLoadingSpinner = document.getElementById('paymentLoadingSpinner'); // Reference to the spinner
+        const submitPaymentBtn = paymentProofForm.querySelector('.submit-payment-btn'); // Reference to the submit button
 
         // Modal elements (from auth.js)
         const modal = document.getElementById('modal');
@@ -593,10 +639,41 @@
             }
         }
 
+        // Function to copy address to clipboard (using modern API)
+        function copyToClipboard(elementId) {
+            const textToCopy = document.getElementById(elementId).textContent;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showModal('Address copied to clipboard!');
+                    console.log("Text copied to clipboard:", textToCopy);
+                }).catch(err => {
+                    console.error('Failed to copy text using Clipboard API: ', err);
+                    showModal('Failed to copy address. Please copy manually.');
+                });
+            } else {
+                // Fallback for older browsers (less common now)
+                const textArea = document.createElement("textarea");
+                textArea.value = textToCopy;
+                textArea.style.position = "fixed"; // Avoid scrolling to bottom
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showModal('Address copied to clipboard (fallback)!');
+                    console.log("Text copied to clipboard (fallback):", textToCopy);
+                } catch (err) {
+                    console.error('Fallback: Oops, unable to copy', err);
+                    showModal('Failed to copy address. Please copy manually.');
+                }
+                document.body.removeChild(textArea);
+            }
+        }
+
         // Event listeners for selecting membership plan
         planOptions.forEach(option => {
             option.addEventListener('click', (event) => {
-                console.log("Plan option clicked:", option.dataset.plan); // Debug log
+                console.log("Plan option clicked:", option.dataset.plan); 
 
                 // Remove 'selected' class from all options
                 planOptions.forEach(opt => opt.classList.remove('selected'));
@@ -612,23 +689,27 @@
                 selectedPriceDisplay.textContent = `₹${selectedPrice}`;
 
                 // Hide plan selection and show payment form
-                planSelectionSection.classList.add('hidden'); // HIDE THE PLAN SELECTION
-                paymentFormSection.classList.remove('hidden'); // SHOW THE PAYMENT FORM
+                planSelectionSection.classList.add('hidden'); 
+                paymentFormSection.classList.remove('hidden'); 
                 paymentFormSection.scrollIntoView({ behavior: 'smooth' });
                 
                 // Reset payment method selection and hide details
                 paymentMethodSelect.value = "";
                 upiDetailsDiv.classList.add('hidden');
                 paypalDetailsDiv.classList.add('hidden');
-                paymentMessage.classList.add('hidden'); // Hide previous messages
+                paymentMessage.classList.add('hidden'); 
                 
-                console.log("Plan selection hidden, payment form section should now be visible."); // Debug log
+                // Pre-fill user email if logged in (assuming 'email' input is added to paymentProofForm or handled elsewhere)
+                // NOTE: Your provided HTML doesn't have an 'email' input in paymentProofForm.
+                // If you want to send the user's email, you'll need to add a hidden input or retrieve it from auth.currentUser later.
+                // For now, I'll assume it's handled by auth.currentUser directly in the submission logic.
+                console.log("Plan selection hidden, payment form section should now be visible."); 
             });
         });
 
         // Event listener for "Choose Different Plan" button
         changePlanButton.addEventListener('click', () => {
-            console.log("Choose Different Plan button clicked."); // Debug log
+            console.log("Choose Different Plan button clicked."); 
             // Hide payment form and show plan selection
             paymentFormSection.classList.add('hidden');
             planSelectionSection.classList.remove('hidden');
@@ -640,10 +721,10 @@
             selectedCurrency = null;
             selectedDurationMonths = 0;
             planOptions.forEach(opt => opt.classList.remove('selected'));
-            paymentMethodSelect.value = ""; // Clear selected payment method
+            paymentMethodSelect.value = ""; 
             upiDetailsDiv.classList.add('hidden');
             paypalDetailsDiv.classList.add('hidden');
-            paymentMessage.classList.add('hidden'); // Hide any messages
+            paymentMessage.classList.add('hidden'); 
             paymentProofForm.reset(); // Clear payment proof form fields
         });
 
@@ -651,7 +732,7 @@
         // Event listener for payment method selection to update UI
         paymentMethodSelect.addEventListener('change', () => {
             const method = paymentMethodSelect.value;
-            console.log("Payment method selected:", method); // Debug log
+            console.log("Payment method selected:", method); 
             upiDetailsDiv.classList.add('hidden');
             paypalDetailsDiv.classList.add('hidden');
 
@@ -660,25 +741,14 @@
                 upiQrCodeImage.src = paymentDetails.UPI.qr;
                 upiId.textContent = paymentDetails.UPI.address;
                 upiAmountSpan.textContent = selectedPrice;
-                console.log("UPI details shown."); // Debug log
+                console.log("UPI details shown."); 
             } else if (method === "PAYPAL") {
                 paypalDetailsDiv.classList.remove('hidden');
                 paypalQrCodeImage.src = paymentDetails.PAYPAL.qr;
                 paypalButtonLink.href = paymentDetails.PAYPAL.link;
-                console.log("PayPal details shown."); // Debug log
+                console.log("PayPal details shown."); 
             }
         });
-
-        // Function to copy address to clipboard
-        function copyToClipboard(elementId) {
-            const textToCopy = document.getElementById(elementId).textContent;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                showModal('Address copied to clipboard!');
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
-                showModal('Failed to copy address.');
-            });
-        }
 
         // Event listener for payment proof form submission
         paymentProofForm.addEventListener('submit', async (e) => {
@@ -707,27 +777,37 @@
 
             const name = document.getElementById('name').value.trim();
             const refID = document.getElementById('refID').value.trim();
+            const screenshotInput = document.getElementById('screenshot'); // Get the file input element
+            const screenshotFile = screenshotInput.files[0]; // Get the actual file
 
-            if (!name || !refID) {
-                showModal("Please fill in your Name and Transaction Reference ID.");
-                console.error("Name or Ref ID missing.");
+            if (!name || !refID || !screenshotFile) {
+                showModal("Please fill in your Name, Transaction Reference ID, and upload a Screenshot.");
+                console.error("Name, Ref ID, or Screenshot missing.");
                 return;
             }
 
-            const data = {
-                name: name,
-                user_firebase_uid: user.uid,
-                user_email: user.email,
-                membership_plan: selectedPlan,
-                payment_method: paymentMethod,
-                refID: refID,
-                selected_price: selectedPrice,
-                selected_currency: selectedCurrency,
-                duration_months: selectedDurationMonths
-            };
+            // Create FormData object to send file and other data
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('user_firebase_uid', user.uid);
+            formData.append('user_email', user.email); // Send user's email
+            formData.append('membership_plan', selectedPlan);
+            formData.append('paymentMethod', paymentMethod);
+            formData.append('refID', refID);
+            formData.append('selected_price', selectedPrice);
+            formData.append('selected_currency', selectedCurrency);
+            formData.append('duration_months', selectedDurationMonths);
+            formData.append('screenshot', screenshotFile); // Append the file
 
-            console.log("Data being sent to backend:", data);
+            console.log("FormData being sent to backend:");
+            for (let pair of formData.entries()) {
+                console.log(pair[0]+ ', ' + pair[1]); 
+            }
 
+            // Show loading spinner and disable button
+            paymentLoadingSpinner.style.display = 'block';
+            submitPaymentBtn.disabled = true;
+            submitPaymentBtn.textContent = 'Submitting...';
             paymentMessage.classList.remove('hidden');
             paymentMessage.textContent = "Submitting your proof...";
             paymentMessage.style.color = '#ffeb3b';
@@ -735,10 +815,8 @@
             try {
                 const response = await fetch(REPLIT_WEBHOOK_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
+                    // IMPORTANT: Do NOT set 'Content-Type' header for FormData. The browser sets it automatically.
+                    body: formData 
                 });
 
                 const result = await response.json();
@@ -748,18 +826,47 @@
                     paymentMessage.textContent = result.message + " We will verify it shortly!";
                     paymentMessage.style.color = '#4CAF50';
                     paymentProofForm.reset();
+                    // Keep email pre-filled if user is logged in
+                    const currentUser = auth.currentUser;
+                    if (currentUser) {
+                        // Assuming you want to pre-fill an email field on the form,
+                        // but your original HTML doesn't have one in paymentProofForm.
+                        // If you add one, you can uncomment this:
+                        // document.getElementById('email').value = currentUser.email;
+                    }
                     showModal("Payment proof submitted successfully! We will verify it shortly.");
                 } else {
-                    paymentMessage.textContent = "Error: " + (result.error || "Something went wrong.");
+                    paymentMessage.textContent = "Error: " + (result.message || response.statusText);
                     paymentMessage.style.color = '#f44336';
-                    showModal("Payment proof submission failed: " + (result.error || "Unknown error."));
+                    showModal("Payment proof submission failed: " + (result.message || "Unknown error."));
                 }
             } catch (error) {
                 console.error("Network error during payment submission:", error);
                 paymentMessage.textContent = "Network error. Please try again.";
                 paymentMessage.style.color = '#f44336';
                 showModal("Network error. Please check your internet connection or the Replit server status.");
+            } finally {
+                // Hide loading spinner and re-enable button
+                paymentLoadingSpinner.style.display = 'none';
+                submitPaymentBtn.disabled = false;
+                submitPaymentBtn.textContent = 'Submit Payment Proof';
             }
+        });
+
+        // Initial check for logged-in user to pre-fill email (if you add an email input to paymentProofForm)
+        // For now, this is not directly used to pre-fill the paymentProofForm as it lacks an 'email' input.
+        // It's mainly for the auth.currentUser check in the submission logic.
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                console.log("User logged in:", user.email);
+            } else {
+                console.log("User not logged in on membership page.");
+            }
+        });
+
+        // Initial state: Hide payment form section
+        document.addEventListener('DOMContentLoaded', () => {
+            paymentFormSection.classList.add('hidden');
         });
     </script>
 </body>

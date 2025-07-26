@@ -318,7 +318,7 @@
             background-color: #0056b3;
             transform: translateY(-1px);
         }
-        #adminPanelContent .user-list, #adminPanelContent .pending-payments-list {
+        #adminPanelContent .user-list, #adminPanelContent .pending-payments-list, #adminPanelContent .approved-payments-list {
             max-height: 400px;
             overflow-y: auto;
             border: 1px solid #3a3a3a;
@@ -497,15 +497,23 @@
 
             <!-- Pending Payments Section -->
             <div class="admin-section">
-                <h3>Pending Payments <button id="refreshPaymentsBtn" class="refresh-btn hidden">Refresh</button></h3>
+                <h3>Pending Payments <button id="refreshPendingPaymentsBtn" class="refresh-btn">Refresh</button></h3>
                 <div id="pendingPaymentsList" class="pending-payments-list">
                     <p class="text-gray-500">Loading pending payments...</p>
                 </div>
             </div>
 
-            <!-- Managed Users Section (previously "Manage Users") -->
+            <!-- Approved Payments Section (NEW) -->
             <div class="admin-section">
-                <h3>Managed Users <button id="refreshUsersBtn" class="refresh-btn hidden">Refresh</button></h3>
+                <h3>Approved Payments <button id="refreshApprovedPaymentsBtn" class="refresh-btn">Refresh</button></h3>
+                <div id="approvedPaymentsList" class="approved-payments-list">
+                    <p class="text-gray-500">Loading approved payments...</p>
+                </div>
+            </div>
+
+            <!-- Managed Users Section -->
+            <div class="admin-section">
+                <h3>Managed Users <button id="refreshUsersBtn" class="refresh-btn">Refresh</button></h3>
                 <div id="userList" class="user-list">
                     <p class="text-gray-500">Loading users...</p>
                 </div>
@@ -550,16 +558,20 @@
         const adminEmailInput = document.getElementById('adminEmail');
         const adminPasswordInput = document.getElementById('adminPassword');
         const pendingPaymentsList = document.getElementById('pendingPaymentsList');
+        const approvedPaymentsList = document.getElementById('approvedPaymentsList'); // New element
         const userList = document.getElementById('userList');
-        // Removed manual refresh buttons as onSnapshot handles real-time updates
+        const refreshPendingPaymentsBtn = document.getElementById('refreshPendingPaymentsBtn');
+        const refreshApprovedPaymentsBtn = document.getElementById('refreshApprovedPaymentsBtn'); // New button
+        const refreshUsersBtn = document.getElementById('refreshUsersBtn');
 
         // Function to show/hide sections
         function showAdminPanel() {
             adminLoginForm.classList.add('hidden');
             adminPanelContent.classList.remove('hidden');
             console.log("admin.html: Showing admin panel content.");
-            // Start real-time listeners
+            // Start real-time listeners (and initial fetch)
             listenForPendingPayments();
+            listenForApprovedPayments(); // New listener
             listenForUsers();
         }
 
@@ -626,7 +638,7 @@
                     const data = doc.data();
                     const requestId = doc.id;
                     const item = document.createElement('div');
-                    item.className = 'user-item'; // Reusing user-item style for consistency
+                    item.className = 'user-item'; 
                     item.innerHTML = `
                         <div>
                             <p><strong>User:</strong> ${data.user_email || 'N/A'}</p>
@@ -644,22 +656,56 @@
                     pendingPaymentsList.appendChild(item);
                 });
                 console.log(`admin.html: ${snapshot.size} pending payments loaded via real-time update.`);
-                attachPaymentButtonListeners(); // Re-attach listeners after UI update
+                // Re-attach listeners after UI update - important for dynamically added elements
+                document.querySelectorAll('#pendingPaymentsList .approve-btn').forEach(button => {
+                    button.onclick = () => approvePayment(button.dataset.requestId, button.dataset.userUid, parseInt(button.dataset.duration));
+                });
+                document.querySelectorAll('#pendingPaymentsList .reject-btn').forEach(button => {
+                    button.onclick = () => rejectPayment(button.dataset.requestId);
+                });
             }, error => {
                 console.error("admin.html: Error listening for pending payments:", error);
                 pendingPaymentsList.innerHTML = `<p class="text-red-500">Error loading payments: ${error.message}</p>`;
             });
         }
 
-        // Attach listeners for Approve/Reject buttons
-        function attachPaymentButtonListeners() {
-            document.querySelectorAll('.approve-btn').forEach(button => {
-                button.onclick = () => approvePayment(button.dataset.requestId, button.dataset.userUid, parseInt(button.dataset.duration));
+        // Real-time Listener for Approved Payments (NEW)
+        function listenForApprovedPayments() {
+            console.log("admin.html: Starting real-time listener for approved payments...");
+            const q = db.collection('payment_requests').where('status', '==', 'approved');
+            
+            q.onSnapshot(snapshot => {
+                if (snapshot.empty) {
+                    approvedPaymentsList.innerHTML = '<p class="text-gray-500">No approved payments found.</p>';
+                    console.log("admin.html: No approved payments found in real-time update.");
+                    return;
+                }
+
+                approvedPaymentsList.innerHTML = ''; // Clear current list
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const requestId = doc.id;
+                    const item = document.createElement('div');
+                    item.className = 'user-item'; 
+                    item.innerHTML = `
+                        <div>
+                            <p><strong>User:</strong> ${data.user_email || 'N/A'}</p>
+                            <p><strong>Plan:</strong> ${data.membership_plan || 'N/A'}</p>
+                            <p><strong>Amount:</strong> ${data.selected_currency} ${data.selected_price || 'N/A'}</p>
+                            <p><strong>Ref ID:</strong> ${data.refID || 'N/A'}</p>
+                            <p class="text-xs text-gray-400">Req ID: ${requestId}</p>
+                            <p class="text-xs text-green-400">Approved By: ${data.approvedBy || 'N/A'}</p>
+                            <p class="text-xs text-green-400">Approved At: ${data.approvedAt ? data.approvedAt.toDate().toLocaleDateString() : 'N/A'}</p>
+                        </div>
+                        <!-- No buttons for approved payments -->
+                    `;
+                    approvedPaymentsList.appendChild(item);
+                });
+                console.log(`admin.html: ${snapshot.size} approved payments loaded via real-time update.`);
+            }, error => {
+                console.error("admin.html: Error listening for approved payments:", error);
+                approvedPaymentsList.innerHTML = `<p class="text-red-500">Error loading approved payments: ${error.message}</p>`;
             });
-            document.querySelectorAll('.reject-btn').forEach(button => {
-                button.onclick = () => rejectPayment(button.dataset.requestId);
-            });
-            console.log("admin.html: Attached payment button listeners.");
         }
 
         // Approve Payment Logic
@@ -692,7 +738,8 @@
 
                     await userDocRef.update({
                         unlocked_access: true,
-                        subscriptionEndDate: currentEndDate // Store as Firebase Timestamp
+                        // Ensure subscriptionEndDate is stored as a Firebase Timestamp, not a JS Date object
+                        subscriptionEndDate: firebase.firestore.Timestamp.fromDate(currentEndDate) 
                     });
                     showModal("Payment approved and user access updated!");
                     console.log(`admin.html: User ${userUid} access updated successfully. New end date: ${currentEndDate.toLocaleDateString()}`);
@@ -766,21 +813,17 @@
                     userList.appendChild(item);
                 });
                 console.log(`admin.html: ${snapshot.size} users loaded via real-time update.`);
-                attachUserButtonListeners(); // Re-attach listeners after UI update
+                // Re-attach listeners after UI update
+                document.querySelectorAll('#userList .toggle-access-btn').forEach(button => {
+                    button.onclick = () => toggleUserAccess(button.dataset.userUid, button.dataset.currentAccess === 'true');
+                });
             }, error => {
                 console.error("admin.html: Error listening for users:", error);
                 userList.innerHTML = `<p class="text-red-500">Error loading users: ${error.message}</p>`;
             });
         }
 
-        // Attach listeners for Grant/Revoke Access buttons
-        function attachUserButtonListeners() {
-            document.querySelectorAll('.toggle-access-btn').forEach(button => {
-                button.onclick = () => toggleUserAccess(button.dataset.userUid, button.dataset.currentAccess === 'true');
-            });
-            console.log("admin.html: Attached user button listeners.");
-        }
-
+        // Attach listeners for Grant/Revoke Access buttons (moved into listenForUsers for re-attachment)
         // Toggle User Access Logic
         async function toggleUserAccess(userId, currentAccessStatus) {
             console.log(`admin.html: Toggling access for user ${userId}. Current status: ${currentAccessStatus}`);
@@ -796,13 +839,14 @@
                     newSubscriptionEndDate = now;
                     console.log(`admin.html: Granting access. New subscription end date: ${newSubscriptionEndDate.toLocaleDateString()}`);
                 } else {
-                    // If revoking access, set subscriptionEndDate to null
-                    console.log("admin.html: Revoking access. Setting subscriptionEndDate to null.");
+                    // If revoking access, set unlocked_access to false and subscriptionEndDate to null
+                    console.log("admin.html: Revoking access. Setting unlocked_access to false and subscriptionEndDate to null.");
                 }
 
                 await userDocRef.update({
                     unlocked_access: newAccessStatus,
-                    subscriptionEndDate: newAccessStatus ? newSubscriptionEndDate : null // Set to null if revoking
+                    // Ensure subscriptionEndDate is stored as a Firebase Timestamp, not a JS Date object
+                    subscriptionEndDate: newAccessStatus ? firebase.firestore.Timestamp.fromDate(newSubscriptionEndDate) : null 
                 });
                 showModal(`User access ${newAccessStatus ? 'granted' : 'revoked'}!`);
                 console.log(`admin.html: User ${userId} access toggled to ${newAccessStatus}.`);
@@ -812,6 +856,12 @@
                 showModal(`Error toggling access: ${error.message}`);
             }
         }
+
+        // Event listeners for manual refresh buttons
+        refreshPendingPaymentsBtn.addEventListener('click', listenForPendingPayments);
+        refreshApprovedPaymentsBtn.addEventListener('click', listenForApprovedPayments);
+        refreshUsersBtn.addEventListener('click', listenForUsers);
+        console.log("admin.html: Attached manual refresh button listeners.");
 
         // Initial check on DOMContentLoaded to ensure Firebase is ready
         document.addEventListener('DOMContentLoaded', () => {

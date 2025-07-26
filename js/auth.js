@@ -11,10 +11,14 @@ const firebaseConfig = {
 // Initialize Firebase if not already initialized
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
+    console.log("Firebase app initialized.");
+} else {
+    console.log("Firebase app already initialized.");
 }
 
 const auth = firebase.auth();
 const db = firebase.firestore(); // Initialize Firestore
+console.log("Firebase Auth and Firestore instances created.");
 
 // Helper function for showing modals (copy-pasted for self-containment)
 const modal = document.getElementById('modal');
@@ -25,30 +29,39 @@ if (modal && closeModalButton) {
     closeModalButton.addEventListener('click', () => {
         hideModal();
     });
+    console.log("Modal elements found and close listener attached.");
+} else {
+    console.log("Modal elements not found on this page.");
 }
 
 function showModal(message) {
     if (modal && modalMessage) {
         modalMessage.textContent = message;
         modal.classList.remove('hidden');
+        console.log("Modal shown with message:", message);
     }
 }
 
 function hideModal() {
     if (modal) {
         modal.classList.add('hidden');
+        console.log("Modal hidden.");
     }
 }
 
 // --- Centralized Form Submission Handlers ---
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOMContentLoaded event fired.");
+
     // Login Form Handler
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         console.log("Login form found, attaching listener.");
+        // Ensure no 'action' attribute on the form, or set it to '#'
+        loginForm.removeAttribute('action'); 
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault(); // Prevent default form submission (page reload)
-            console.log('Login form submitted.');
+            console.log('Login form submitted. e.preventDefault() called.');
 
             const email = loginForm.loginEmail.value.trim();
             const password = loginForm.loginPassword.value;
@@ -79,9 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         console.log("Register form found, attaching listener.");
+        // Ensure no 'action' attribute on the form, or set it to '#'
+        registerForm.removeAttribute('action');
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault(); // Prevent default form submission (page reload)
-            console.log('Register form submitted.');
+            console.log('Register form submitted. e.preventDefault() called.');
 
             const username = registerForm.username.value.trim();
             const email = registerForm.email.value.trim();
@@ -126,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutButtons.forEach(button => {
             button.addEventListener('click', async (e) => {
                 e.preventDefault();
-                console.log("Logout button clicked.");
+                console.log("Logout button clicked. e.preventDefault() called.");
                 try {
                     await auth.signOut();
                     console.log("User logged out.");
@@ -145,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- Update UI based on Auth State (show/hide login/logout buttons) ---
 auth.onAuthStateChanged(user => {
+    console.log("Auth state changed. User:", user ? user.uid : "None");
     const loginLinks = document.querySelectorAll('.login-link');
     const registerLinks = document.querySelectorAll('.register-link');
     const logoutButtons = document.querySelectorAll('.logout-link');

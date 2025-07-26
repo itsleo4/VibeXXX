@@ -205,25 +205,12 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // Firebase Configuration (same as your other client-side files)
-        const firebaseConfig = {
-            apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
-            authDomain: "vibexxx-500c6.firebaseapp.com",
-            projectId: "vibexxx-500c6",
-            storageBucket: "vibexxx-500c6.firebasestorage.app", 
-            messagingSenderId: "880697212397",
-            appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
-        };
-
-        // Initialize Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-            document.getElementById('firebaseStatus').textContent = 'Firebase Status: Initialized';
-        } else {
-            document.getElementById('firebaseStatus').textContent = 'Firebase Status: Already Initialized';
-        }
+        // Use the globally available auth and db objects from auth.js
+        const auth = firebase.auth();
         const db = firebase.firestore();
-        const auth = firebase.auth(); 
+
+        // Update Firebase Status indicator
+        document.getElementById('firebaseStatus').textContent = 'Firebase Status: Initialized (via auth.js)';
 
         // Admin Secret (MUST MATCH THE ONE IN REPLIT SECRETS)
         const ADMIN_SECRET = "@#vacexw999666"; 
@@ -366,50 +353,6 @@
                 console.error("Error fetching contributions:", error);
                 contributionsList.innerHTML = `<p class="text-red-500">Error loading contributions: ${error.message}</p>`;
                 showModal(`Error loading contributions: ${error.message}`);
-            }
-        }
-
-        // --- Handle Approve/Reject Actions ---
-        async function handleApproveReject(event) {
-            const button = event.target;
-            const docId = button.dataset.docId;
-            const userUid = button.dataset.userUid;
-            const membershipPlan = button.dataset.plan; // Only available on approve button
-            const action = button.classList.contains('approve-btn') ? 'approve' : 'reject';
-
-            button.disabled = true;
-            button.textContent = 'Processing...';
-
-            try {
-                const response = await fetch(`${REPLIT_WEBHOOK_BASE_URL}/approve_user`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Admin-Secret': ADMIN_SECRET // Send the admin secret
-                    },
-                    body: JSON.stringify({
-                        contributionDocId: docId,
-                        userUid: userUid,
-                        membershipPlan: membershipPlan, // Sent for both approve/reject, but only used for approve
-                        action: action
-                    })
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    showModal(result.message);
-                    fetchPendingContributions(); // Refresh the list
-                } else {
-                    console.error(`Error ${action}ing user:`, result.error);
-                    showModal(`Error ${action}ing user: ${result.error || 'Unknown error'}`);
-                }
-            } catch (error) {
-                console.error(`Network error during ${action} action:`, error);
-                showModal(`Network error: ${error.message}`);
-            } finally {
-                button.disabled = false;
-                button.textContent = action === 'approve' ? 'Approve' : 'Reject';
             }
         }
 

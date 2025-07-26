@@ -286,24 +286,12 @@
     <script src="auth.js"></script> <!-- Link to your auth.js script -->
 
     <script>
-        // Firebase Configuration (same as your other client-side files)
-        const firebaseConfig = {
-            apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
-            authDomain: "vibexxx-500c6.firebaseapp.com",
-            projectId: "vibexxx-500c6",
-            storageBucket: "vibexxx-500c6.appspot.com",
-            messagingSenderId: "880697212397",
-            appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
-        };
-
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-            document.getElementById('firebaseStatus').textContent = 'Firebase Status: Initialized';
-        } else {
-            document.getElementById('firebaseStatus').textContent = 'Firebase Status: Already Initialized';
-        }
+        // Use the globally available auth and db objects from auth.js
         const auth = firebase.auth();
         const db = firebase.firestore();
+
+        // Update Firebase Status indicator
+        document.getElementById('firebaseStatus').textContent = 'Firebase Status: Initialized (via auth.js)';
 
         // Get screen elements
         const loadingScreen = document.getElementById('loadingScreen');

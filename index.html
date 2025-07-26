@@ -192,7 +192,6 @@
             margin-bottom: 5px;
             display: -webkit-box;
             -webkit-line-clamp: 2; /* Limit description to 2 lines */
-            line-clamp: 2; /* Standard property for compatibility */
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -298,25 +297,16 @@
     <script src="auth.js"></script> <!-- Link to your auth.js script -->
 
     <script>
-        // Firebase configuration (same as your other client-side files)
-        const firebaseConfig = {
-            apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
-            authDomain: "vibexxx-500c6.firebaseapp.com",
-            projectId: "vibexxx-500c6",
-            storageBucket: "vibexxx-500c6.firebasestorage.app",
-            messagingSenderId: "880697212397",
-            appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
-        };
+        // No need to initialize Firebase here, auth.js handles it
+        // const firebaseConfig = { ... };
+        // if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 
-        // Initialize Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-            document.getElementById('firebaseStatus').textContent = 'Firebase Status: Initialized';
-        } else {
-            document.getElementById('firebaseStatus').textContent = 'Firebase Status: Already Initialized';
-        }
+        // Use the globally available auth and db objects from auth.js
         const auth = firebase.auth();
         const db = firebase.firestore();
+
+        // Update Firebase Status indicator
+        document.getElementById('firebaseStatus').textContent = 'Firebase Status: Initialized (via auth.js)';
 
         // --- Free Video Data (from your provided links) ---
         const freeVideoData = {

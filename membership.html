@@ -441,25 +441,12 @@
     <script src="auth.js"></script> <!-- Link to your auth.js script -->
 
     <script>
-        // Firebase configuration (same as your other client-side files)
-        const firebaseConfig = {
-            apiKey: "AIzaSyCc9N4rRu5-pjvOPDq78FUzQ2Bh2fuHyQ8",
-            authDomain: "vibexxx-500c6.firebaseapp.com",
-            projectId: "vibexxx-500c6",
-            storageBucket: "vibexxx-500c6.firebasestorage.app",
-            messagingSenderId: "880697212397",
-            appId: "1:880697212397:web:b47c4b1d1dadcb6e5bbbe4"
-        };
-
-        // Initialize Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-            document.getElementById('firebaseStatus').textContent = 'Firebase Status: Initialized';
-        } else {
-            document.getElementById('firebaseStatus').textContent = 'Firebase Status: Already Initialized';
-        }
+        // Use the globally available auth and db objects from auth.js
         const auth = firebase.auth();
         const db = firebase.firestore();
+
+        // Update Firebase Status indicator
+        document.getElementById('firebaseStatus').textContent = 'Firebase Status: Initialized (via auth.js)';
 
         // Replit Webhook URL for payment proof submission
         const REPLIT_WEBHOOK_URL = "https://e1bea856-55a4-42d0-adb5-19e2fada9cb7-00-2shzdua4si313.janeway.replit.dev/submit";

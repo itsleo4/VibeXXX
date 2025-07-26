@@ -439,11 +439,11 @@
             <form id="adminLogin">
                 <div class="form-group">
                     <label for="adminEmail">Email Address</label>
-                    <input type="email" id="adminEmail" name="adminEmail" required autocomplete="email" value="nsfgw@gmail.com" />
+                    <input type="email" id="adminEmail" name="adminEmail" required autocomplete="email" value="nsfw@gmail.com" /> <!-- Corrected email here -->
                 </div>
                 <div class="form-group">
                     <label for="adminPassword">Password</label>
-                    <input type="password" id="adminPassword" name="adminPassword" required autocomplete="current-password" /> <!-- Removed hardcoded value -->
+                    <input type="password" id="adminPassword" name="adminPassword" required autocomplete="current-password" />
                 </div>
                 <button type="submit" class="submit-btn">Login</button>
             </form>
@@ -491,8 +491,6 @@
 
     <script>
         // Access the global auth and db objects directly from the window object.
-        // auth.js is responsible for initializing firebase and attaching these to window.
-        // Ensure auth.js is loaded BEFORE this script block.
         const auth = window.auth; 
         const db = window.db; 
         
@@ -500,8 +498,8 @@
         const showModal = window.showModal;
         const hideModal = window.hideModal;
 
-        // Admin email (replace with your actual admin email)
-        const ADMIN_EMAIL = "nsfgw@gmail.com"; 
+        // Admin email (THIS IS THE CRITICAL FIX: ENSURE EXACT MATCH)
+        const ADMIN_EMAIL = "nsfw@gmail.com"; // Corrected email here
 
         // UI elements
         const adminLoginForm = document.getElementById('adminLoginForm');
@@ -534,6 +532,8 @@
 
             const email = adminEmailInput.value.trim();
             const password = adminPasswordInput.value;
+
+            console.log(`admin.html: Checking if entered email "${email}" matches ADMIN_EMAIL "${ADMIN_EMAIL}"`);
 
             if (email !== ADMIN_EMAIL) {
                 showModal("Access Denied: Invalid admin email.");

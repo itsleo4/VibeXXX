@@ -527,9 +527,9 @@
     <script src="auth.js"></script> <!-- Link to your auth.js script -->
 
     <script>
-        // Use the globally available auth and db objects from auth.js
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+        // No need to redeclare auth and db here, they are globally available from auth.js
+        // const auth = firebase.auth();
+        // const db = firebase.firestore();
 
         // Replit Webhook URL for payment proof submission
         const REPLIT_WEBHOOK_URL = "https://e1bea856-55a4-42d0-adb5-19e2fada9cb7-00-2shzdua4si313.janeway.replit.dev/submit";
@@ -569,29 +569,19 @@
         const paymentMessage = document.getElementById('paymentMessage');
         const changePlanButton = document.getElementById('changePlanButton'); // New button
 
-        // Modal elements (from auth.js)
-        const modal = document.getElementById('modal');
-        const modalMessage = document.getElementById('modalMessage');
-        const closeModalButton = document.getElementById('closeModal');
+        // Modal elements (from auth.js) - these are already handled by auth.js global functions
+        // const modal = document.getElementById('modal');
+        // const modalMessage = document.getElementById('modalMessage');
+        // const closeModalButton = document.getElementById('closeModal');
 
-        if (modal && closeModalButton) {
-            closeModalButton.addEventListener('click', () => {
-                hideModal();
-            });
-        }
+        // if (modal && closeModalButton) {
+        //     closeModalButton.addEventListener('click', () => {
+        //         hideModal();
+        //     });
+        // }
 
-        function showModal(message) {
-            if (modal && modalMessage) {
-                modalMessage.textContent = message;
-                modal.classList.remove('hidden');
-            }
-        }
-
-        function hideModal() {
-            if (modal) {
-                modal.classList.add('hidden');
-            }
-        }
+        // showModal and hideModal are now *global functions* provided by auth.js
+        // No need to redefine them here.
 
         // Event listeners for selecting membership plan
         planOptions.forEach(option => {
@@ -673,9 +663,11 @@
         function copyToClipboard(elementId) {
             const textToCopy = document.getElementById(elementId).textContent;
             navigator.clipboard.writeText(textToCopy).then(() => {
+                // Use the global showModal function from auth.js
                 showModal('Address copied to clipboard!');
             }).catch(err => {
                 console.error('Failed to copy text: ', err);
+                // Use the global showModal function from auth.js
                 showModal('Failed to copy address.');
             });
         }
@@ -685,6 +677,7 @@
             e.preventDefault();
             console.log("Payment proof form submitted.");
 
+            // Use the global auth object from auth.js
             const user = auth.currentUser;
             if (!user) {
                 showModal("You must be logged in to submit payment proof.");

@@ -53,6 +53,27 @@
             height: 100%;
             border: none;
         }
+        /* Style for iframely embed container */
+        .iframely-embed-container {
+            width: 100%;
+            max-width: 100%; /* Ensure it doesn't overflow */
+            margin: 0 auto; /* Center it */
+            /* Add padding-bottom for aspect ratio if iframely-responsive doesn't handle it */
+            position: relative;
+            padding-bottom: 56.25%; /* Default 16:9 aspect ratio for video */
+            height: 0;
+            overflow: hidden;
+            background-color: #000; /* Black background for player */
+            border-radius: 8px;
+        }
+        .iframely-embed-container > div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
         .message-box {
             background-color: #330000;
             border: 2px solid #f44336;
@@ -99,11 +120,10 @@
         <h1 id="videoTitle">Loading Video...</h1>
 
         <div id="videoPlayerSection">
-            <div class="video-wrapper">
-                <iframe id="videoIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <p id="videoDescription" class="text-gray-300 text-lg"></p>
+            <!-- Content will be dynamically inserted here -->
         </div>
+
+        <p id="videoDescription" class="text-gray-300 text-lg mt-4"></p>
 
         <div id="errorMessage" class="message-box hidden">
             <h2>Error!</h2>
@@ -122,23 +142,56 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const videoTitleElement = document.getElementById('videoTitle');
-            const videoIframe = document.getElementById('videoIframe');
-            const videoDescriptionElement = document.getElementById('videoDescription');
             const videoPlayerSection = document.getElementById('videoPlayerSection');
+            const videoDescriptionElement = document.getElementById('videoDescription');
             const errorMessage = document.getElementById('errorMessage');
             const errorText = document.getElementById('errorText');
 
             const title = getQueryParam('title');
             const description = getQueryParam('description');
-            const embedSrc = getQueryParam('embedSrc');
+            const embedSrc = getQueryParam('embedSrc'); // For Streamtape/direct iframes
+            const iframelyHtml = getQueryParam('iframelyHtml'); // For iframely embeds
 
-            if (embedSrc) {
-                videoTitleElement.textContent = title ? decodeURIComponent(title) : 'Video';
-                videoDescriptionElement.textContent = description ? decodeURIComponent(description) : '';
-                videoIframe.src = decodeURIComponent(embedSrc);
+            videoTitleElement.textContent = title ? decodeURIComponent(title) : 'Video';
+            videoDescriptionElement.textContent = description ? decodeURIComponent(description) : '';
+
+            if (iframelyHtml) {
+                // Handle iframely embed
+                const decodedIframelyHtml = decodeURIComponent(iframelyHtml);
+                
+                // Create a container for the iframely embed to apply responsive styles
+                const iframelyContainer = document.createElement('div');
+                iframelyContainer.className = 'iframely-embed-container';
+                iframelyContainer.innerHTML = decodedIframelyHtml;
+                videoPlayerSection.appendChild(iframelyContainer);
+
+                // Manually append the iframely script to ensure it executes
+                const scriptTag = document.createElement('script');
+                scriptTag.async = true;
+                scriptTag.src = "//iframely.net/embed.js";
+                document.body.appendChild(scriptTag);
+
+                videoPlayerSection.classList.remove('hidden');
+                errorMessage.classList.add('hidden');
+
+            } else if (embedSrc) {
+                // Handle standard iframe embed (like Streamtape)
+                const iframe = document.createElement('iframe');
+                iframe.id = 'videoIframe';
+                iframe.src = decodeURIComponent(embedSrc);
+                iframe.frameborder = '0';
+                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                iframe.allowFullscreen = true;
+
+                const videoWrapper = document.createElement('div');
+                videoWrapper.className = 'video-wrapper';
+                videoWrapper.appendChild(iframe);
+                videoPlayerSection.appendChild(videoWrapper);
+
                 videoPlayerSection.classList.remove('hidden');
                 errorMessage.classList.add('hidden');
             } else {
+                // No valid video source found
                 videoTitleElement.textContent = 'Video Not Found';
                 errorText.textContent = 'No video source provided. Please go back and select a video.';
                 videoPlayerSection.classList.add('hidden');

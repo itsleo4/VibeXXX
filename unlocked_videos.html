@@ -5,191 +5,251 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>VibeXXX - Pro Videos</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
     <style>
+        /* Base styles */
         body {
             margin: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: #0f0f0f; /* Dark YouTube background */
-            color: #f1f1f1; /* Light gray text */
+            font-family: 'Open Sans', sans-serif; /* General text font */
+            background-color: #121212; /* Deep dark background */
+            color: #e0e0e0; /* Soft white text */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
-        /* Header styles */
-        .yt-header {
-            background-color: #202020; /* Darker gray for header */
+
+        /* Header styles (Copied from index.html for consistency) */
+        .app-header {
+            background-color: #1a1a1a;
             padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap; /* Allow wrapping on smaller screens */
-            gap: 1rem; /* Space between header elements */
+            flex-wrap: wrap;
+            gap: 1rem;
             position: sticky;
             top: 0;
             z-index: 50;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
-        .yt-logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #ff0000; /* YouTube red */
-            text-shadow: 0 0 5px rgba(255,0,0,0.5);
-            text-decoration: none;
+
+        /* VibeXXX Logo (Copied from index.html) */
+        .vibe-logo {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            text-decoration: none;
+            flex-shrink: 0;
         }
-        .yt-logo svg {
-            width: 30px;
-            height: 30px;
-            fill: #ff0000;
+        .vibe-logo .icon {
+            width: 32px;
+            height: 32px;
+            fill: #ff2e63;
+            transition: transform 0.2s ease;
         }
-        .yt-search-bar {
-            flex-grow: 1; /* Allows search bar to take available space */
-            max-width: 600px;
-            display: flex;
-            border-radius: 20px;
-            overflow: hidden;
-            background-color: #121212; /* Darker input background */
-            border: 1px solid #303030;
+        .vibe-logo:hover .icon {
+            transform: scale(1.1);
         }
-        .yt-search-bar input {
+        .vibe-logo .text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #f1f1f1;
+            letter-spacing: -1px;
+            text-shadow: 0 0 5px rgba(255,46,99,0.3);
+        }
+        .vibe-logo .text span {
+            color: #ff2e63;
+        }
+
+        /* Search Bar (Copied from index.html) */
+        .search-container {
             flex-grow: 1;
-            padding: 0.6rem 1rem;
+            max-width: 500px;
+            display: flex;
+            border-radius: 25px;
+            overflow: hidden;
+            background-color: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .search-container:focus-within {
+            border-color: #ff2e63;
+            box-shadow: 0 0 0 2px rgba(255,46,99,0.4);
+        }
+        .search-container input {
+            flex-grow: 1;
+            padding: 0.75rem 1.25rem;
             background-color: transparent;
             border: none;
             outline: none;
             color: #f1f1f1;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
-        .yt-search-bar button {
-            background-color: #303030;
-            padding: 0.6rem 1rem;
+        .search-container button {
+            background-color: #3a3a3a;
+            padding: 0.75rem 1.25rem;
             border: none;
             color: #f1f1f1;
             cursor: pointer;
             transition: background-color 0.2s;
         }
-        .yt-search-bar button:hover {
-            background-color: #404040;
+        .search-container button:hover {
+            background-color: #4a4a4a;
         }
-        .yt-nav-buttons {
+        .search-container button svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Navigation Buttons (Copied from index.html) */
+        .nav-buttons {
             display: flex;
             gap: 0.8rem;
             align-items: center;
-            flex-wrap: wrap; /* Allow buttons to wrap */
-            justify-content: center; /* Center buttons on small screens */
+            flex-wrap: wrap;
+            justify-content: center;
         }
-        .yt-nav-buttons a, .yt-nav-buttons button {
-            background-color: #3a3a3a;
+        .nav-buttons a, .nav-buttons button {
+            background-color: #333333; /* Dark button background */
             color: #f1f1f1;
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 20px;
             text-decoration: none;
             font-weight: 500;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s ease, transform 0.1s ease;
             border: none;
             cursor: pointer;
-            white-space: nowrap; /* Prevent text wrapping */
+            white-space: nowrap;
+            font-family: 'Montserrat', sans-serif;
         }
-        .yt-nav-buttons a:hover, .yt-nav-buttons button:hover {
-            background-color: #505050;
+        .nav-buttons a:hover, .nav-buttons button:hover {
+            background-color: #444444;
+            transform: translateY(-1px);
         }
-        .yt-nav-buttons .btn-primary {
-            background-color: #ff0000; /* YouTube red */
+        .nav-buttons .btn-accent {
+            background-color: #ff2e63; /* Accent color */
         }
-        .yt-nav-buttons .btn-primary:hover {
-            background-color: #cc0000;
+        .nav-buttons .btn-accent:hover {
+            background-color: #e02a5a;
         }
-        .yt-nav-buttons .btn-secondary {
-            background-color: #404040;
-        }
-        .yt-nav-buttons .btn-secondary:hover {
-            background-color: #555555;
-        }
-        .yt-nav-buttons .btn-logout {
+        .nav-buttons .btn-logout {
             background-color: #dc2626; /* Red-600 */
         }
-        .yt-nav-buttons .btn-logout:hover {
+        .nav-buttons .btn-logout:hover {
             background-color: #b91c1c; /* Red-700 */
         }
 
         /* Main content layout */
         main {
             flex-grow: 1;
-            padding: 2rem 1.5rem;
+            padding: 2rem 1.5rem; /* Consistent padding */
             max-width: 1400px; /* Max width for content */
             margin: 0 auto; /* Center content */
         }
         .section-title {
-            font-size: 2rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
             font-weight: 700;
-            color: #e0e0e0;
-            margin-bottom: 1.5rem;
+            color: #f1f1f1;
+            margin-bottom: 2rem;
             text-align: center;
+            text-shadow: 0 0 8px rgba(255,46,99,0.2);
         }
         .video-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive grid */
-            gap: 1.5rem; /* Space between video cards */
+            gap: 2rem; /* More generous spacing */
         }
+        @media (max-width: 640px) { /* Mobile specific adjustments */
+            .app-header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem;
+            }
+            .search-container {
+                width: 100%;
+                max-width: none;
+            }
+            .nav-buttons {
+                width: 100%;
+                justify-content: space-around;
+                margin-top: 1rem;
+            }
+            .nav-buttons a, .nav-buttons button {
+                flex-grow: 1; /* Make buttons fill width */
+                text-align: center;
+            }
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+            }
+            .video-grid {
+                grid-template-columns: 1fr; /* Single column on very small screens */
+                gap: 1.5rem;
+            }
+        }
+
         .video-card {
-            background-color: #1a1a1a; /* Darker card background */
-            border-radius: 8px;
+            background-color: #1a1a1a;
+            border-radius: 12px; /* More rounded corners */
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            height: 100%; /* Ensure cards fill grid space vertically */
+            height: 100%;
         }
         .video-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(255,46,99,0.4); /* Accent glow on hover */
         }
         .video-card img {
             width: 100%;
-            height: 180px; /* Fixed height for thumbnails */
+            height: 200px; /* Larger thumbnails */
             object-fit: cover;
-            border-bottom: 1px solid #303030;
+            border-bottom: 1px solid #2a2a2a;
         }
         .video-card-content {
-            padding: 1rem;
-            flex-grow: 1; /* Allows content to push footer down */
+            padding: 1.25rem;
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
         .video-card h3 {
-            font-size: 1.1rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem;
             font-weight: 600;
             color: #f1f1f1;
             margin-bottom: 0.5rem;
             line-height: 1.4;
             display: -webkit-box;
-            -webkit-line-clamp: 2; /* Limit title to 2 lines */
-            line-clamp: 2; /* Standard property for compatibility */
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .video-card p {
-            font-size: 0.85rem;
-            color: #aaaaaa; /* Lighter gray for description */
-            margin-bottom: 0.5rem;
-            flex-grow: 1; /* Allows description to take space */
+            font-size: 0.95rem;
+            color: #b0b0b0; /* Slightly darker gray for description */
+            margin-bottom: 0.8rem;
+            flex-grow: 1;
             display: -webkit-box;
-            -webkit-line-clamp: 3; /* Limit description to 3 lines */
-            line-clamp: 3; /* Standard property for compatibility */
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .video-card .meta-info {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: #888888;
-            margin-top: auto; /* Pushes meta info to the bottom */
+            margin-top: auto;
+            text-align: right; /* Align meta info to right */
         }
 
         /* Access control screens */
@@ -201,11 +261,17 @@
             min-height: calc(100vh - 120px); /* Adjust for header/footer */
             text-align: center;
             padding: 2rem;
+            background-color: #1a1a1a; /* Slightly lighter background for these screens */
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+            margin: 2rem auto;
+            max-width: 600px;
         }
         .access-screen h2 {
+            font-family: 'Montserrat', sans-serif;
             font-size: 2.5rem;
-            font-weight: bold;
-            color: #ff0000; /* YouTube red */
+            font-weight: 700;
+            color: #ff2e63;
             margin-bottom: 1rem;
         }
         .access-screen p {
@@ -214,21 +280,22 @@
             margin-bottom: 1.5rem;
         }
         .access-screen .cta-button {
-            background-color: #ff0000;
+            background-color: #ff2e63;
             color: white;
             padding: 12px 24px;
             border-radius: 9999px;
             text-decoration: none;
             font-weight: 600;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, transform 0.1s;
         }
         .access-screen .cta-button:hover {
-            background-color: #cc0000;
+            background-color: #e02a5a;
+            transform: translateY(-2px);
         }
         /* Spinner animation */
         .spinner {
             border: 8px solid rgba(255, 255, 255, 0.3);
-            border-top: 8px solid #ff0000; /* YouTube red */
+            border-top: 8px solid #ff2e63;
             border-radius: 50%;
             width: 60px;
             height: 60px;
@@ -240,14 +307,15 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Footer styles */
+        /* Footer styles (Copied from index.html) */
         footer {
-            background-color: #202020;
+            background-color: #1a1a1a;
             color: #aaaaaa;
             text-align: center;
             padding: 1.5rem;
-            margin-top: auto; /* Pushes footer to the bottom */
-            border-top: 1px solid #303030;
+            margin-top: auto;
+            border-top: 1px solid #2a2a2a;
+            font-size: 0.9rem;
         }
         footer a {
             color: #f1f1f1;
@@ -255,7 +323,7 @@
             transition: color 0.2s;
         }
         footer a:hover {
-            color: #ff0000;
+            color: #ff2e63;
         }
 
         /* Modal styles (from auth.js) */
@@ -306,22 +374,32 @@
 </head>
 <body>
 
-    <header class="yt-header">
-        <a href="index.html" class="yt-logo">
-            <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" class="style-scope yt-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope yt-icon"><path d="M10 15V9l5 3-5 3zM22 3H2v18h20V3zm-2 16H4V5h16v14z" class="style-scope yt-icon"></path></g></svg>
-            VibeXXX
+    <header class="app-header">
+        <a href="index.html" class="vibe-logo">
+            <!-- Custom VibeXXX Logo SVG -->
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#ff2e63"/>
+                <path d="M15.5 12L9.5 8.5V15.5L15.5 12z" fill="#f1f1f1"/>
+                <path d="M12 11.5L10 10.5V13.5L12 12.5V11.5z" fill="#f1f1f1"/>
+                <path d="M14 10.5L12 9.5V12.5L14 11.5V10.5z" fill="#f1f1f1"/>
+            </svg>
+            <span class="text">Vibe<span class="font-extrabold">XXX</span></span>
         </a>
-        <div class="yt-search-bar">
-            <input type="text" placeholder="Search" />
+        
+        <div class="search-container">
+            <input type="text" placeholder="Search videos..." />
             <button>
-                <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" class="style-scope yt-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope yt-icon"><path d="M20.87 20.17l-5.59-5.59A7.954 7.954 0 0 0 16 9c0-4.42-3.58-8-8-8S0 4.58 0 9s3.58 8 8 8c1.86 0 3.59-.63 4.95-1.69l5.59 5.59L20.87 20.17zM8 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z" class="style-scope yt-icon"></path></g></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.5 14h-.79l-.28-.27A6.96 6.96 0 0016 9c0-3.87-3.13-7-7-7S2 5.13 2 9s3.13 7 7 7c1.74 0 3.34-.64 4.56-1.68l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9 14c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                </svg>
             </button>
         </div>
-        <div class="yt-nav-buttons">
-            <a href="unlocked_videos.html" class="btn-primary">Pro Videos</a>
-            <a href="membership.html" class="btn-secondary">Membership</a>
-            <a href="login.html" class="btn-secondary login-link">Login</a>
-            <a href="register.html" class="btn-secondary register-link">Register</a>
+
+        <div class="nav-buttons">
+            <a href="unlocked_videos.html" class="btn-accent">Pro Videos</a>
+            <a href="membership.html">Membership</a>
+            <a href="login.html" class="login-link">Login</a>
+            <a href="register.html" class="register-link">Register</a>
             <button class="btn-logout hidden">Logout</button>
         </div>
     </header>
@@ -355,7 +433,7 @@
         <p>&copy; 2025 VibeXXX. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="https://t.me/LuxFlix" target="_blank">Telegram</a></p>
     </footer>
 
-    <!-- Universal Modal Structure -->
+    <!-- Universal Modal Structure (from auth.js) -->
     <div id="modal" class="modal hidden">
         <div class="modal-content">
             <span class="close" id="closeModal">&times;</span>
@@ -385,9 +463,11 @@
         const proVideoData = {
             "pro_1024tera_squirting": {
                 title: "She's Squirting: Witness the Meltdown of Pure Pleasure!",
-                description: "Experience an intense session of pure squirting bliss.",
+                description: "Experience an intense session of pure squirting bliss. Exclusive content for Pro members.",
                 thumbnail: "https://roughcrave.wordpress.com/wp-content/uploads/2025/07/download.webp",
-                iframelyEmbedHtml: `<div class="iframely-embed"><div class="iframely-responsive" style="height: 170px; padding-bottom: 0;"><a href="https://www.1024tera.com/sharing/link?surl=ltc6OftWoRP40JvL36U_JQ" data-iframely-url="//iframely.net/qmsLhSJA?theme=dark"></a></div></div>`
+                iframelyEmbedHtml: `<div class="iframely-embed"><div class="iframely-responsive" style="height: 170px; padding-bottom: 0;"><a href="https://www.1024tera.com/sharing/link?surl=ltc6OftWoRP40JvL36U_JQ" data-iframely-url="//iframely.net/qmsLhSJA?theme=dark"></a></div></div>`,
+                views: "2.5M",
+                uploadTime: "3 days ago"
             }
         };
 
@@ -412,14 +492,17 @@
                     const encodedTitle = encodeURIComponent(video.title);
                     const encodedDescription = encodeURIComponent(video.description);
                     const encodedIframelyHtml = encodeURIComponent(video.iframelyEmbedHtml);
-                    window.location.href = `video-player.html?title=${encodedTitle}&description=${encodedDescription}&iframelyHtml=${encodedIframelyHtml}`;
+                    const encodedViews = encodeURIComponent(video.views);
+                    const encodedUploadTime = encodeURIComponent(video.uploadTime);
+
+                    window.location.href = `video-player.html?title=${encodedTitle}&description=${encodedDescription}&iframelyHtml=${encodedIframelyHtml}&views=${encodedViews}&uploadTime=${encodedUploadTime}`;
                 };
                 card.innerHTML = `
-                    <img src="${video.thumbnail}" alt="${video.title} Thumbnail" onerror="this.onerror=null;this.src='https://placehold.co/400x180/333/ffffff?text=Video+Thumbnail+Error';" >
+                    <img src="${video.thumbnail}" alt="${video.title} Thumbnail" onerror="this.onerror=null;this.src='https://placehold.co/400x200/333/ffffff?text=Video+Error';" >
                     <div class="video-card-content">
                         <h3>${video.title}</h3>
-                        <p>${video.description}</p>
-                        <div class="meta-info">Pro Exclusive • New!</div>
+                        <p class="channel-name">VibeXXX Pro</p> <!-- Placeholder channel name -->
+                        <div class="meta-info">${video.views} views • ${video.uploadTime}</div>
                     </div>
                 `;
                 videoGridContainer.appendChild(card);
